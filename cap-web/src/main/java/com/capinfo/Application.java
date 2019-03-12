@@ -17,7 +17,11 @@ import tk.mybatis.spring.annotation.MapperScan;
  * @author zhuxiaomeng
  * @date 2018/1/1.
  * @email 154040976@qq.com1111
+ *
+ * 林哥万岁
  */
+
+
 
 @EnableWebMvc
 @SpringBootConfiguration
@@ -34,7 +38,7 @@ public class Application {
 
     public static void main(String[] args) {
         ApplicationContext applicationContext = SpringApplication.run(Application.class, args);
-//    String[] names = applicationContext.getBeanDefinitionNames();
+        //    String[] names = applicationContext.getBeanDefinitionNames();
         //1.8 forEach循环
 //    Arrays.asList(names).forEach(System.out::println);
         System.out.println("Server start succ");
