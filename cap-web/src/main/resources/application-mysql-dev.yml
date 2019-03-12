@@ -5,7 +5,7 @@ spring:
       restart:
         enabled: true
   datasource:
-        url: jdbc:mysql://1.0.4.102:3306/lenos?useUnicode=true&characterEncoding=UTF-8
+        url: jdbc:mysql://localhost:3306/capinfo?useUnicode=true&characterEncoding=UTF-8
         username: root
         password: root
         # 使用druid数据源
@@ -31,7 +31,7 @@ spring:
     admin:
       client:
         prefer-ip: true
-      url: http://localhost:8082
+      url: http://localhost:80821
 
 mybatis:
     type-aliases-package: com.capinfo.entity
