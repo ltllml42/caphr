@@ -30,7 +30,7 @@ import tk.mybatis.spring.annotation.MapperScan;
         @ComponentScan.Filter(type = FilterType.CUSTOM, classes = AutoConfigurationExcludeFilter.class) })
 @EnableTransactionManagement
 @ComponentScan({"com.capinfo", "org.activiti"})
-@MapperScan(basePackages = {"com.capinfo.mapper"})
+@MapperScan(basePackages = {"com.capinfo.mappers"})
 @EnableAutoConfiguration(exclude = {
         org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration.class
 })
@@ -42,6 +42,7 @@ public class Application {
         //1.8 forEach循环
 //    Arrays.asList(names).forEach(System.out::println);
         System.out.println("Server start succ");
+        System.out.println(111);
     }
 
 
