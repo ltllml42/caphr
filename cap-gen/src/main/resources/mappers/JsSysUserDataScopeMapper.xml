@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.capinfo.mapper.JsSysUserDataScopeMapper">
+  <resultMap id="BaseResultMap" type="com.capinfo.entity.JsSysUserDataScope">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="user_code" jdbcType="VARCHAR" property="user_code" />
+    <id column="ctrl_type" jdbcType="VARCHAR" property="ctrl_type" />
+    <id column="ctrl_data" jdbcType="VARCHAR" property="ctrl_data" />
+    <id column="ctrl_permi" jdbcType="VARCHAR" property="ctrl_permi" />
+  </resultMap>
+</mapper>

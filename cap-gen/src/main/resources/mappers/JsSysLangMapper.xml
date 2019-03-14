@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.capinfo.mapper.JsSysLangMapper">
+  <resultMap id="BaseResultMap" type="com.capinfo.entity.JsSysLang">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="id" jdbcType="VARCHAR" property="id" />
+    <result column="module_code" jdbcType="VARCHAR" property="module_code" />
+    <result column="lang_code" jdbcType="VARCHAR" property="lang_code" />
+    <result column="lang_text" jdbcType="VARCHAR" property="lang_text" />
+    <result column="lang_type" jdbcType="VARCHAR" property="lang_type" />
+    <result column="create_by" jdbcType="VARCHAR" property="create_by" />
+    <result column="create_date" jdbcType="TIMESTAMP" property="create_date" />
+    <result column="update_by" jdbcType="VARCHAR" property="update_by" />
+    <result column="update_date" jdbcType="TIMESTAMP" property="update_date" />
+    <result column="remarks" jdbcType="VARCHAR" property="remarks" />
+  </resultMap>
+</mapper>

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.capinfo.mapper.JsSysMsgInnerRecordMapper">
+  <resultMap id="BaseResultMap" type="com.capinfo.entity.JsSysMsgInnerRecord">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="id" jdbcType="VARCHAR" property="id" />
+    <result column="msg_inner_id" jdbcType="VARCHAR" property="msg_inner_id" />
+    <result column="receive_user_code" jdbcType="VARCHAR" property="receive_user_code" />
+    <result column="receive_user_name" jdbcType="VARCHAR" property="receive_user_name" />
+    <result column="read_status" jdbcType="CHAR" property="read_status" />
+    <result column="read_date" jdbcType="TIMESTAMP" property="read_date" />
+    <result column="is_star" jdbcType="CHAR" property="is_star" />
+  </resultMap>
+</mapper>

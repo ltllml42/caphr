@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.capinfo.mapper.JsSysEmployeePostMapper">
+  <resultMap id="BaseResultMap" type="com.capinfo.entity.JsSysEmployeePost">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="emp_code" jdbcType="VARCHAR" property="emp_code" />
+    <id column="post_code" jdbcType="VARCHAR" property="post_code" />
+  </resultMap>
+</mapper>

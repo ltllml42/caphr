@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.capinfo.mapper.JsSysCompanyOfficeMapper">
+  <resultMap id="BaseResultMap" type="com.capinfo.entity.JsSysCompanyOffice">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="company_code" jdbcType="VARCHAR" property="company_code" />
+    <id column="office_code" jdbcType="VARCHAR" property="office_code" />
+  </resultMap>
+</mapper>

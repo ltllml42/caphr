@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.capinfo.mapper.JsSysMsgInnerMapper">
+  <resultMap id="BaseResultMap" type="com.capinfo.entity.JsSysMsgInner">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="id" jdbcType="VARCHAR" property="id" />
+    <result column="msg_title" jdbcType="VARCHAR" property="msg_title" />
+    <result column="content_level" jdbcType="CHAR" property="content_level" />
+    <result column="content_type" jdbcType="CHAR" property="content_type" />
+    <result column="receive_type" jdbcType="CHAR" property="receive_type" />
+    <result column="send_user_code" jdbcType="VARCHAR" property="send_user_code" />
+    <result column="send_user_name" jdbcType="VARCHAR" property="send_user_name" />
+    <result column="send_date" jdbcType="TIMESTAMP" property="send_date" />
+    <result column="is_attac" jdbcType="CHAR" property="is_attac" />
+    <result column="notify_types" jdbcType="VARCHAR" property="notify_types" />
+    <result column="status" jdbcType="CHAR" property="status" />
+    <result column="create_by" jdbcType="VARCHAR" property="create_by" />
+    <result column="create_date" jdbcType="TIMESTAMP" property="create_date" />
+    <result column="update_by" jdbcType="VARCHAR" property="update_by" />
+    <result column="update_date" jdbcType="TIMESTAMP" property="update_date" />
+    <result column="remarks" jdbcType="VARCHAR" property="remarks" />
+    <result column="msg_content" jdbcType="LONGVARCHAR" property="msg_content" />
+    <result column="receive_codes" jdbcType="LONGVARCHAR" property="receive_codes" />
+    <result column="receive_names" jdbcType="LONGVARCHAR" property="receive_names" />
+  </resultMap>
+</mapper>
