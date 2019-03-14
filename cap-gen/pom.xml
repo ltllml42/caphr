@@ -10,19 +10,37 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>cap-gen</artifactId>
+    <name>cap-gen</name>
+
     <dependencies>
-	    <dependency>
-	      <groupId>com.capinfo</groupId>
-	      <artifactId>cap-core</artifactId>
-	    </dependency>
+        <dependency>
+            <groupId>com.capinfo</groupId>
+            <artifactId>cap-core</artifactId>
+        </dependency>
     </dependencies>
-    
-   <!-- <build>
+    <!--<dependencies>
+         <dependency>
+           <groupId>com.capinfo</groupId>
+           <artifactId>cap-core</artifactId>
+         </dependency>
+     </dependencies>-->
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+
+
+
+    <!--    使用 springboot Mybatis Generator 代码生成器  生成的 entity、mappers、XXXMapper.xml文件
+            使用的mybatis-generator：generate的插件执行生成的
+            如果已经生成过一次了需要把本项目目录下和pom.xml文件同目录下的哪个 项目名.iml 文件，删除在执行一下插件即可
+             -->
+    <!--<build>
         <plugins>
             <plugin>
                 <groupId>org.mybatis.generator</groupId>
                 <artifactId>mybatis-generator-maven-plugin</artifactId>
-                <version>1.3.5</version>
+                <version>1.3.6</version>
                 <configuration>
                     <configurationFile>src/main/resources/generatorConfig.xml</configurationFile>
                     <verbose>true</verbose>
@@ -42,6 +60,18 @@
                         <artifactId>mysql-connector-java</artifactId>
                         <version>5.1.6</version>
                     </dependency>
+                    <dependency>
+                        <groupId>org.mybatis.generator</groupId>
+                        <artifactId>mybatis-generator-core</artifactId>
+                        <version>1.3.6</version>
+                    </dependency>
+                    <dependency>
+                        <groupId>tk.mybatis</groupId>
+                        <artifactId>mapper-spring-boot-starter</artifactId>
+                        <version>1.1.4</version>
+
+                    </dependency>
+
                 </dependencies>
             </plugin>
         </plugins>
