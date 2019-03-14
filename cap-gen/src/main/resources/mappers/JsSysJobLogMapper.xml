@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.capinfo.mapper.JsSysJobLogMapper">
+  <resultMap id="BaseResultMap" type="com.capinfo.entity.JsSysJobLog">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="id" jdbcType="VARCHAR" property="id" />
+    <result column="job_name" jdbcType="VARCHAR" property="job_name" />
+    <result column="job_group" jdbcType="VARCHAR" property="job_group" />
+    <result column="job_type" jdbcType="VARCHAR" property="job_type" />
+    <result column="job_event" jdbcType="VARCHAR" property="job_event" />
+    <result column="job_message" jdbcType="VARCHAR" property="job_message" />
+    <result column="is_exception" jdbcType="CHAR" property="is_exception" />
+    <result column="create_date" jdbcType="TIMESTAMP" property="create_date" />
+    <result column="exception_info" jdbcType="LONGVARCHAR" property="exception_info" />
+  </resultMap>
+</mapper>

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.capinfo.mapper.JsSysMsgPushedMapper">
+  <resultMap id="BaseResultMap" type="com.capinfo.entity.JsSysMsgPushed">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="id" jdbcType="VARCHAR" property="id" />
+    <result column="msg_type" jdbcType="VARCHAR" property="msg_type" />
+    <result column="msg_title" jdbcType="VARCHAR" property="msg_title" />
+    <result column="biz_key" jdbcType="VARCHAR" property="biz_key" />
+    <result column="biz_type" jdbcType="VARCHAR" property="biz_type" />
+    <result column="receive_code" jdbcType="VARCHAR" property="receive_code" />
+    <result column="receive_user_code" jdbcType="VARCHAR" property="receive_user_code" />
+    <result column="receive_user_name" jdbcType="VARCHAR" property="receive_user_name" />
+    <result column="send_user_code" jdbcType="VARCHAR" property="send_user_code" />
+    <result column="send_user_name" jdbcType="VARCHAR" property="send_user_name" />
+    <result column="send_date" jdbcType="TIMESTAMP" property="send_date" />
+    <result column="is_merge_push" jdbcType="CHAR" property="is_merge_push" />
+    <result column="plan_push_date" jdbcType="TIMESTAMP" property="plan_push_date" />
+    <result column="push_number" jdbcType="INTEGER" property="push_number" />
+    <result column="push_return_code" jdbcType="VARCHAR" property="push_return_code" />
+    <result column="push_return_msg_id" jdbcType="VARCHAR" property="push_return_msg_id" />
+    <result column="push_status" jdbcType="CHAR" property="push_status" />
+    <result column="push_date" jdbcType="TIMESTAMP" property="push_date" />
+    <result column="read_status" jdbcType="CHAR" property="read_status" />
+    <result column="read_date" jdbcType="TIMESTAMP" property="read_date" />
+    <result column="msg_content" jdbcType="LONGVARCHAR" property="msg_content" />
+    <result column="push_return_content" jdbcType="LONGVARCHAR" property="push_return_content" />
+  </resultMap>
+</mapper>

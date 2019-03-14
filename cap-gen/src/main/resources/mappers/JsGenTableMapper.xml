@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.capinfo.mapper.JsGenTableMapper">
+  <resultMap id="BaseResultMap" type="com.capinfo.entity.JsGenTable">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="table_name" jdbcType="VARCHAR" property="table_name" />
+    <result column="class_name" jdbcType="VARCHAR" property="class_name" />
+    <result column="comments" jdbcType="VARCHAR" property="comments" />
+    <result column="parent_table_name" jdbcType="VARCHAR" property="parent_table_name" />
+    <result column="parent_table_fk_name" jdbcType="VARCHAR" property="parent_table_fk_name" />
+    <result column="data_source_name" jdbcType="VARCHAR" property="data_source_name" />
+    <result column="tpl_category" jdbcType="VARCHAR" property="tpl_category" />
+    <result column="package_name" jdbcType="VARCHAR" property="package_name" />
+    <result column="module_name" jdbcType="VARCHAR" property="module_name" />
+    <result column="sub_module_name" jdbcType="VARCHAR" property="sub_module_name" />
+    <result column="function_name" jdbcType="VARCHAR" property="function_name" />
+    <result column="function_name_simple" jdbcType="VARCHAR" property="function_name_simple" />
+    <result column="function_author" jdbcType="VARCHAR" property="function_author" />
+    <result column="gen_base_dir" jdbcType="VARCHAR" property="gen_base_dir" />
+    <result column="options" jdbcType="VARCHAR" property="options" />
+    <result column="create_by" jdbcType="VARCHAR" property="create_by" />
+    <result column="create_date" jdbcType="TIMESTAMP" property="create_date" />
+    <result column="update_by" jdbcType="VARCHAR" property="update_by" />
+    <result column="update_date" jdbcType="TIMESTAMP" property="update_date" />
+    <result column="remarks" jdbcType="VARCHAR" property="remarks" />
+  </resultMap>
+</mapper>

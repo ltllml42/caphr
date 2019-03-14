@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.capinfo.mapper.JsSysConfigMapper">
+  <resultMap id="BaseResultMap" type="com.capinfo.entity.JsSysConfig">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="id" jdbcType="VARCHAR" property="id" />
+    <result column="config_name" jdbcType="VARCHAR" property="config_name" />
+    <result column="config_key" jdbcType="VARCHAR" property="config_key" />
+    <result column="config_value" jdbcType="VARCHAR" property="config_value" />
+    <result column="is_sys" jdbcType="CHAR" property="is_sys" />
+    <result column="create_by" jdbcType="VARCHAR" property="create_by" />
+    <result column="create_date" jdbcType="TIMESTAMP" property="create_date" />
+    <result column="update_by" jdbcType="VARCHAR" property="update_by" />
+    <result column="update_date" jdbcType="TIMESTAMP" property="update_date" />
+    <result column="remarks" jdbcType="VARCHAR" property="remarks" />
+  </resultMap>
+</mapper>

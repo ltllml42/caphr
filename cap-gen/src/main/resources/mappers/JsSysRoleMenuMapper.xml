@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.capinfo.mapper.JsSysRoleMenuMapper">
+  <resultMap id="BaseResultMap" type="com.capinfo.entity.JsSysRoleMenu">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="role_code" jdbcType="VARCHAR" property="role_code" />
+    <id column="menu_code" jdbcType="VARCHAR" property="menu_code" />
+  </resultMap>
+</mapper>

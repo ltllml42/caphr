@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.capinfo.mapper.JsGenTableColumnMapper">
+  <resultMap id="BaseResultMap" type="com.capinfo.entity.JsGenTableColumn">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="id" jdbcType="VARCHAR" property="id" />
+    <result column="table_name" jdbcType="VARCHAR" property="table_name" />
+    <result column="column_name" jdbcType="VARCHAR" property="column_name" />
+    <result column="column_sort" jdbcType="DECIMAL" property="column_sort" />
+    <result column="column_type" jdbcType="VARCHAR" property="column_type" />
+    <result column="column_label" jdbcType="VARCHAR" property="column_label" />
+    <result column="comments" jdbcType="VARCHAR" property="comments" />
+    <result column="attr_name" jdbcType="VARCHAR" property="attr_name" />
+    <result column="attr_type" jdbcType="VARCHAR" property="attr_type" />
+    <result column="is_pk" jdbcType="CHAR" property="is_pk" />
+    <result column="is_null" jdbcType="CHAR" property="is_null" />
+    <result column="is_insert" jdbcType="CHAR" property="is_insert" />
+    <result column="is_update" jdbcType="CHAR" property="is_update" />
+    <result column="is_list" jdbcType="CHAR" property="is_list" />
+    <result column="is_query" jdbcType="CHAR" property="is_query" />
+    <result column="query_type" jdbcType="VARCHAR" property="query_type" />
+    <result column="is_edit" jdbcType="CHAR" property="is_edit" />
+    <result column="show_type" jdbcType="VARCHAR" property="show_type" />
+    <result column="options" jdbcType="VARCHAR" property="options" />
+  </resultMap>
+</mapper>

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.capinfo.mapper.JsSysEmployeeMapper">
+  <resultMap id="BaseResultMap" type="com.capinfo.entity.JsSysEmployee">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="emp_code" jdbcType="VARCHAR" property="emp_code" />
+    <result column="emp_name" jdbcType="VARCHAR" property="emp_name" />
+    <result column="emp_name_en" jdbcType="VARCHAR" property="emp_name_en" />
+    <result column="office_code" jdbcType="VARCHAR" property="office_code" />
+    <result column="office_name" jdbcType="VARCHAR" property="office_name" />
+    <result column="company_code" jdbcType="VARCHAR" property="company_code" />
+    <result column="company_name" jdbcType="VARCHAR" property="company_name" />
+    <result column="status" jdbcType="CHAR" property="status" />
+    <result column="create_by" jdbcType="VARCHAR" property="create_by" />
+    <result column="create_date" jdbcType="TIMESTAMP" property="create_date" />
+    <result column="update_by" jdbcType="VARCHAR" property="update_by" />
+    <result column="update_date" jdbcType="TIMESTAMP" property="update_date" />
+    <result column="remarks" jdbcType="VARCHAR" property="remarks" />
+    <result column="corp_code" jdbcType="VARCHAR" property="corp_code" />
+    <result column="corp_name" jdbcType="VARCHAR" property="corp_name" />
+  </resultMap>
+</mapper>

@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.capinfo.mapper.JsSysOfficeMapper">
+  <resultMap id="BaseResultMap" type="com.capinfo.entity.JsSysOffice">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="office_code" jdbcType="VARCHAR" property="office_code" />
+    <result column="parent_code" jdbcType="VARCHAR" property="parent_code" />
+    <result column="parent_codes" jdbcType="VARCHAR" property="parent_codes" />
+    <result column="tree_sort" jdbcType="DECIMAL" property="tree_sort" />
+    <result column="tree_sorts" jdbcType="VARCHAR" property="tree_sorts" />
+    <result column="tree_leaf" jdbcType="CHAR" property="tree_leaf" />
+    <result column="tree_level" jdbcType="DECIMAL" property="tree_level" />
+    <result column="tree_names" jdbcType="VARCHAR" property="tree_names" />
+    <result column="view_code" jdbcType="VARCHAR" property="view_code" />
+    <result column="office_name" jdbcType="VARCHAR" property="office_name" />
+    <result column="full_name" jdbcType="VARCHAR" property="full_name" />
+    <result column="office_type" jdbcType="CHAR" property="office_type" />
+    <result column="leader" jdbcType="VARCHAR" property="leader" />
+    <result column="phone" jdbcType="VARCHAR" property="phone" />
+    <result column="address" jdbcType="VARCHAR" property="address" />
+    <result column="zip_code" jdbcType="VARCHAR" property="zip_code" />
+    <result column="email" jdbcType="VARCHAR" property="email" />
+    <result column="status" jdbcType="CHAR" property="status" />
+    <result column="create_by" jdbcType="VARCHAR" property="create_by" />
+    <result column="create_date" jdbcType="TIMESTAMP" property="create_date" />
+    <result column="update_by" jdbcType="VARCHAR" property="update_by" />
+    <result column="update_date" jdbcType="TIMESTAMP" property="update_date" />
+    <result column="remarks" jdbcType="VARCHAR" property="remarks" />
+    <result column="corp_code" jdbcType="VARCHAR" property="corp_code" />
+    <result column="corp_name" jdbcType="VARCHAR" property="corp_name" />
+    <result column="extend_s1" jdbcType="VARCHAR" property="extend_s1" />
+    <result column="extend_s2" jdbcType="VARCHAR" property="extend_s2" />
+    <result column="extend_s3" jdbcType="VARCHAR" property="extend_s3" />
+    <result column="extend_s4" jdbcType="VARCHAR" property="extend_s4" />
+    <result column="extend_s5" jdbcType="VARCHAR" property="extend_s5" />
+    <result column="extend_s6" jdbcType="VARCHAR" property="extend_s6" />
+    <result column="extend_s7" jdbcType="VARCHAR" property="extend_s7" />
+    <result column="extend_s8" jdbcType="VARCHAR" property="extend_s8" />
+    <result column="extend_i1" jdbcType="DECIMAL" property="extend_i1" />
+    <result column="extend_i2" jdbcType="DECIMAL" property="extend_i2" />
+    <result column="extend_i3" jdbcType="DECIMAL" property="extend_i3" />
+    <result column="extend_i4" jdbcType="DECIMAL" property="extend_i4" />
+    <result column="extend_f1" jdbcType="DECIMAL" property="extend_f1" />
+    <result column="extend_f2" jdbcType="DECIMAL" property="extend_f2" />
+    <result column="extend_f3" jdbcType="DECIMAL" property="extend_f3" />
+    <result column="extend_f4" jdbcType="DECIMAL" property="extend_f4" />
+    <result column="extend_d1" jdbcType="TIMESTAMP" property="extend_d1" />
+    <result column="extend_d2" jdbcType="TIMESTAMP" property="extend_d2" />
+    <result column="extend_d3" jdbcType="TIMESTAMP" property="extend_d3" />
+    <result column="extend_d4" jdbcType="TIMESTAMP" property="extend_d4" />
+  </resultMap>
+</mapper>

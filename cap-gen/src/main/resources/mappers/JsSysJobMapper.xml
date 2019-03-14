@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.capinfo.mapper.JsSysJobMapper">
+  <resultMap id="BaseResultMap" type="com.capinfo.entity.JsSysJob">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="job_name" jdbcType="VARCHAR" property="job_name" />
+    <id column="job_group" jdbcType="VARCHAR" property="job_group" />
+    <result column="description" jdbcType="VARCHAR" property="description" />
+    <result column="invoke_target" jdbcType="VARCHAR" property="invoke_target" />
+    <result column="cron_expression" jdbcType="VARCHAR" property="cron_expression" />
+    <result column="misfire_instruction" jdbcType="DECIMAL" property="misfire_instruction" />
+    <result column="concurrent" jdbcType="CHAR" property="concurrent" />
+    <result column="status" jdbcType="CHAR" property="status" />
+    <result column="create_by" jdbcType="VARCHAR" property="create_by" />
+    <result column="create_date" jdbcType="TIMESTAMP" property="create_date" />
+    <result column="update_by" jdbcType="VARCHAR" property="update_by" />
+    <result column="update_date" jdbcType="TIMESTAMP" property="update_date" />
+    <result column="remarks" jdbcType="VARCHAR" property="remarks" />
+  </resultMap>
+</mapper>

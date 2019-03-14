@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.capinfo.mapper.JsSysAreaMapper">
+  <resultMap id="BaseResultMap" type="com.capinfo.entity.JsSysArea">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="area_code" jdbcType="VARCHAR" property="area_code" />
+    <result column="parent_code" jdbcType="VARCHAR" property="parent_code" />
+    <result column="parent_codes" jdbcType="VARCHAR" property="parent_codes" />
+    <result column="tree_sort" jdbcType="DECIMAL" property="tree_sort" />
+    <result column="tree_sorts" jdbcType="VARCHAR" property="tree_sorts" />
+    <result column="tree_leaf" jdbcType="CHAR" property="tree_leaf" />
+    <result column="tree_level" jdbcType="DECIMAL" property="tree_level" />
+    <result column="tree_names" jdbcType="VARCHAR" property="tree_names" />
+    <result column="area_name" jdbcType="VARCHAR" property="area_name" />
+    <result column="area_type" jdbcType="CHAR" property="area_type" />
+    <result column="status" jdbcType="CHAR" property="status" />
+    <result column="create_by" jdbcType="VARCHAR" property="create_by" />
+    <result column="create_date" jdbcType="TIMESTAMP" property="create_date" />
+    <result column="update_by" jdbcType="VARCHAR" property="update_by" />
+    <result column="update_date" jdbcType="TIMESTAMP" property="update_date" />
+    <result column="remarks" jdbcType="VARCHAR" property="remarks" />
+  </resultMap>
+</mapper>

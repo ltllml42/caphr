@@ -18,12 +18,6 @@
             <artifactId>cap-core</artifactId>
         </dependency>
     </dependencies>
-    <!--<dependencies>
-         <dependency>
-           <groupId>com.capinfo</groupId>
-           <artifactId>cap-core</artifactId>
-         </dependency>
-     </dependencies>-->
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
