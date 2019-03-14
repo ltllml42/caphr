@@ -4,10 +4,6 @@ import com.capinfo.core.filter.PermissionFilter;
 import com.capinfo.core.filter.VerfityCodeFilter;
 import com.capinfo.core.shiro.LoginRealm;
 import com.capinfo.core.shiro.RetryLimitCredentialsMatcher;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.Map;
-import javax.servlet.Filter;
 import org.apache.shiro.cache.ehcache.EhCacheManager;
 import org.apache.shiro.mgt.SecurityManager;
 import org.apache.shiro.spring.LifecycleBeanPostProcessor;
@@ -17,10 +13,13 @@ import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
 import org.apache.shiro.web.session.mgt.DefaultWebSessionManager;
 import org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.web.filter.DelegatingFilterProxy;
+
+import javax.servlet.Filter;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 /**
  * @author zhuxiaomeng
@@ -99,6 +98,7 @@ public class ShiroConfig {
     //filterMap.put("/login","anon");
     filterMap.put("/getCode","anon");
     filterMap.put("/blog/**","anon");
+    filterMap.put("/gen/**","anon");
     filterMap.put("/logout","logout");
     filterMap.put("/plugin/**","anon");
     filterMap.put("/user/**","per");
