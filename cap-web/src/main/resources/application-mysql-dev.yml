@@ -5,9 +5,14 @@ spring:
       restart:
         enabled: true
   datasource:
-        url: jdbc:mysql://localhost:3306/capinfo?useUnicode=true&characterEncoding=UTF-8
-        username: root
-        password: root
+#      allowMultiQueries 允许mysql运行多个sql语句以;分隔  也就是批处理
+#    zeroDateTimeBehavior=convertToNull  规避0000-00-00 00：00：00  这类值，这类值在java中是会跑异常的
+#        url: jdbc:mysql://localhost:3306/jeesite?useUnicode=true&characterEncoding=UTF-8
+        url: jdbc:mysql://1.0.0.162:3306/capinfo?useUnicode=true&characterEncoding=UTF-8&zeroDateTimeBehavior=convertToNull&autoReconnect=true&allowMultiQueries=true
+        username: capinfo
+        password: Capinfo123!@#
+#        username: root
+#        password: root
         # 使用druid数据源
         type: com.alibaba.druid.pool.DruidDataSource
         driver-class-name: com.mysql.jdbc.Driver
