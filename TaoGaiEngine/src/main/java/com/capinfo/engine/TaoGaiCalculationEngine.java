@@ -1,5 +1,14 @@
 package com.capinfo.engine;
 
+import com.capinfo.engine.adapter.IntelligenceCalculationEngineAdapter;
+import com.capinfo.engine.data.builder.DataParamsBuilder;
+import com.capinfo.engine.data.builder.DataParamsDirector;
+import com.capinfo.engine.message.MessageCode;
+import com.capinfo.engine.message.MessageEnum;
+import com.capinfo.engine.taogai.TaoGaiTypeBehavior;
+import com.capinfo.engine.taogai.factory.TaoGaiBehaviorFactory;
+import com.capinfo.engine.utils.MessageUtils;
+
 import java.util.List;
 import java.util.Map;
 

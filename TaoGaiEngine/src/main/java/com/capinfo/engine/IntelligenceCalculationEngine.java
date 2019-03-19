@@ -1,5 +1,10 @@
 package com.capinfo.engine;
 
+import com.capinfo.engine.promotion.PromotionConditionBehavior;
+import com.capinfo.engine.promotion.PromotionTypeBehavior;
+import com.capinfo.engine.taogai.TaoGaiBehavior;
+import com.capinfo.engine.taogai.TaoGaiTypeBehavior;
+
 /**
  *  目前暂定传入的为OriginalData 这个原对象
  *
