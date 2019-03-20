@@ -1,4 +1,4 @@
-package com.capinfo.engine;
+package com.capinfo.engine.data.builder;
 
 
 import com.capinfo.engine.data.AssessmentSubset;
@@ -13,7 +13,7 @@ import java.util.logging.Logger;
 /**
  * 晋升中所需要的构建对象
  */
-public class PromotionParamsBuilder extends DataParamsBuilder {
+public class PromotionParamsBuilder extends DataParamsAdapter {
 
     Logger logger  = Logger.getLogger("加载日志");//需要自己写
 
