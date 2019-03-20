@@ -1,7 +1,7 @@
-package com.demo.springbootlog.dateCount;
+package com.capinfo.engine.utils;
 
-import com.demo.springbootlog.dateCount.entity.DateAddEntity;
-import com.demo.springbootlog.dateCount.entity.DateCount;
+import com.capinfo.engine.utils.entity.DateAddEntity;
+import com.capinfo.engine.utils.entity.DateCount;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateFormatUtils;
 

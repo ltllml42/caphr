@@ -1,4 +1,4 @@
-package com.demo.springbootlog.dateCount.entity;
+package com.capinfo.engine.utils.entity;
 
 import java.util.List;
 
