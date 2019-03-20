@@ -18,6 +18,17 @@ public class PromoteTimeConfing {
     //年转化月
     private String monthLimit;
 
+    public PromoteTimeConfing() {
+    }
+
+    public PromoteTimeConfing(String frontKey, String frontName, String afterKey, String afterName, String yearLimit, String monthLimit) {
+        this.frontKey = frontKey;
+        this.frontName = frontName;
+        this.afterKey = afterKey;
+        this.afterName = afterName;
+        this.yearLimit = yearLimit;
+        this.monthLimit = monthLimit;
+    }
 
     public String getFrontKey() {
         return frontKey;

@@ -9,6 +9,15 @@ public class CheckPostConfig {
     private String checkResult;//考核结果的值  中文
     private String postMonth; //任职年限 月
 
+    public CheckPostConfig() {
+    }
+
+    public CheckPostConfig(String key, String checkResult, String postMonth) {
+        this.key = key;
+        this.checkResult = checkResult;
+        this.postMonth = postMonth;
+    }
+
     public String getKey() {
         return key;
     }
