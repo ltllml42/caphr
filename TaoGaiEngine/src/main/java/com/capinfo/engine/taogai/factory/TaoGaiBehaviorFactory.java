@@ -10,8 +10,8 @@ public class TaoGaiBehaviorFactory {
 
     public static TaoGaiBehavior newFactory(TaoGaiType type){
         switch (type){
-            case XYXJGXL: return new TypeTaoGaiBehavior1();
-            case ZWXL: return new TypeTaoGaiBehavior2();
+            case GAI1: return new TypeTaoGaiBehavior1();
+            case GAI2: return new TypeTaoGaiBehavior2();
             default: return null;
         }
     }

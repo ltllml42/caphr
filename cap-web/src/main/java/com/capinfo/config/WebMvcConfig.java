@@ -1,5 +1,7 @@
 package com.capinfo.config;
 
+import org.apache.naming.factory.BeanFactory;
+import org.aspectj.runtime.reflect.Factory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
