@@ -16,6 +16,13 @@ public class DictBean {
 	public DictBean() {
 	}
 
+	public DictBean(String code, String name, String orderId, String fcode) {
+		this.code = code;
+		this.name = name;
+		this.orderId = orderId;
+		this.fcode = fcode;
+	}
+
 	public String getCode() {
 		return code;
 	}
