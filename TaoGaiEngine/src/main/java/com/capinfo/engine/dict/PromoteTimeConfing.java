@@ -4,66 +4,124 @@ package com.capinfo.engine.dict;
  * 晋升时间表
  */
 public class PromoteTimeConfing {
+    /**
+     * id
+     */
+   private String id;
+    /**
+     * 父ID
+     */
+   private String pid;
+    /**
+     *公务员套改前类别
+     */
+   private String gwy;
+    /**
+     * 套改前职级
+     */
+   private String zj;
+    /**
+     * 套改后级别
+     */
+   private String zhgl;
+    /**
+     * 套改类型   三种套改类型
+     */
+   private String type;
+    /**
+     * 晋升年限
+     */
+   private int nx;
+    /**
+     * 排序
+     */
+   private int sort;
+    /**
+     * 是否有效
+     */
+   private String delFlag;
+    /**
+     * 中文备注
+     */
+   private String remarks;
 
-    //晋升前职务
-    private String frontKey;//保存ID
-    private String frontName;//保存汉字
-
-    //晋升后职务
-    private String afterKey;//保存ID
-    private String afterName;//保存汉字
-
-    //转化年
-    private String yearLimit;
-    //年转化月
-    private String monthLimit;
-
-
-    public String getFrontKey() {
-        return frontKey;
+    public String getId() {
+        return id;
     }
 
-    public void setFrontKey(String frontKey) {
-        this.frontKey = frontKey;
+    public void setId(String id) {
+        this.id = id;
     }
 
-    public String getFrontName() {
-        return frontName;
+    public String getPid() {
+        return pid;
     }
 
-    public void setFrontName(String frontName) {
-        this.frontName = frontName;
+    public void setPid(String pid) {
+        this.pid = pid;
     }
 
-    public String getAfterKey() {
-        return afterKey;
+    public String getGwy() {
+        return gwy;
     }
 
-    public void setAfterKey(String afterKey) {
-        this.afterKey = afterKey;
+    public void setGwy(String gwy) {
+        this.gwy = gwy;
     }
 
-    public String getAfterName() {
-        return afterName;
+    public String getZj() {
+        return zj;
     }
 
-    public void setAfterName(String afterName) {
-        this.afterName = afterName;
+    public void setZj(String zj) {
+        this.zj = zj;
     }
 
-    public String getYearLimit() {
-        return yearLimit;
+    public String getZhgl() {
+        return zhgl;
     }
 
-    public void setYearLimit(String yearLimit) {
-        this.yearLimit = yearLimit;
+    public void setZhgl(String zhgl) {
+        this.zhgl = zhgl;
     }
 
-    public String getMonthLimit() {
-        return monthLimit;
+    public String getType() {
+        return type;
     }
 
-    public void setMonthLimit(String monthLimit) {
-        this.monthLimit = monthLimit;
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public int getNx() {
+        return nx;
+    }
+
+    public void setNx(int nx) {
+        this.nx = nx;
+    }
+
+    public int getSort() {
+        return sort;
+    }
+
+    public void setSort(int sort) {
+        this.sort = sort;
+    }
+
+    public String getDelFlag() {
+        return delFlag;
+    }
+
+    public void setDelFlag(String delFlag) {
+        this.delFlag = delFlag;
+    }
+
+    public String getRemarks() {
+        return remarks;
+    }
+
+    public void setRemarks(String remarks) {
+        this.remarks = remarks;
     }
 }

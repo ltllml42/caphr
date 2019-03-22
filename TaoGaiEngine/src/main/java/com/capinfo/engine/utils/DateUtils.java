@@ -38,24 +38,9 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils{
     public static DateAddEntity getAfterAddDate(String dateStr, String addYearOrMonth, String addNum) {
         DateAddEntity entity = new DateAddEntity();
         if(valiDate(dateStr)){
-            //SimpleDateFormat sdf = new SimpleDateFormat(DEFAULT_DATA);
             Date date = null;
-            try {
-                //date = sdf.parse(dateStr);
                 date = getDateFromDateStr(dateStr);
-                String year = getYear(date);
-                String month = getMonth(date);
-                //输入的dateStr    形如2015-01，要得到这个月的对应对象，并算出当时年到当前年的相隔的每一年对应对象
-                DateCount dateEntity = new DateCount();
-                dateEntity.setAddYearOrMonth(addYearOrMonth);
-                dateEntity.setAddNum(addNum);
-                dateEntity.setYear(Integer.parseInt(year));
-                dateEntity.setMonth(Integer.parseInt(month));
-                dateEntity.setYearMonthDate(date);
-                entity = getDateCountList(dateEntity);
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
+                return getAfterAddDate(date,addYearOrMonth,addNum);
         }else{
             try {
                 throw new Exception("传入的格式不正确");
@@ -64,8 +49,53 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils{
             }
         }
         return entity;
-
     }
+
+    /**
+     *  得到传入日期到当前日期之间的每年的对应月份。如传入2015-01 得到 2015-01，2016-01，2017-01，,218-01,2019-01
+     *  并且，如果类型和添加月份或年份数传入的不为空，则每个算出来的DateCount对象中再算出加上对应年数或对应月数的对象
+     * @param date 当前日期
+     * @param addYearOrMonth 类型
+     * @param addNum 添加的月份或者年份
+     * @return
+     */
+    public static DateAddEntity getAfterAddDate(Date date, String addYearOrMonth, String addNum) {
+        DateAddEntity entity = new DateAddEntity();
+        try {
+            //date = sdf.parse(dateStr);
+            String year = getYear(date);
+            String month = getMonth(date);
+            //输入的dateStr    形如2015-01，要得到这个月的对应对象，并算出当时年到当前年的相隔的每一年对应对象
+            DateCount dateEntity = new DateCount();
+            if (StringUtils.isNotBlank(addYearOrMonth)){
+                dateEntity.setAddYearOrMonth(addYearOrMonth);
+            }
+            if (StringUtils.isNotBlank(addNum)){
+                dateEntity.setAddNum(addNum);
+            }
+            dateEntity.setYear(Integer.parseInt(year));
+            dateEntity.setMonth(Integer.parseInt(month));
+            dateEntity.setYearMonthDate(date);
+            entity = getDateCountList(dateEntity);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return entity;
+    }
+
+
+    public static DateAddEntity getAfterAddMonth(Date date) {
+        return getAfterAddDate(date,MONTH_TYPE,"0");
+    }
+
+
+    public static DateAddEntity getAfterAddYear(Date date) {
+        return getAfterAddDate(date,YEAR_TYPE,"0");
+    }
+
+
+
+
     /**
      * 传进来输入的要开始的目标月份
      * @param dateCount
@@ -240,6 +270,30 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils{
             return null;
         }
     }
+
+
+    //如何进行累计任职年限   需要哪些参数
+
+    /**
+     * 套改的任职年限
+     *
+     *
+     *
+     *
+     *
+     *
+     *
+     *
+     *
+     *
+     *
+     *
+     * @param args
+     */
+
+
+
+
 
 
 

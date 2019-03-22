@@ -1,7 +1,9 @@
 package com.capinfo.engine.data;
 
 /**
- * 保存考核子集
+ * 保存考核子集(需要获取有效的考核子集)
+ * 最后一次晋升后的考核子集
+ *
  */
 public class AssessmentSubset {
     /**

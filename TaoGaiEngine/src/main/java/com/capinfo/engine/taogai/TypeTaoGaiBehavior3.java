@@ -2,11 +2,10 @@ package com.capinfo.engine.taogai;
 
 import com.capinfo.engine.data.PostSubset;
 import com.capinfo.engine.data.TaoGaiPromotionSubset;
-import com.capinfo.engine.message.MessageCode;
 
 import java.util.List;
 
-public class TypeTaoGaiBehavior2 extends AbstractTaoGaiBehavior {
+public class TypeTaoGaiBehavior3<T> extends AbstractTaoGaiBehavior {
 
     @Override
     protected TaoGaiPromotionSubset needTypeJudge(PostSubset mainPost, List postList, List list) {

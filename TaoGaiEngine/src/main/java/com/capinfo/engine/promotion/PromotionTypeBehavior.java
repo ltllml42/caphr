@@ -1,7 +1,10 @@
 package com.capinfo.engine.promotion;
 
+import com.capinfo.engine.data.DictBean;
 import com.capinfo.engine.data.VersionInfo;
 import com.capinfo.engine.message.MessageCode;
+
+import java.util.List;
 
 public interface PromotionTypeBehavior<T> {
 
@@ -18,7 +21,7 @@ public interface PromotionTypeBehavior<T> {
      * @param data
      * @return
      */
-    public PromotionType judgementType(T data);
+    public PromotionType judgementType(T data) throws Exception;
 
     /**
      * 传入的数据必须是符合套改条件的基础数据
@@ -26,6 +29,9 @@ public interface PromotionTypeBehavior<T> {
      * @return
      */
     public MessageCode validate(T data);
+
+
+    public List<DictBean> loadDict(String type);
 
 
 }

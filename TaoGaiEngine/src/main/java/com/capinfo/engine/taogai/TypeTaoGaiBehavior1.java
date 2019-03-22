@@ -1,22 +1,21 @@
 package com.capinfo.engine.taogai;
 
+import com.capinfo.engine.data.PostSubset;
+import com.capinfo.engine.data.TaoGaiPromotionSubset;
 import com.capinfo.engine.message.MessageCode;
 
 import java.util.List;
 
-public class TypeTaoGaiBehavior1<T> implements TaoGaiBehavior<T> {
-    @Override
-    public String getVersion() {
-        return null;
-    }
+public class TypeTaoGaiBehavior1 extends AbstractTaoGaiBehavior {
+
 
     @Override
-    public T execute(T t) {
-        return null;
-    }
-
-    @Override
-    public List<MessageCode> validate(T data) {
-        return null;
+    protected TaoGaiPromotionSubset needTypeJudge(PostSubset mainPost, List postList, List list) {
+        super.taoGaiPromotionSubset.setBeforeRank();//有关系
+        super.taoGaiPromotionSubset.setCountyUnderRank();//有关系
+        super.taoGaiPromotionSubset.setNowYearCount();
+        super.taoGaiPromotionSubset.setCountyUnderNowRankTime();
+        super.taoGaiPromotionSubset.setAfterRank();
+        return taoGaiPromotionSubset;
     }
 }

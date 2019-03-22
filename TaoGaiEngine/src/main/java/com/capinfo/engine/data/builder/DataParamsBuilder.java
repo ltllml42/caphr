@@ -2,6 +2,7 @@ package com.capinfo.engine.data.builder;
 
 import com.capinfo.engine.data.OriginalProduct;
 import com.capinfo.engine.data.AssessmentSubset;
+import com.capinfo.engine.data.PostRanks;
 import com.capinfo.engine.data.PostSubset;
 
 import java.util.List;
@@ -43,6 +44,14 @@ public abstract class DataParamsBuilder {
      * @return List<AssessmentSubset>
      */
     protected abstract  List<AssessmentSubset> buildAssessmentSubsetList(Map<String,String> assessmentData);
+
+
+
+    protected abstract  List<PostRanks> buildPostSubsetList(Map<String,String> postSubsetData);
+
+
+    protected abstract  List<PostRanks> buildRanksSubsetList(Map<String,String> ranksSubsetData);
+
 
 
     /**

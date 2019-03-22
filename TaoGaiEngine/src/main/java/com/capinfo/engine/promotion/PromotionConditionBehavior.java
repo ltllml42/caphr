@@ -1,5 +1,6 @@
 package com.capinfo.engine.promotion;
 
+import com.capinfo.engine.data.OriginalProduct;
 import com.capinfo.engine.data.VersionInfo;
 import com.capinfo.engine.message.MessageCode;
 
@@ -8,6 +9,7 @@ import com.capinfo.engine.message.MessageCode;
  * @param <T>
  */
 public interface PromotionConditionBehavior<T> {
+
     /**
      * 当前版本号
      * @return
@@ -15,10 +17,10 @@ public interface PromotionConditionBehavior<T> {
     VersionInfo getVersion();
     /**
      * 晋升判断
-     * @param t 原始数据
+     * @param
      * @return
      */
-    Promotion process(T t);
+    void process();
 
     /**
      * 验证是否正确 如果不符合晋升条件

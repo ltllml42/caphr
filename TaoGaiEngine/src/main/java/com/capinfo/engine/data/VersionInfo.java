@@ -5,21 +5,30 @@ package com.capinfo.engine.data;
  */
 public enum VersionInfo {
 
-    VERSION_2019("2019","中组部2019年套改方案");
+    VERSION_2019(2019,6,"中组部2019年套改方案");
+
     /**
-     * 版本号  和  备注信息
-     * @param version
+     * 记录套改版本号，套改年，套改月等重要数据
+     * @param year
+     * @param month
      * @param remarks
      */
-    private VersionInfo(String version, String remarks) {
-        this.version = version;
+    private VersionInfo(int year,int month, String remarks) {
+        this.year = year;
+        this.month = month;
         this.remarks = remarks;
     }
 
     /**
-     *  版本号
+     *  年份
      */
-    private String version;
+    private int year;
+
+    /**
+     *  月份 格式 1
+     */
+    private int month;
+
     /**
      * 描述信息
      */
