@@ -33,7 +33,23 @@ public class TaoGaiPromotionSubset {
      */
     private String countyUnderRank;
 
+    public int getValidMonth() {
+        return validMonth;
+    }
 
+    public void setValidMonth(int validMonth) {
+        this.validMonth = validMonth;
+    }
+
+    /**
+     * 有效年限
+     */
+    private int validMonth;
+
+    /**
+     * 套改后 职务层次
+     */
+    private String afterLevels;
 
     /**
      * 任现职级时间
@@ -99,6 +115,19 @@ public class TaoGaiPromotionSubset {
      * 晋升台账
      */
     private List<PromotionLedger> ledgerList;
+    /**
+     * 1 综合管理类
+     *
+     * 2 专业技术类
+     *
+     * 3 行政执法类
+     *
+     */
+    private int rankType;
+
+    private Date nextPromoteDate;
+
+
 
     public String getId() {
         return id;
@@ -248,5 +277,29 @@ public class TaoGaiPromotionSubset {
 
     public void setLedgerList(List<PromotionLedger> ledgerList) {
         this.ledgerList = ledgerList;
+    }
+
+    public int getRankType() {
+        return rankType;
+    }
+
+    public void setRankType(int rankType) {
+        this.rankType = rankType;
+    }
+
+    public String getAfterLevels() {
+        return afterLevels;
+    }
+
+    public void setAfterLevels(String afterLevels) {
+        this.afterLevels = afterLevels;
+    }
+
+    public Date getNextPromoteDate() {
+        return nextPromoteDate;
+    }
+
+    public void setNextPromoteDate(Date nextPromoteDate) {
+        this.nextPromoteDate = nextPromoteDate;
     }
 }

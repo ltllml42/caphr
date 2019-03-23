@@ -62,7 +62,7 @@ public enum TrueTable {
      *
      *
      */
-    ZL5(true,true,PromotionType.FIRST_PROMOTION_STATUS,PromotionType.UNCERTAIN_STATUS),//
+    ZL5(true,true,PromotionType.FIRST_PROMOTION_STATUS,PromotionType.SECOND_PROMOTION_STATUS),//
 
 
     /**
@@ -74,7 +74,7 @@ public enum TrueTable {
      *        如果晋升后的时间在套改之后，则为正常晋升。
      *
      */
-    ZL7(false,true,PromotionType.FIRST_PROMOTION_STATUS,PromotionType.UNCERTAIN_STATUS),//领导职务，有过第一次晋升
+    ZL7(false,true,PromotionType.FIRST_PROMOTION_STATUS,PromotionType.SECOND_PROMOTION_STATUS),//领导职务，有过第一次晋升
     /**
      *
      */

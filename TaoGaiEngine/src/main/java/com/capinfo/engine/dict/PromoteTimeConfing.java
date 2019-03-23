@@ -2,6 +2,10 @@ package com.capinfo.engine.dict;
 
 /**
  * 晋升时间表
+ *
+ *  韩王栋起的名字，和改程序作者没有关系
+ *
+ *
  */
 public class PromoteTimeConfing {
     /**
@@ -13,11 +17,11 @@ public class PromoteTimeConfing {
      */
    private String pid;
     /**
-     *公务员套改前类别
+     *公务员套改前职务层次
      */
    private String gwy;
     /**
-     * 套改前职级
+     * 公务员套改前职务层级
      */
    private String zj;
     /**

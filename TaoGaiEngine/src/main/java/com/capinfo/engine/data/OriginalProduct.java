@@ -39,12 +39,15 @@ public class OriginalProduct {
      * 身份证	RS_A01  A0184
      */
     private String idCode;
+    /**
+     * 套改或者晋升时间（手动输入）
+     */
+    private Date operationTime;
 
     /**
-     * 套改时间页面传入的
+     * 页面上输入的晋升截止时间
      */
-    private Date taoGaiTime;
-
+    private Date promotionDateByInput;
 
 
     private TaoGaiType taoGaiType;
@@ -94,6 +97,15 @@ public class OriginalProduct {
      * 职级信息集  A05  通过A0531进行区分
      */
     private List<PostRanks> ranksList;
+
+    /**
+     * 套改后职级职级是否为新职级或旧职级
+     */
+    private boolean afterNewOrOld;
+    /**
+     * 套改前职级职级是否为新职级或旧职级
+     */
+    private boolean beforeNowOrOld;
 
 
 
@@ -210,8 +222,10 @@ public class OriginalProduct {
         if(taoGaiType!=null) return promotionType;
         if(promotionHisList!=null&&promotionHisList.isEmpty()){
             TaoGaiPromotionSubset peek = promotionHisList.peek();
-            return TrueTable.conversionTrueTable(isBeforeNewOrOldRank(peek)
-                    ,isAfterNewOrOldRank(peek),peek.getUpStatus()).getNextUpStatus();
+            beforeNowOrOld=isBeforeNewOrOldRank(peek);
+            afterNewOrOld=isAfterNewOrOldRank(peek);
+            return TrueTable.conversionTrueTable(beforeNowOrOld
+                    ,afterNewOrOld,peek.getUpStatus()).getNextUpStatus();
             //通过查询套改晋升表
         }
         throw new RuntimeException("我日");
@@ -255,6 +269,24 @@ public class OriginalProduct {
 
     /**
      *
+     * @param rank
+     * @param post
+     * @return
+     */
+    public static boolean isNewOrOldRank(String rank,String post){
+        if(StringUtils.isNotBlank(rank)){
+            return isNewOrOldRank(rank);
+        }
+        if(StringUtils.isNotBlank(post)){
+            return isNewOrOldRank(rank);
+        }
+        throw new RuntimeException("我日");
+    };
+
+
+
+    /**
+     *
      * @param peek
      * @return
      */
@@ -271,7 +303,7 @@ public class OriginalProduct {
      * @param rank
      * @return  true 是新   false 是旧
      */
-    private boolean isNewOrOldRank(String rank){
+    private static boolean isNewOrOldRank(String rank){
         List<PromoteTimeConfing> list = new ArrayList<PromoteTimeConfing>();
         for (PromoteTimeConfing ptc: list) {
             if (StringUtils.equals(ptc.getGwy(),rank)||StringUtils.equals(ptc.getZj(),rank)){
@@ -315,12 +347,37 @@ public class OriginalProduct {
         this.nowReferenceNumber = nowReferenceNumber;
     }
 
-
-    public Date getTaoGaiTime() {
-        return taoGaiTime;
+    public Date getOperationTime() {
+        return operationTime;
     }
 
-    public void setTaoGaiTime(Date taoGaiTime) {
-        this.taoGaiTime = taoGaiTime;
+    public void setOperationTime(Date operationTime) {
+        this.operationTime = operationTime;
     }
+
+    public boolean isAfterNewOrOld() {
+        return afterNewOrOld;
+    }
+
+    public void setAfterNewOrOld(boolean afterNewOrOld) {
+        this.afterNewOrOld = afterNewOrOld;
+    }
+
+    public boolean isBeforeNowOrOld() {
+        return beforeNowOrOld;
+    }
+
+    public void setBeforeNowOrOld(boolean beforeNowOrOld) {
+        this.beforeNowOrOld = beforeNowOrOld;
+    }
+
+    public Date getPromotionDateByInput() {
+        return promotionDateByInput;
+    }
+
+    public void setPromotionDateByInput(Date promotionDateByInput) {
+        this.promotionDateByInput = promotionDateByInput;
+    }
+
+
 }

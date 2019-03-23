@@ -29,8 +29,8 @@ public enum PromotionType {
     FIRST_PROMOTION_STATUS(1,"首次晋升"),
     SECOND_PROMOTION_STATUS(2,"二次晋升"),
     NORMAL_PROMOTION_STATUS(3,"正常晋升"),
-    ERROR_STATUS(4,"不存在"),
-    UNCERTAIN_STATUS(5,"不确定状态");//可能是二次晋升或正常晋升
+    ERROR_STATUS(4,"不存在");
+    //UNCERTAIN_STATUS(5,"不确定状态");//可能是二次晋升或正常晋升
     ;
 
     private PromotionType(int code, String msg) {

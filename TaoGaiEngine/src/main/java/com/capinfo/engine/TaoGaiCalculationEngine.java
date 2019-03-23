@@ -71,7 +71,7 @@ public class TaoGaiCalculationEngine<OriginalProduct> extends IntelligenceCalcul
             List<MessageCode> codeList = taoGaiConditionBehavior.validate(super.product);
             if (codeList==null||codeList.isEmpty()){
                 //就是我想要的参数
-                taoGaiConditionBehavior.execute(super.product);
+                /*taoGaiConditionBehavior.execute(super.product);*/
             }else{
                 //需要补充 List<MessageCode>
                 throw new Exception();

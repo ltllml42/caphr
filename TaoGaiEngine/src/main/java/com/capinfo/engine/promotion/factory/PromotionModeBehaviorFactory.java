@@ -18,8 +18,8 @@ public class PromotionModeBehaviorFactory {
                 break;
             case ERROR_STATUS: new PromotionModeErrorBehavior();
                 break;
-            case UNCERTAIN_STATUS: new PromotionModeNormalBehavior();
-                break;
+            /*case UNCERTAIN_STATUS: new PromotionModeUnCentainBehavior();
+                break;*/
         }
         return null;
     }

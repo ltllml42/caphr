@@ -6,7 +6,9 @@ import com.capinfo.engine.log.Ledger;
 import com.capinfo.engine.message.MessageCode;
 import com.capinfo.engine.promotion.PromotionType;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 public abstract class AbstractTaoGaiBehavior<OriginalProduct> implements TaoGaiBehavior<OriginalProduct>, Ledger {
 
@@ -57,7 +59,7 @@ public abstract class AbstractTaoGaiBehavior<OriginalProduct> implements TaoGaiB
          *
          */
 		taoGaiPromotionSubset.setBeforePost(mainPost.getPost());
-		taoGaiPromotionSubset.setBeforePostCate(taogaiProduct.getWorkUnitAndPost())
+		taoGaiPromotionSubset.setBeforePostCate(taogaiProduct.getWorkUnitAndPost());
 		taoGaiPromotionSubset.setBeforeLevels(findByBeforeLevels(postList));
 		taoGaiPromotionSubset.setLeader(mainPost.isLeader());
         //在任 目前套改必须是在任的将来有可能会调整
@@ -65,7 +67,9 @@ public abstract class AbstractTaoGaiBehavior<OriginalProduct> implements TaoGaiB
 		//任现职级时间就是套改时间(手动输入)
 		taoGaiPromotionSubset.setNowRankTime(findByNowRankTime(ranksList));
 
-		taoGaiPromotionSubset.setOperationTime(taogaiProduct.getTaoGaiTime());
+        /*
+         taoGaiPromotionSubset.setOperationTime(taogaiProduct.getTaoGaiTime());
+*/
 		taoGaiPromotionSubset.setBeforePostNowTime(findByBeforePostNowTime(postList));
 		//套改不需要填写套改时间
 		//taoGaiPromotionSubset.setPromoteTime();

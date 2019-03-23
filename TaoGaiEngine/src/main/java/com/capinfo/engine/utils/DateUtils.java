@@ -51,6 +51,17 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils{
         return entity;
     }
 
+
+    public static DateCount getDateYearAndMonth(Date date) {
+        DateCount entity = new DateCount();
+        Calendar instance = Calendar.getInstance();
+        instance.setTime(date);
+        entity.setYear(instance.get(Calendar.YEAR));
+        entity.setMonth(getNowMonth(instance.get(Calendar.MONTH)));
+        return entity;
+    }
+
+
     /**
      *  得到传入日期到当前日期之间的每年的对应月份。如传入2015-01 得到 2015-01，2016-01，2017-01，,218-01,2019-01
      *  并且，如果类型和添加月份或年份数传入的不为空，则每个算出来的DateCount对象中再算出加上对应年数或对应月数的对象
@@ -82,7 +93,31 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils{
         }
         return entity;
     }
+    public static DateAddEntity getDateDif(Date date, Date date1) {
+        DateAddEntity entity = new DateAddEntity();
+        try {
+            int result = 0;
 
+            Calendar c1 = Calendar.getInstance();
+            Calendar c2 = Calendar.getInstance();
+
+            c1.setTime(date);
+            c2.setTime(date1);
+
+           result =  getNowMonth(c2.get(Calendar.MONTH)) - (getNowMonth(c1.get(Calendar.MONTH)));
+
+
+            entity.setMonthNum(result);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return entity;
+    }
+
+
+    private static int getNowMonth(int i) {
+        return i + 1;
+    }
 
     public static DateAddEntity getAfterAddMonth(Date date) {
         return getAfterAddDate(date,MONTH_TYPE,"0");
@@ -91,6 +126,18 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils{
 
     public static DateAddEntity getAfterAddYear(Date date) {
         return getAfterAddDate(date,YEAR_TYPE,"0");
+    }
+
+
+    public static int getMonthCount(Date start, Date end) {
+        Calendar can = Calendar.getInstance();
+        can.setTime(start);
+        int count = 0;
+        while (can.getTime().before(end)) {
+            can.add(Calendar.MONTH, 1);
+            count++;
+        }
+        return count;
     }
 
 
@@ -147,7 +194,7 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils{
         entity.setDateCountList(list);
         entity.setDateCountNum(list.size());
         //while循环条件是这样的。can.getTime().before(end)。所以最后一个月要再+1
-        entity.setMonthNum(monthCount+1);
+        entity.setMonthNum(getNowMonth(monthCount));
         return entity;
     }
     /**
@@ -301,8 +348,9 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils{
 
     public static void main(String[] args) {
 
-        DateAddEntity entity = DateUtils.getAfterAddDate("2018-12", MONTH_TYPE, "2");
-        System.out.println(entity.getMonthNum());
+
+        DateAddEntity dateDif = getDateDif(DateUtils.parseDate("201811"), DateUtils.parseDate("201911"));
+        System.out.println(dateDif.getDateCountNum());
 
 
 

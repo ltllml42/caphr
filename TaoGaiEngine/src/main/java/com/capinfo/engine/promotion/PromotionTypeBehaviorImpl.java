@@ -46,8 +46,8 @@ public class PromotionTypeBehaviorImpl<T> implements PromotionTypeBehavior<T> {
                 break;
             case ERROR_STATUS:
                 break;
-            case UNCERTAIN_STATUS:
-                break;
+            /*case UNCERTAIN_STATUS:
+                break;*/
         }
         throw new Exception(new MessageCode().failMessage(MessageEnum.ERROR_CODE_UNKNOWN).getMsg());
     }
@@ -79,9 +79,9 @@ public class PromotionTypeBehaviorImpl<T> implements PromotionTypeBehavior<T> {
             if (dictBeans == null) {
                 message.append(new MessageCode().failMessage(MessageEnum.ERROR_CODE_NULL_DIC,"县处级以下之类云云").getMsg()+"\n");
             }
-            if (StringUtils.isNotBlank(taoGaiPlan.getRank())){
+           /* if (StringUtils.isNotBlank(taoGaiPlan.getRank())){
                 message.append(new MessageCode().failMessage(MessageEnum.LI_CODE_06,"没有套改前职级").getMsg()+"\n");
-            }
+            }*/
 
 
 
