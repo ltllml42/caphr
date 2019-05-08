@@ -52,7 +52,14 @@ public class LoginRealm extends AuthorizingRealm{
   @Autowired
   private RoleMenuService roleMenuService;
 
+  @Override
+  public void setAuthenticationTokenClass(Class<? extends AuthenticationToken> authenticationTokenClass) {
+    super.setAuthenticationTokenClass(UsernamePasswordToken.class);
+  }
+
+
   /**
+   * WeiXinAuth2Token
    * 获取认证
    * @param principalCollection
    * @return

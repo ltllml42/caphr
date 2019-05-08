@@ -4,7 +4,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <title>KIT ADMIN</title>
+  <title>你好呀</title>
   <link rel="stylesheet" href="${re.contextPath}/plugin/plugins/layui/css/layui.css" media="all" />
   <link rel="stylesheet" href="${re.contextPath}/plugin/plugins/font-awesome/css/font-awesome.min.css" media="all" />
   <link rel="stylesheet" href="${re.contextPath}/plugin/build/css/app.css" media="all" />
@@ -40,7 +40,7 @@
   </div>
   </#if>
 </#macro>
-<@tree data=menu start="start" end="end"/>
+<@tree data=Session["menu"] start="start" end="end"/>
 
 
 

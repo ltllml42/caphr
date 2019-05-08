@@ -1,5 +1,5 @@
 server:
-  port: 8081
+  port: 80
 spring:
   devtools:
       restart:
@@ -65,3 +65,11 @@ logging:
     com.capinfo.mapper: debug
 
 dataType: mysql
+
+weixin:
+  mp:
+    configs:
+    - appId: wx72c8bfbb4f8fc348
+      secret: 559cc1d55cc2c6fef675567196f65853
+      token: esxkey12312394943qwww
+      aesKey: z49PcuSKlNj3CGBEHnad43YfTTGheJYP4HeTLH6EnTH

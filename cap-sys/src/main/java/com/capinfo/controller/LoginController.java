@@ -5,6 +5,7 @@ import com.capinfo.core.annotation.Log;
 import com.capinfo.core.shiro.ShiroUtil;
 import com.capinfo.entity.SysMenu;
 import com.capinfo.entity.SysUser;
+import com.capinfo.mapper.SysMenuMapper;
 import com.capinfo.service.MenuService;
 import com.capinfo.service.SysUserService;
 import com.capinfo.util.VerifyCodeUtils;

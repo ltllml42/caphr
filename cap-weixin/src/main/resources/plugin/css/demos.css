@@ -1,0 +1,101 @@
+body, html {
+  height: 100%;
+  -webkit-tap-highlight-color: transparent;
+}
+.demos-title {
+  text-align: center;
+  font-size: 34px;
+  color: #3cc51f;
+  font-weight: 400;
+  margin: 0 15%;
+}
+
+.demos-sub-title {
+  text-align: center;
+  color: #888;
+  font-size: 14px;
+}
+
+.demos-header {
+  padding: 35px 0;
+}
+
+.demos-content-padded {
+  padding: 15px;
+}
+
+.demos-second-title {
+  text-align: center;
+  font-size: 24px;
+  color: #3cc51f;
+  font-weight: 400;
+  margin: 0 15%;
+}
+
+footer {
+  text-align: center;
+  font-size: 14px;
+  padding: 20px;
+}
+
+footer a {
+  color: #999;
+  text-decoration: none;
+}
+
+
+
+.left_150 {
+	margin-left: 25%;
+	
+}
+
+.wy-header{ height:44px; border-bottom:1px solid #e1e1e1; position:relative;}
+.wy-header-icon-back{position: absolute; left:0; top:0; width: 40px;height: 44px; }
+.wy-header-icon-back span {width:20px;height:20px; margin: 12px 0 0 10px; background:url(../project/images/icon-back.png) no-repeat; background-size:20px; display:block;}
+.wy-header-title{margin: 0 50px;text-align: center;height: 44px;line-height: 44px;font-size: 16px; color: #3cc51f;}
+.promotion-label-tit img{width:80%;}
+.wy-media-box.address-select{margin-top:0; background:url(../project/images/location-border.png) repeat-x left bottom #fff; border-bottom:0; background-size:auto 3px;}
+
+
+.weui-label_hz{
+  display:block;
+  text-align: center;
+  width:40px;
+  word-wrap:break-word;
+  word-break:break-all;
+}
+
+
+.weui-label_spot{
+  display:block;
+  text-align: center;
+  width:25px;
+  word-wrap:break-word;
+  word-break:break-all;
+}
+
+
+.weui-label_exc{
+	text-align:right;
+	margin:-10px auto 0px auto;
+  display:block;
+  word-wrap:break-word;
+  word-break:break-all;
+  display:block;clear:both;
+  
+}
+
+
+.weui-cell_success{
+
+}
+.weui-cell_success {
+  display:inline-block;
+}
+
+.weui-cell_success .weui-textarea-counter{
+
+}
+
+

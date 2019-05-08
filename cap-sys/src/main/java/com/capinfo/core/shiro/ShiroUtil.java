@@ -2,6 +2,8 @@ package com.capinfo.core.shiro;
 
 import com.capinfo.base.CurrentUser;
 import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.UnavailableSecurityManagerException;
+import org.apache.shiro.session.InvalidSessionException;
 import org.apache.shiro.session.Session;
 import org.apache.shiro.subject.Subject;
 

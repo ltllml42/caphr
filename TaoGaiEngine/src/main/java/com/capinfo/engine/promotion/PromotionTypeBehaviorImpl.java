@@ -1,11 +1,9 @@
 package com.capinfo.engine.promotion;
 
-import com.capinfo.engine.data.DictBean;
-import com.capinfo.engine.data.OriginalProduct;
-import com.capinfo.engine.data.TaoGaiPromotionSubset;
-import com.capinfo.engine.data.VersionInfo;
+import com.capinfo.engine.data.*;
 import com.capinfo.engine.message.MessageCode;
 import com.capinfo.engine.message.MessageEnum;
+import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.List;
@@ -26,30 +24,30 @@ public class PromotionTypeBehaviorImpl<T> implements PromotionTypeBehavior<T> {
     }
 
     /**
-     *
-     * TODO:代码未完成
      * @param data
      * @return
      */
     @Override
     public PromotionType judgementType(T data) throws Exception {
+
         OriginalProduct product = (OriginalProduct)data;
         PromotionType promotionType = product.getPromotionType();
-        switch (promotionType) {
-            case TAOGAI_STATUS:
-                break;
-            case FIRST_PROMOTION_STATUS:
-                break;
-            case SECOND_PROMOTION_STATUS:
-                break;
-            case NORMAL_PROMOTION_STATUS:
-                break;
-            case ERROR_STATUS:
-                break;
-            /*case UNCERTAIN_STATUS:
-                break;*/
+        TaoGaiPromotionSubset subset = null;
+        if(promotionType==null){
+            if(product.getPromotionHisList()!=null&&(!product.getPromotionHisList().isEmpty())){
+                subset = product.getPromotionHisList().peek();
+            }else{
+                if(product.getTaoGaiHisList()!=null&&(!product.getTaoGaiHisList().isEmpty())){
+                    subset = product.getTaoGaiHisList().peek();
+                }
+            }
+            if(subset==null)return null;
+
+            TrueTable trutTable =  TrueTable.conversionTrueTable(product.isBeforeNewOrOldRank(subset)
+                    ,product.isAfterNewOrOldRank(subset),subset.getUpStatus());
+            return (trutTable==null)?null:trutTable.getNextUpStatus();
         }
-        throw new Exception(new MessageCode().failMessage(MessageEnum.ERROR_CODE_UNKNOWN).getMsg());
+        throw new RuntimeException("我日");
     }
 
     @Override
@@ -79,20 +77,7 @@ public class PromotionTypeBehaviorImpl<T> implements PromotionTypeBehavior<T> {
             if (dictBeans == null) {
                 message.append(new MessageCode().failMessage(MessageEnum.ERROR_CODE_NULL_DIC,"县处级以下之类云云").getMsg()+"\n");
             }
-           /* if (StringUtils.isNotBlank(taoGaiPlan.getRank())){
-                message.append(new MessageCode().failMessage(MessageEnum.LI_CODE_06,"没有套改前职级").getMsg()+"\n");
-            }*/
-
-
-
-
-
-//            if (taoGaiPlan.isLeader()){
-//                message.append(new MessageCode().failMessage(MessageEnum.LI_CODE_06,"没有套改前职级").getMsg()+"\n");
-//            }
         }
-
-
 
         if(StringUtils.isNotBlank(message.toString())){
             return new MessageCode().failMessage(message);

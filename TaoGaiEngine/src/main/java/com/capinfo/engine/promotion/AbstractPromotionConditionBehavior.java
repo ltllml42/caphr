@@ -154,11 +154,6 @@ public abstract class AbstractPromotionConditionBehavior implements PromotionCon
         int monthNum = completeTaogaiDate.getMonthNum();
         //为正表示填写的套改时间在当前时间之前，为负表示套改时间在当前时间之后（不做处理）
         limit.setAfterTaoGaiDateLimitMonth(monthNum);
-        /*if (monthNum<0) {
-            throw new RuntimeException("套改时间在当前时间之后为错误情况");
-        } else {
-
-        }*/
         DateAddEntity completeRankServingDate = DateUtils.getDateDif(rankServingDate, taogaiDate);
         //为正表示填写的套改时间在职级任职时间之后。为负表示套改时间在职级时间之前（不做处理）
         int rankServingMonthNum = completeRankServingDate.getMonthNum();

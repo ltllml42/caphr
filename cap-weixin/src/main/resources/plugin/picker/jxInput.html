@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+<base href="<%=basePath%>">
+<meta charset="UTF-8">
+<meta name="viewport"
+	content="width=device-width,initial-scale=1.0,maximum-scale=1.0,minimum-scale=1.0,user-scalable=no">
+<meta name="apple-touch-fullscreen" content="YES">
+<meta name="format-detection" content="telephone=no">
+<title>捷信裸机分期</title>
+<script src="jquery-2.1.4.js"></script>
+<link rel="stylesheet" href="weui.css">
+<link rel="stylesheet" href="jquery-weui.css">
+<script src="jquery-weui.js"></script>
+<ul>
+	<li>测试<input class="pickerInput" id="picker1" type="text" readonly="readonly"/></label></li>
+</ul>
+
+	<script type="text/javascript">
+	var fqProductArray =new Array();
+	/*function initFqProductList(){
+		var url = "your/url/xxx";
+		$.ajax({
+			type : 'POST',
+			url : url,
+			data : {
+			},
+			dataType:'json',  
+	        //jsonp:'callback', 
+	        //scriptCharset: 'utf-8',
+			success : function(data) {
+				console.log(data);
+				//获取数组
+				fqProductArray = data.array;
+				var values = new Array();
+				for ( var i in fqProductArray) {
+					values[i] = fqProductArray[i].productValue;
+				}
+				packerInit(values);
+			}
+		});
+	}*/
+	//例如
+	var values = ['iPhone 4', 'iPhone 4S', 'iPhone 5', 'iPhone 5S', 'iPhone 6', 'iPhone 6 Plus', 'iPad 2', 'iPad Retina', 'iPad Air', 'iPad mini', 'iPad mini 2', 'iPad mini 3'];
+	//正常情况是根据key查value，现在反向操作
+	for(var i in values){
+		var fqProduct = new Object();
+		fqProduct.key = i;
+		fqProduct.value = values[i];
+		fqProductArray.push(fqProduct);
+	}
+	packerInit(values);
+	function packerInit(values) {
+		$("#picker1").picker(
+			{
+				toolbarTemplate : '<div class="toolbar">'
+						+ '<div class="toolbar-inner"><a href="javascript:;" class="cancel-picker close-picker">取消</a><a href="javascript:;" class="picker-button close-picker"  onclick="staging()">确定</a></div></div>',
+				cols : [ {
+					textAlign : 'center',
+					values : values,
+				} ],
+				cssClass : 'productList',
+				onOpen : function() {
+					//  document.activeElement.focus();
+					$("body").append(
+							"<div class='grayBg'></div>");
+				},
+				onClose : function() {
+					$(".grayBg").remove();
+				}
+			});
+		}
+		function staging() {
+			var p1_val = $("#picker1").val();
+			for(var i in fqProductArray){
+				if(fqProductArray[i].value == p1_val){
+					alert("p1_val："+p1_val+"--------------------key:"+fqProductArray[i].key);
+				}
+			}
+			for ( var p in fqProductArray) {
+				if ($("#productName").val() == fqProductArray[p].productValue) {
+					productKey = fqProductArray[p].productKey;
+					productId = fqProductArray[p].productId;
+					break;
+				}
+			}
+		};
+	</script>
+</body>
+</html>

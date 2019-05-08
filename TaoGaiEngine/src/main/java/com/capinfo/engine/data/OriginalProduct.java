@@ -219,16 +219,7 @@ public class OriginalProduct {
      * @return
      */
     public PromotionType getPromotionType() {
-        if(taoGaiType!=null) return promotionType;
-        if(promotionHisList!=null&&promotionHisList.isEmpty()){
-            TaoGaiPromotionSubset peek = promotionHisList.peek();
-            beforeNowOrOld=isBeforeNewOrOldRank(peek);
-            afterNewOrOld=isAfterNewOrOldRank(peek);
-            return TrueTable.conversionTrueTable(beforeNowOrOld
-                    ,afterNewOrOld,peek.getUpStatus()).getNextUpStatus();
-            //通过查询套改晋升表
-        }
-        throw new RuntimeException("我日");
+        return promotionType;
     }
 
     /**
@@ -258,7 +249,7 @@ public class OriginalProduct {
      *
      *  GWY 和 ZJ 的数据 如果出现就是旧的数
      */
-    private boolean isBeforeNewOrOldRank(TaoGaiPromotionSubset peek) {
+    public boolean isBeforeNewOrOldRank(TaoGaiPromotionSubset peek) {
         if (StringUtils.isNotBlank(peek.getBeforeRank())){
             return isNewOrOldRank(peek.getBeforeRank());
         }else if(StringUtils.isNotBlank(peek.getBeforeLevels())){
@@ -290,7 +281,7 @@ public class OriginalProduct {
      * @param peek
      * @return
      */
-    private boolean isAfterNewOrOldRank(TaoGaiPromotionSubset peek) {
+    public boolean isAfterNewOrOldRank(TaoGaiPromotionSubset peek) {
         if (StringUtils.isNotBlank(peek.getAfterRank())){
             return isNewOrOldRank(peek.getAfterRank());
         }

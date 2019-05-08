@@ -5,6 +5,8 @@ import com.capinfo.base.CurrentUser;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.session.Session;
 
+import javax.security.auth.Subject;
+
 /**
  * @author zhuxiaomeng
  * @date 2017/12/4.
@@ -22,6 +24,7 @@ public class CommonUtil {
     Session session = subject.getSession();
     return (CurrentUser) session.getAttribute("curentUser");
   }
+  
 }
 
   /**
