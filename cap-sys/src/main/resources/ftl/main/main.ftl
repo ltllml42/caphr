@@ -37,28 +37,28 @@
     </ul>
     </div-->
     <ul class="layui-nav layui-layout-right kit-nav">
-      <li class="layui-nav-item">
-        <a href="javascript:;">
-          <i class="layui-icon">&#xe63f;</i> 皮肤</a>
-        </a>
-        <dl class="layui-nav-child skin">
-          <dd><a href="javascript:;" data-skin="default" style="color:#393D49;"><i class="layui-icon">&#xe658;</i> 默认</a></dd>
-          <dd><a href="javascript:;" data-skin="orange" style="color:#ff6700;"><i class="layui-icon">&#xe658;</i> 橘子橙</a></dd>
-          <dd><a href="javascript:;" data-skin="green" style="color:#00a65a;"><i class="layui-icon">&#xe658;</i> 春天绿</a></dd>
-          <dd><a href="javascript:;" data-skin="pink" style="color:#FA6086;"><i class="layui-icon">&#xe658;</i> 少女粉</a></dd>
-          <dd><a href="javascript:;" data-skin="blue.1" style="color:#00c0ef;"><i class="layui-icon">&#xe658;</i> 天空蓝</a></dd>
-          <dd><a href="javascript:;" data-skin="red" style="color:#dd4b39;"><i class="layui-icon">&#xe658;</i> 枫叶红</a></dd>
-        </dl>
-      </li>
+      <#--<li class="layui-nav-item">-->
+        <#--<a href="javascript:;">-->
+          <#--<i class="layui-icon">&#xe63f;</i> 皮肤</a>-->
+        <#--</a>-->
+        <#--<dl class="layui-nav-child skin">-->
+          <#--<dd><a href="javascript:;" data-skin="default" style="color:#393D49;"><i class="layui-icon">&#xe658;</i> 默认</a></dd>-->
+          <#--<dd><a href="javascript:;" data-skin="orange" style="color:#ff6700;"><i class="layui-icon">&#xe658;</i> 橘子橙</a></dd>-->
+          <#--<dd><a href="javascript:;" data-skin="green" style="color:#00a65a;"><i class="layui-icon">&#xe658;</i> 春天绿</a></dd>-->
+          <#--<dd><a href="javascript:;" data-skin="pink" style="color:#FA6086;"><i class="layui-icon">&#xe658;</i> 少女粉</a></dd>-->
+          <#--<dd><a href="javascript:;" data-skin="blue.1" style="color:#00c0ef;"><i class="layui-icon">&#xe658;</i> 天空蓝</a></dd>-->
+          <#--<dd><a href="javascript:;" data-skin="red" style="color:#dd4b39;"><i class="layui-icon">&#xe658;</i> 枫叶红</a></dd>-->
+        <#--</dl>-->
+      <#--</li>-->
       <li class="layui-nav-item">
         <a href="javascript:;">
         <#assign currentUser = Session["curentUser"]>
-          <img src="${re.contextPath}/images/${currentUser.photo}" class="layui-nav-img">${currentUser.username}
+          ${currentUser.username}
         </a>
-        <dl class="layui-nav-child">
-          <dd><a href="javascript:;" kit-target data-options="{url:'basic.html',icon:'&#xe658;',title:'基本资料',id:'966'}"><span>基本资料</span></a></dd>
-          <dd><a href="javascript:;">安全设置</a></dd>
-        </dl>
+        <#--<dl class="layui-nav-child">-->
+          <#--<dd><a href="javascript:;" kit-target data-options="{url:'basic.html',icon:'&#xe658;',title:'基本资料',id:'966'}"><span>基本资料</span></a></dd>-->
+          <#--<dd><a href="javascript:;">安全设置</a></dd>-->
+        <#--</dl>-->
       </li>
       <li class="layui-nav-item"><a href="logout"><i class="fa fa-sign-out" aria-hidden="true"></i> 注销</a></li>
     </ul>

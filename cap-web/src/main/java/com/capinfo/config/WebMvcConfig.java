@@ -1,5 +1,6 @@
 package com.capinfo.config;
 
+import com.capinfo.interceptor.MobileInterceptor;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.naming.factory.BeanFactory;
 import org.aspectj.runtime.reflect.Factory;
@@ -41,6 +42,8 @@ public class WebMvcConfig extends WebMvcConfigurationSupport {
         StringHttpMessageConverter converter = new StringHttpMessageConverter(Charset.forName("UTF-8"));
         return converter;
     }
+
+
 
 
     @Override
@@ -92,9 +95,17 @@ public class WebMvcConfig extends WebMvcConfigurationSupport {
         return interceptor;
     }
 
+    @Bean
+    public MobileInterceptor mobileInterceptor(){
+        return new MobileInterceptor();
+    }
+
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
+
         registry.addInterceptor(interceptor());
+        registry.addInterceptor(mobileInterceptor())
+                .addPathPatterns("/**");
     }
 
     @Bean
