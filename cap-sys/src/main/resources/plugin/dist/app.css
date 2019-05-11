@@ -1,0 +1,15 @@
+/* Write your styles */
+
+.f-aid{
+	text-indent:35px;
+	font-size: 12px;
+	color: #999;
+}
+
+.wgt-ask .ask-time {
+    text-align: right;
+}
+.grid-r {
+    display: inline;
+    float: right;
+}
