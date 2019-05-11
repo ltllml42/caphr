@@ -25,9 +25,7 @@
     <module>cap-sys</module>
     <module>cap-web</module>
     <module>cap-activiti</module>
-    <module>cap-demo</module>
     <module>cap-person</module>
-    <module>cap-demo</module>
 
   </modules>
 
@@ -103,6 +101,12 @@
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-logging</artifactId>
+    </dependency>
+
+
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-activemq</artifactId>
     </dependency>
 
     <!--<dependency>-->

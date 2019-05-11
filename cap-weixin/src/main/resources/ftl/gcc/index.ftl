@@ -111,7 +111,6 @@
 
 
     $(function () {
-        debugger;
         var socket = new SockJS('/endpoint-websocket'); //连接上端点(基站)
         stompClient = Stomp.over(socket);			//用stom进行包装，规范协议
         stompClient.connect({}, function (frame) {
@@ -125,13 +124,16 @@
 
     function showContent(data){
         $('.dowebok').children().remove();
-        $('.dowebok').append("<h1 style=\"color:red;\">"+data.content+"</h1>");
+         $('.dowebok').append("<h1 style=\"color:red;\">"+data.content+"</h1>");
         $('.dowebok').liMarquee({
             direction: 'left',
             scrollamount: 200
         });
         voiceTTs(data.content);
     }
+
+
+
 
 
 

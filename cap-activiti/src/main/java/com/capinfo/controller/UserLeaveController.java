@@ -306,7 +306,6 @@ public class UserLeaveController extends BaseController {
             {
                 continue;
             }
-
             map = taskService.getVariables(taskId);
             BaseTask userLeave = (BaseTask) map.get("baseTask");
 
