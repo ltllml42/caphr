@@ -60,8 +60,6 @@ public class CapCameraController {
         }
         //可能需要判断一下是哪一步的摄像头。如果第进入车检厂的这个摄像头，那么这样判断。如果是外观检测的摄像头
         // ip地址摄像头id应该不一样，如果都用这个方法那么再做判断
-
-
         if (count == 0) {
             //这个时候添数据到数据库里
             CapVehicleInfo capVehicleInfo = new CapVehicleInfo();
