@@ -19,6 +19,10 @@
             <groupId>com.capinfo</groupId>
             <artifactId>cap-sys</artifactId>
         </dependency>
+        <dependency>
+            <groupId>com.capinfo</groupId>
+            <artifactId>cap-activiti</artifactId>
+        </dependency>
         <!-- https://mvnrepository.com/artifact/com.github.binarywang/wx-java -->
 
         <dependency>

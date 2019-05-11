@@ -129,6 +129,8 @@ public class ShiroConfig {
         filterMap.put("/logout", "logout");
         filterMap.put("/plugin/**", "anon");
         filterMap.put("/user/**", "per");
+        filterMap.put("/adviceMobile/**", "anon");
+        filterMap.put("/car/getCarCardInfo", "anon");
         filterMap.put("/**", "authc");
         sfb.setFilterChainDefinitionMap(filterMap);
         return sfb;

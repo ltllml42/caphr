@@ -51,6 +51,12 @@
       <version>1.0-SNAPSHOT</version>
     </dependency>
 
+    <dependency>
+      <groupId>com.capinfo</groupId>
+      <artifactId>cap-advice</artifactId>
+      <version>1.0-SNAPSHOT</version>
+    </dependency>
+
   </dependencies>
   <build>
     <finalName>cap-web</finalName>
