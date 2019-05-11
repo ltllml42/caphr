@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.capinfo.mapper.CapAdviceDealMapper">
+  <resultMap id="BaseResultMap" type="com.capinfo.entity.CapAdviceDeal">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="id" jdbcType="VARCHAR" property="id" />
+    <result column="cap_advice_id" jdbcType="VARCHAR" property="capAdviceId"/>
+    <result column="title" jdbcType="VARCHAR" property="title"/>
+    <result column="content" jdbcType="VARCHAR" property="content"/>
+    <result column="status" jdbcType="VARCHAR" property="status"/>
+    <result column="remark" jdbcType="VARCHAR" property="remark" />
+    <result column="create_by" jdbcType="VARCHAR" property="createBy" />
+    <result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
+    <result column="update_by" jdbcType="VARCHAR" property="updateBy" />
+    <result column="update_date" jdbcType="TIMESTAMP" property="updateDate" />
+  </resultMap>
+
+  <select id="selectListByPage" parameterType="com.capinfo.entity.CapAdviceDeal" resultMap="BaseResultMap">
+    SELECT *
+    from cap_advice_deal
+    <where>
+      <if test="content!=null and content!=''">and remark like '%${content}%'</if>
+      <if test="capAdviceId != null and capAdviceId != ''">and cap_advice_id = #{capAdviceId,jdbcType=VARCHAR}</if>
+      <if test="status != null and status != ''">and status = #{status,jdbcType=VARCHAR}</if>
+    </where>
+    order by create_date desc
+  </select>
+
+  <select id="selectByCondition" parameterType="com.capinfo.entity.CapAdviceDeal" resultMap="BaseResultMap">
+    select
+    *
+    from cap_advice_deal
+    <where>
+      <if test="capAdviceId != null and capAdviceId != ''">and cap_advice_id = #{capAdviceId,jdbcType=VARCHAR}</if>
+      <if test="status != null and status != ''">and status = #{status,jdbcType=VARCHAR}</if>
+    </where>
+  </select>
+  <select id="selectCountByCondition" parameterType="com.capinfo.entity.CapAdviceDeal" resultType="java.lang.Integer">
+    select
+    count(*)
+    from cap_advice_deal
+    <where>
+      <if test="capAdviceId != null and capAdviceId != ''">and cap_advice_id = #{capAdviceId,jdbcType=VARCHAR}</if>
+      <if test="status != null and status != ''">and status = #{status,jdbcType=VARCHAR}</if>
+    </where>
+  </select>
+
+</mapper>

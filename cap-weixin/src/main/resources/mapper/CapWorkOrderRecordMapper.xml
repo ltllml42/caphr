@@ -25,4 +25,24 @@
     <result column="del_flag" property="delFlag" jdbcType="VARCHAR" />
     <result column="proc_inst_id" property="procInstId" jdbcType="VARCHAR" />
   </resultMap>
+
+
+  <select id="selectListByCondition" parameterType="com.capinfo.entity.CapWorkOrderRecord" resultMap="BaseResultMap">
+    SELECT * from cap_work_order_record
+    <where>
+      del_flag = '0'
+      <if test="nowLink!=null and nowLink!=''">
+        and now_link = #{nowLink}
+      </if>
+      <if test="nowStatus!=null and nowStatus!=''">
+        and now_status = #{nowStatus}
+      </if>
+      <if test="recordId!=null and recordId!=''">
+        and record_id = #{recordId}
+      </if>
+    </where>
+    order by create_date desc
+  </select>
+
+
 </mapper>

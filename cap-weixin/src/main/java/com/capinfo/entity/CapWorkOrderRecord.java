@@ -42,12 +42,20 @@ public class CapWorkOrderRecord  extends BaseEntity {
     private float totalMoney; //总钱数
     @Column(name = "total_limit")
     private int totalLimit;  //分钟   统计的进入停车场环节。
+
+    /*@Column(name = "total_last_limit")
+    private int nowLastTime;//最后一个环节花费时间*/
+    //不知道为啥名字和mapper里的不一样，先这样改一下
     @Column(name = "total_last_limit")
-    private int nowLastTime;//最后一个环节花费时间
+    private int totalLastLimit;
+
+
     @Column(name = "proc_inst_id")
     private String procInstId;//工作流ID
-    @Column(name="remarks")
-    private String remarks; //备注
+
+    //数据库里没有这个字段不知道为啥。暂时去掉了
+    /*@Column(name="remarks")
+    private String remarks; //备注*/
 
 
 

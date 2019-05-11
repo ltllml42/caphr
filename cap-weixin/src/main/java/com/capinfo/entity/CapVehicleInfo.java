@@ -1,6 +1,7 @@
 package com.capinfo.entity;
 
 import com.capinfo.base.BaseEntity;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
 import org.apache.commons.lang3.StringUtils;
@@ -46,11 +47,13 @@ public class CapVehicleInfo extends BaseEntity {
     @Column(name = "last_test_time")
     private Date lastTestTime;
     @Transient
+    @JsonIgnore
     private String lastTestTimeStr;
 
     @Column(name = "buy_time")
     private Date buyTime;
     @Transient
+    @JsonIgnore
     private String buyTimeStr;
 
     @Column(name = "openId")
@@ -58,11 +61,18 @@ public class CapVehicleInfo extends BaseEntity {
     @Column(name = "fans_id")
     private String fansId;
     @Transient
+    @JsonIgnore
     private String lpnChar;
     @Transient
+    @JsonIgnore
     private String lpnNumber;
     @Column(name = "nj_type")
     private String njType;
+
+
+    private CapWorkOrderRecord capWorkOrderRecord;
+
+
 
     public String getLpnChar() {
         return splitPlateNo(PLATENO_LPNCHAR,PLATENO_DIAN);
