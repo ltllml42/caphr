@@ -45,7 +45,7 @@ public class TransactionalConfig {
     public BeanNameAutoProxyCreator getBeanNameAutoProxyCreator(){
       BeanNameAutoProxyCreator proxyCreator=new BeanNameAutoProxyCreator();
       proxyCreator.setProxyTargetClass(true);
-      proxyCreator.setBeanNames("*ServiceImpl","*Controller");
+      proxyCreator.setBeanNames("*ServiceImpl","*Controller","*Service");
       proxyCreator.setInterceptorNames("transactionInterceptor");
       return proxyCreator;
   }

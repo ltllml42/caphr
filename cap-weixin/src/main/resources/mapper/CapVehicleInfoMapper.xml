@@ -19,4 +19,43 @@
     <result column="update_by" property="updateBy" jdbcType="VARCHAR" />
     <result column="del_flag" property="delFlag" jdbcType="VARCHAR" />
   </resultMap>
+
+
+  <select id="selectListByCondition" parameterType="com.capinfo.entity.CapVehicleInfo" resultMap="BaseResultMap">
+    SELECT
+    a.id AS "id",
+    a.plate_no AS "plateNo",
+    a.vehicle_type AS "vehicleType",
+    a.create_date AS "createDate",
+    b.now_link AS "capWorkOrderRecord.nowLink",
+    b.now_status AS "capWorkOrderRecord.nowStatus"
+    from cap_vehicle_info a left join cap_work_order_record b on a.id=b.record_id
+    <where>
+      a.del_flag = '0'
+      <if test="capWorkOrderRecord != null and capWorkOrderRecord.nowLink!=null and capWorkOrderRecord.nowLink!=''">
+        and b.now_link = #{capWorkOrderRecord.nowLink}
+      </if>
+      <if test="capWorkOrderRecord != null and capWorkOrderRecord.nowStatus!=null and capWorkOrderRecord.nowStatus!=''">
+        and b.now_status = #{capWorkOrderRecord.nowStatus}
+      </if>
+    </where>
+    order by a.create_date desc
+  </select>
+
+  <select id="selectCountJoinByCondition" parameterType="com.capinfo.entity.CapVehicleInfo" resultType="java.lang.Integer">
+    select
+    count(*)
+    from cap_vehicle_info a left join cap_work_order_record b on a.id=b.record_id
+    <where>
+      a.del_flag = '0'
+      <if test="capWorkOrderRecord != null and capWorkOrderRecord.nowLink!=null and capWorkOrderRecord.nowLink!=''">
+        and b.now_link = #{capWorkOrderRecord.nowLink}
+      </if>
+      <if test="capWorkOrderRecord != null and capWorkOrderRecord.nowStatus!=null and capWorkOrderRecord.nowStatus!=''">
+        and b.now_status = #{capWorkOrderRecord.nowStatus}
+      </if>
+    </where>
+  </select>
+
+
 </mapper>
