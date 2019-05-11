@@ -25,9 +25,6 @@
     <module>cap-sys</module>
     <module>cap-web</module>
     <module>cap-activiti</module>
-    <module>cap-demo</module>
-    <module>cap-person</module>
-    <module>cap-demo</module>
 
   </modules>
 
@@ -103,6 +100,12 @@
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-logging</artifactId>
+    </dependency>
+
+
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-activemq</artifactId>
     </dependency>
 
     <!--<dependency>-->
@@ -353,6 +356,14 @@
         </exclusion>
       </exclusions>
     </dependency>
+
+    <dependency>
+      <groupId>net.sf.json-lib</groupId>
+      <artifactId>json-lib</artifactId>
+      <version>2.4</version>
+      <classifier>jdk15</classifier>
+    </dependency>
+
 
     <!-- <dependency>
        <groupId>de.codecentric</groupId>
