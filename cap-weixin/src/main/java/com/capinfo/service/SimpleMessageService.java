@@ -15,4 +15,9 @@ public class SimpleMessageService {
     }
 
 
+    public void sendObjectMessage(String url,String message){
+        template.convertAndSend(url,new SendMessage(message));
+    }
+
+
 }

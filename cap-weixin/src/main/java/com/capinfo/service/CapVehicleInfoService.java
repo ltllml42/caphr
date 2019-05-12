@@ -31,10 +31,6 @@ public class CapVehicleInfoService extends BaseServiceImpl<CapVehicleInfo, Strin
     @Autowired
     private CapVehicleInfoMapper capVehicleInfoMapper;
 
-
-
-
-
     @Override
     public BaseMapper<CapVehicleInfo, String> getMappser() {
         return capVehicleInfoMapper;

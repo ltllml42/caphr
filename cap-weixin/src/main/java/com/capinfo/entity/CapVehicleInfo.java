@@ -69,7 +69,7 @@ public class CapVehicleInfo extends BaseEntity {
     @Column(name = "nj_type")
     private String njType;
 
-
+    @Transient
     private CapWorkOrderRecord capWorkOrderRecord;
 
 

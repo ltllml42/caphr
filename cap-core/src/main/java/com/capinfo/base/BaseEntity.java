@@ -3,10 +3,11 @@ package com.capinfo.base;
 import lombok.Data;
 
 import javax.persistence.Column;
+import java.io.Serializable;
 import java.util.Date;
 
 @Data
-public class BaseEntity {
+public class BaseEntity implements Serializable {
 
     /**
      * 删除标记（0：正常；1：删除；2：审核；）
