@@ -32,8 +32,14 @@ public class MobileInterceptor implements HandlerInterceptor {
 			ModelAndView modelAndView) throws Exception {
 				if(modelAndView!=null)
 				if(true && !StringUtils.startsWithIgnoreCase(modelAndView.getViewName(), "redirect:")) {
-					System.out.println(modelAndView.getViewName());
 					modelAndView.setViewName("mobile/" + modelAndView.getViewName());
+
+					//					if(modelAndView.getViewName().startsWith("main")){
+//						modelAndView.setViewName(modelAndView.getViewName().replaceFirst("main","redirect: mobile/main"));
+//					}else{
+//						modelAndView.setViewName("mobile/" + modelAndView.getViewName());
+//
+//					}
 				}
 
 //		if (modelAndView != null){

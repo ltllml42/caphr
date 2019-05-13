@@ -61,14 +61,12 @@ public class WeixinPermissionFilter extends AuthenticatingFilter {
             if (StringUtils.isBlank(code)) {
                 return false;
             }
-
             String[] paths = StringUtils.split(httpRequest.getRequestURI(), '/');
             if (paths.length > 2) {
                 return subject.isAuthenticated();
             } else {
                 return false;
             }
-
         }
         return false;
     }

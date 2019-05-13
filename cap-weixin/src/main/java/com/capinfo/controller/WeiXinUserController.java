@@ -1,9 +1,11 @@
 package com.capinfo.controller;
 
 import com.capinfo.entity.CapVehicleInfo;
+import com.capinfo.entity.CapWorkOrderRecord;
 import com.capinfo.entity.CapWxAccountFans;
 import com.capinfo.entity.MessageCode;
 import com.capinfo.service.CapVehicleInfoService;
+import com.capinfo.service.CapWorkOrderRecordService;
 import com.capinfo.service.CapWxAccountFansService;
 import com.capinfo.shiro.token.WeiXinAuth2Token;
 import com.capinfo.utils.WeiXinUtils;
@@ -38,6 +40,9 @@ public class WeiXinUserController {
     private CapWxAccountFansService capWxAccountFansService;
     @Autowired
     private CapVehicleInfoService capVehicleInfoService;
+    @Autowired
+    private CapWorkOrderRecordService capWorkOrderRecordService;
+
     //绑定
     private WxMpService wxService;
 
@@ -84,7 +89,10 @@ public class WeiXinUserController {
             model.addAttribute("cvInfo", new CapVehicleInfo());//目前是一个
             return "/weixin/user";
         } else {
+
             CapVehicleInfo cvInfo = cvInfoList.get(0);
+            cvInfo.setYearCheckCount(
+                    capWorkOrderRecordService.selectCount(CapWorkOrderRecord.builder().vehicleId(cvInfo.getId()).build()));
             model.addAttribute("cvInfo", cvInfo);//目前是一个
             model.addAttribute("fans", principal.getFansInfo());
             return "/weixin/queryCar";
@@ -92,16 +100,18 @@ public class WeiXinUserController {
 
     }
 
+
     /**
-     *             data.fansId = "${fans.id}";
-     *             data.carId = "${cvInfo.id}";
-     *             data.name = name.value;
-     *             data.sex = $(sex).attr("data-values");
-     *             data.telphone = telphone.value;
-     *             data.plateNo = lpnChar.value + "@" + lpnNumber.value;
-     *             data.njType = $(njType).attr("data-values");
-     *             data.buyTimeStr = buyTime.value;
-     *             data.lastTestTimeStr = lastTestTime.value;
+     * data.fansId = "${fans.id}";
+     * data.carId = "${cvInfo.id}";
+     * data.name = name.value;
+     * data.sex = $(sex).attr("data-values");
+     * data.telphone = telphone.value;
+     * data.plateNo = lpnChar.value + "@" + lpnNumber.value;
+     * data.njType = $(njType).attr("data-values");
+     * data.buyTimeStr = buyTime.value;
+     * data.lastTestTimeStr = lastTestTime.value;
+     *
      * @param appid
      * @param request
      * @return
@@ -161,18 +171,33 @@ public class WeiXinUserController {
     }
 
 
-    @GetMapping("hisTestMsg")
-    public String hisTestMsg(@PathVariable String appid) {
+    @GetMapping("/{id}/hisTestMsg")
+    public String hisTestMsg(@PathVariable String appid, @PathVariable String id, Model model) {
+        CapVehicleInfo cvInfo = capVehicleInfoService.selectOne(CapVehicleInfo.builder().id(id).build());
+        List<CapWorkOrderRecord> workList = capWorkOrderRecordService.select(CapWorkOrderRecord.builder().vehicleId(id).build());
+        model.addAttribute("cvInfo", cvInfo);
+        model.addAttribute("workList",workList);
         return "/weixin/hisTestMsg";
     }
+    @GetMapping("/{id}/hisTestMsg")
+    public String showHis(@PathVariable String appid, @PathVariable String id, Model model) {
+        CapWorkOrderRecord cwor = capWorkOrderRecordService.selectOne(CapWorkOrderRecord.builder().id(id).build());
+        //历史消息
+
+
+
+
+
+        model.addAttribute("cwor",cwor);
+        return "/weixin/hisTestMsg";
+    }
+
 
 
     @GetMapping("flow")
     public String flow(@PathVariable String appid) {
         return "/weixin/flow";
     }
-    //flow.ftl
-
 
     @GetMapping("queryCar")
     public String queryCar(@PathVariable String appid) {

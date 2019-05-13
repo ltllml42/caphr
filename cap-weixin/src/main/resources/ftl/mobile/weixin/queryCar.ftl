@@ -1,18 +1,11 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>车辆绑定</title>
-    
-    
-    
-    
+<title>车辆绑定</title>
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
-
 <meta name="description" content="车辆查询">
-
-
 <link rel="stylesheet" href="${re.contextPath}/plugin/lib/weui.css">
 <link rel="stylesheet" href="${re.contextPath}/plugin/css/jquery-weui.css">
 <link rel="stylesheet" href="${re.contextPath}/plugin/css/demos.css">
@@ -35,7 +28,7 @@
 	  <div class="weui-cell">
 		  <div class="weui-cell__hd"><label class="weui-label">姓名</label></div>
 		  <div class="weui-cell__bd">
-					<input class="weui-input"id="name" maxlength="20" name="name" type="text"   pattern="^[\u4E00-\u9FA5\uf900-\ufa2d·s]{1,20}$" required="required" placeholder="必须为汉字或者·不能超过20个汉字">
+		  		${fans.name}
 		  </div>
 	    <div class="weui-cell__ft">
 	      <i class="weui-icon-warn"></i>
@@ -44,7 +37,7 @@
 		 <div class="weui-cell">
 		  <div class="weui-cell__hd"><label class="weui-label">性别</label></div>
 		  <div class="weui-cell__bd">
-					<input  id="sex" class="weui-input" id="sex" type="text" value="男" data-values="1" readonly placeholder="性别">
+		  		${fans.sexDesc}
 		  </div>
 		 </div>
 		 <!--weui-cell_vcode-->
@@ -52,8 +45,7 @@
 		 	
 		  <div class="weui-cell__hd"><label class="weui-label">手机</label></div>
 		  <div class="weui-cell__bd">
-		 			<input id="telphone" class="weui-input" maxlength="13" name="telphone" required="true" type="tel" placeholder="手机号码(13位)">
-	
+		  		${fans.telphone}
 		  </div>
 		  <div class="weui-cell__ft">
 	      <i class="weui-icon-warn"></i>
@@ -77,12 +69,13 @@
             <div class="weui-cell__bd">
               <div class="weui-cell">
               	<div class="weui-cell__hd">
-              		 	 <p>京A-AB123</p>
+					<p>${cvInfo.plateNo}</p>
               	</div>
                 <div class="weui-cell__bd left_150 " >
                  	 <p><a href="javascript:void(0);">5</a></p>
                 </div>
-                <div class="weui-cell__ft"><a href="javascript:void(0);">查看详情</a></div>
+				  <#assign wxUser = Session["weiXinUser"]>
+                <div class="weui-cell__ft"><a href="${re.contextPath}/oauth2/${wxUser.appid}/${cvInfo.id}/show">查看详情</a></div>
               </div>
             </div>
             <div class="weui-cell__ft">

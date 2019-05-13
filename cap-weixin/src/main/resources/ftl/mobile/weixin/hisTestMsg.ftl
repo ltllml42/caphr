@@ -22,7 +22,7 @@
 					<label class="weui-label">车牌号</label>
 				</div>
 				<div class="weui-cell__bd">
-					<label class="weui-label">京A-CD123</label>
+					<label class="weui-label">${cvInfo.}</label>
 				</div>
 				<div class="weui-cell__ft">
 					<i class="weui-icon-warn"></i>
@@ -33,28 +33,37 @@
 					<label class="weui-label">购车日期</label>
 				</div>
 				<div class="weui-cell__bd">
-					<label class="weui-label">2010-12-23</label>
+					<label class="weui-label">${cvInfo.buyTimeStr}</label>
 				</div>
 				<div class="weui-cell__ft">
 					<i class="weui-icon-warn"></i>
 				</div>
 			</div>
+            <div class="weui-cell ">
+                <div class="weui-cell__hd">
+                    <label class="weui-label">最后年检时间</label>
+                </div>
+                <div class="weui-cell__bd">
+                    <label class="weui-label">${cvInfo.lastTestTimeStr}</label>
+                </div>
+                <div class="weui-cell__ft">
+                    <i class="weui-icon-warn"></i>
+                </div>
+            </div>
+
+
 			<div class="weui-cells__title">验车时间</div>
 			<div class="weui-cells">
-				<a class="weui-cell weui-cell_access" href="javascript:void(0);">
-					<div class="weui-cell__bd">
-						<p>2019-12-23</p>
-					</div>
-					<div class="weui-cell__ft">
-					</div>
-				</a>
-				<a class="weui-cell weui-cell_access" href="javascript:void(0)">
-					<div class="weui-cell__bd">
-						<p>2018-7-12</p>
-					</div>
-					<div class="weui-cell__ft">
-					</div>
-				</a>
+				 <#assign wxUser = Session["weiXinUser"]>
+				  <#list works as workList>
+						<a class="weui-cell weui-cell_access" href="${re.contextPath}/oauth2/${wxUser.appid}/${works.id}/showHis">
+							<div class="weui-cell__bd">
+								<p>${works.endTime}</p>
+							</div>
+							<div class="weui-cell__ft">
+							</div>
+						</a>
+				  </#list>
 			</div>
 		</div>
 
