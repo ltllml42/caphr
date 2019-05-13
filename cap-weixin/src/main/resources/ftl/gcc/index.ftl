@@ -109,13 +109,12 @@
 
     var stompClient = null;
 
-
     $(function () {
         var socket = new SockJS('/endpoint-websocket'); //连接上端点(基站)
         stompClient = Stomp.over(socket);			//用stom进行包装，规范协议
         stompClient.connect({}, function (frame) {
             console.log('Connected: ' + frame);
-            stompClient.subscribe('/topic/callback', function (result) {
+            stompClient.subscribe('/topic/gcc', function (result) {
                 console.log(result.body);
                 showContent(JSON.parse(result.body));
             });
@@ -124,7 +123,7 @@
 
     function showContent(data){
         $('.dowebok').children().remove();
-         $('.dowebok').append("<h1 style=\"color:red;\">"+data.content+"</h1>");
+        $('.dowebok').append("<h1 style=\"color:red;\">"+data.content+"</h1>");
         $('.dowebok').liMarquee({
             direction: 'left',
             scrollamount: 200

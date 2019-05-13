@@ -3,9 +3,10 @@ package com.capinfo.util;
 
 import com.capinfo.base.CurrentUser;
 import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.mgt.SecurityManager;
 import org.apache.shiro.session.Session;
+import org.apache.shiro.util.ThreadContext;
 
-import javax.security.auth.Subject;
 
 /**
  * @author zhuxiaomeng
@@ -20,23 +21,31 @@ public class CommonUtil {
    * 获取当前用户
    */
   public static CurrentUser getUser() {
-    org.apache.shiro.subject.Subject subject = SecurityUtils.getSubject();
-    Session session = subject.getSession();
-    return (CurrentUser) session.getAttribute("curentUser");
+
+      org.apache.shiro.subject.Subject subject = SecurityUtils.getSubject();
+      Session session = subject.getSession();
+
+      return (CurrentUser) session.getAttribute("curentUser");
+
+//      SecurityManager securityManager = null;
+//
+//      try{
+//          securityManager = SecurityUtils.getSecurityManager();
+//      }catch (RuntimeException e){
+//          SecurityUtils.setSecurityManager(SpringUtil.getBean("securityManager"));
+//          org.apache.shiro.mgt.SecurityManager securityManager1 = SpringUtil.getBean("securityManager");
+//          ThreadContext.bind(securityManager1);
+//      }
+//      if(securityManager!=null){
+//          System.out.println(SpringUtil.getBean("securityManager").toString());
+//
+//          System.out.println(ThreadContext.getSecurityManager());
+//
+//          //ThreadContext.bind();
+//          org.apache.shiro.subject.Subject subject = SecurityUtils.getSubject();
+//          Session session = subject.getSession();
+//          return (CurrentUser) session.getAttribute("curentUser");
+//      }
+//      return null;
   }
-  
 }
-
-  /**
-   * 获取权限
-   * @return
-   */
-  /*public static List<SysPermission> getPermission(){
-    SysUser user=CommonUtil.getUser();
-    if(user!=null){
-
-    }
-  }
-
-}
-*/

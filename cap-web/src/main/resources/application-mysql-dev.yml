@@ -33,7 +33,9 @@ spring:
         prefer-ip: true
       url: http://localhost:80821
   activemq:
-    broker-url:tcp://localhost:61616
+    broker-url: tcp://localhost:61616
+    packages:
+      trust-all: true
 
 mybatis:
     type-aliases-package: com.capinfo.entity

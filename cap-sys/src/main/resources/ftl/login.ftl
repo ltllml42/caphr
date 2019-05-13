@@ -36,7 +36,6 @@
             <div class="layui-input-inline">
                 <img src="" id="code">
             </div>
-
         </div>
         <#--<div>-->
         <#--<label class="layui-form-label" style="width:40px;padding: 9px 0px;">记住我</label>  由于不好验证 目前去掉-->

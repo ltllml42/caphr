@@ -1,11 +1,21 @@
 package com.capinfo.controller;
 
+import com.capinfo.base.CurrentUser;
+import com.capinfo.entity.CapVehicleInfo;
+import com.capinfo.entity.CapWorkOrderRecord;
+import com.capinfo.entity.CarCheckFlowMessage;
+import com.capinfo.util.CommonUtil;
+import com.capinfo.utils.WeiXinUtils;
+import com.capinfo.vehicle.utilEntity.VehicleConstant;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jms.core.JmsTemplate;
 import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.scheduling.config.FixedRateTask;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import javax.jms.Queue;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -16,11 +26,49 @@ import java.util.Map;
  */
 @Controller
 @RequestMapping(value = "/mq/test")
+@Slf4j
 public class MqTestController {
 
+
+
     List<String> list = new ArrayList<String>();
+    List<CarCheckFlowMessage> cvInfos = new ArrayList<CarCheckFlowMessage>();
+    @Autowired
+    private Queue displayQueue;
+    @Autowired
+    private Queue ordinaryQueue;
+    @Autowired
+    private Queue flowQuere;
+
+
 
     public MqTestController(){
+
+        CapWorkOrderRecord cvi1 = new CapWorkOrderRecord();
+        cvi1.setPlateNo("京G-FA123");
+        cvi1.setNowLink("3");
+        //未通过
+        //不通过
+        //
+        cvi1.setNowStatus("");
+
+        CapWorkOrderRecord cvi2 = new CapWorkOrderRecord();
+        cvi2.setPlateNo("京A-FF123");
+        cvi1.setNowLink("3");
+
+
+        CapWorkOrderRecord cvi3 = new CapWorkOrderRecord();
+        cvi3.setPlateNo("京F-FC123");
+        cvi1.setNowLink("3");
+
+        CapWorkOrderRecord cvi4 = new CapWorkOrderRecord();
+        cvi4.setPlateNo("京D-AB123");
+        cvi1.setNowLink("4");
+
+        CapWorkOrderRecord cvi5 = new CapWorkOrderRecord();
+        cvi5.setPlateNo("京C-IA123");
+        cvi1.setNowLink("4");
+
         list.add("京G-B1387 入场进行年检");
         list.add("京A-FB123 入场进行年检");
         list.add("京F-GC123 入场进行年检");
@@ -39,6 +87,54 @@ public class MqTestController {
         list.add("京F-GC123 车检完成");
         list.add("京F-GC123 车检完成");
 
+        CarCheckFlowMessage car1 = new CarCheckFlowMessage();
+        car1.setBuisId("1");
+        car1.setAction("add");
+        car1.setNowStatus(VehicleConstant.PROCESS_GAS);
+        car1.setPlateNo("京A-FD123");
+        car1.setDetectionState("首检");
+        car1.setToUser(new String[]{""});//将消息发送给那些人
+        car1.setNewIcon("新");
+        car1.setStatusCss(CarCheckFlowMessage.FONT_CSS_GREEN);
+        car1.setFlag("full");
+
+        CarCheckFlowMessage car2 = new CarCheckFlowMessage();
+        car2.setBuisId("2");
+        car2.setAction("add");
+        car2.setNowStatus(VehicleConstant.PROCESS_GAS);
+        car2.setPlateNo("京A-SF369");
+        car2.setDetectionState("首检");
+        car2.setToUser(new String[]{""});//将消息发送给那些人
+        car2.setNewIcon("新");
+        car2.setStatusCss(CarCheckFlowMessage.FONT_CSS_GREEN);
+        car2.setFlag("full");
+
+        CarCheckFlowMessage car3 = new CarCheckFlowMessage();
+        car3.setBuisId("3");
+        car3.setAction("add");
+        car3.setNowStatus(VehicleConstant.PROCESS_GAS);
+        car3.setPlateNo("京A-NS369");
+        car3.setDetectionState("首检");
+        car3.setToUser(new String[]{""});//将消息发送给那些人
+        car3.setNewIcon("新");
+        car3.setStatusCss(CarCheckFlowMessage.FONT_CSS_GREEN);
+        car3.setFlag("full");
+
+        CarCheckFlowMessage car4 = new CarCheckFlowMessage();
+        car4.setBuisId("3");
+        car4.setAction("add");
+        car4.setNowStatus(VehicleConstant.PROCESS_GAS);
+        car4.setPlateNo("京A-NS369");
+        car4.setDetectionState("复检");
+        car4.setToUser(new String[]{""});//将消息发送给那些人
+        car4.setNewIcon("新");
+        car4.setStatusCss(CarCheckFlowMessage.FONT_CSS_GREEN);
+        car4.setFlag("full");
+
+        cvInfos.add(car1);
+        cvInfos.add(car2);
+        cvInfos.add(car3);
+        cvInfos.add(car4);
     }
 
 
@@ -57,9 +153,54 @@ public class MqTestController {
         if(i==list.size()){
             i=0;
         }
-        jmsTemplate.convertAndSend("my_msg", list.get(i++));
+        jmsTemplate.convertAndSend(this.displayQueue, list.get(i++));
+
+        log.debug("大屏显示消息为"+list.get(i));
+    }
+
+
+    /**
+     *     @Autowired
+     *     private Queue displayQueue;
+     *     @Autowired
+     *     private Queue ordinaryQueue;
+     *     @Autowired
+     *     private Queue flowQuere;
+     */
+    @Scheduled(fixedRate = 2000)
+    public void sendOrdinaryQueue() {
+        //测试数据
+        if(i>=list.size()-1){
+            i=0;
+        }
+        jmsTemplate.convertAndSend(this.ordinaryQueue, list.get(i));
+        i++;
         System.out.println("msg发送成功");
     }
+
+    static int count = 0 ;
+    @Scheduled(fixedRate = 10000)
+    public void sendFlowQuere() {
+       // CurrentUser user = CommonUtil.getUser();
+    //  if(user!=null){
+
+
+            if(cvInfos.size()-1<count){
+                count=0;
+            }
+            jmsTemplate.convertAndSend(this.flowQuere,cvInfos.get(count));
+
+            log.debug("工作流输出显示:"+cvInfos.get(count));
+            count++;
+      //  }else{
+      //      log.debug("还未重新登录！");
+      //  }
+
+    }
+
+
+
+
 
 //    @Scheduled(fixedRate = 10000)
 //    public void sendMap() {
