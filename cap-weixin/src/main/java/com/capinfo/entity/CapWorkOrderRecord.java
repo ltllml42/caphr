@@ -1,8 +1,7 @@
 package com.capinfo.entity;
 
 import com.capinfo.base.BaseEntity;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.Column;
 import javax.persistence.GeneratedValue;
@@ -16,6 +15,9 @@ import java.util.Date;
 @Getter
 @Setter
 @Table(name = "cap_work_order_record")
+@AllArgsConstructor //生成全参数构造函数
+@NoArgsConstructor//生成无参构造函数
+@Builder
 public class CapWorkOrderRecord  extends BaseEntity {
     @Id
     @GeneratedValue(generator = "JDBC")

@@ -9,14 +9,13 @@
     <link rel="stylesheet" href="${re.contextPath}/plugin/jmq/css/jqm-demos.css"/>
 </head>
 <body>
-
-
-  <div data-role="page" id="login">
+<!-- Session -->
+  <div data-role="page" data-ajax = "false" id="login">
         <div data-role="header" data-theme="b">
             <h1>车检管理系统</h1>
         </div>
         <div data-role="content">
-            <form id="logFrom" method="post" action="${re.contextPath}/login">
+            <form id="logFrom" method="post" data-ajax="false" action="${re.contextPath}/login">
               <div data-role="fieldcontain">
               	<h2>用户登录</h2>
                   <input type="text" name="username" id="username" data-required="true" data-descriptions="username" data-describedby="username-description" placeholder="请输入用户名"><div id="username-description"></div>
@@ -54,7 +53,7 @@
 
 
 	</script>
-    <script src="http://apps.bdimg.com/libs/jquery/1.10.2/jquery.min.js"></script>
+    <script src="http://apps.bdimg.com/libs/jquery/1.10.2/jquery.js"></script>
     <script type="text/javascript" src="${re.contextPath}/plugin/jmq/js/jquery-mvalidate.js"></script>
     <script type="text/javascript" src="${re.contextPath}/plugin/jmq/js/jquery.mobile-1.4.5.js"></script>
     <script type="text/javascript" src="${re.contextPath}/plugin/jmq/js/laytpl.js"></script>
@@ -64,9 +63,6 @@
                 var url = "${re.contextPath}/getCode?"+new Date().getTime();
                 this.src = url;
             }).click().show();
-            $('#code').on('mouseover',function(){
-                layer.tips('点击刷新验证码', this,{time:1000});
-            });
         });
 
         $("#logFrom").mvalidate({

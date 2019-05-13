@@ -2,16 +2,25 @@ package com.capinfo.entity;
 
 import com.capinfo.base.BaseEntity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 import org.apache.commons.lang3.StringUtils;
 
 import javax.persistence.*;
 import java.util.Date;
 
+/**
+ *         model.addAttribute("cvInfo", cvInfo);
+ *         model.addAttribute("workList",workList);
+ *
+ *
+ *           <option value="${cl.id}" <#if cl.id == declare.customerId>selected = selected"</#if> >${cl.customerName}</option>
+ */
 @Getter
 @Setter
 @Table(name = "cap_vehicle_info")
+@AllArgsConstructor //生成全参数构造函数
+@NoArgsConstructor//生成无参构造函数
+@Builder
 public class CapVehicleInfo extends BaseEntity {
 
     public final static String FORMAT_DATE = "yyyy年MM月dd日";
@@ -22,6 +31,9 @@ public class CapVehicleInfo extends BaseEntity {
 
 
     public final static String PLATENO_DIAN = "·";
+
+
+
     @Id
     @GeneratedValue(generator = "JDBC")
     private String id;
@@ -45,7 +57,7 @@ public class CapVehicleInfo extends BaseEntity {
     private String vehicleKind;
 
     @Column(name = "last_test_time")
-    private Date lastTestTime;
+    private Date lastTestTime; //最后一次验车时间
     @Transient
     @JsonIgnore
     private String lastTestTimeStr;
@@ -68,6 +80,8 @@ public class CapVehicleInfo extends BaseEntity {
     private String lpnNumber;
     @Column(name = "nj_type")
     private String njType;
+    @Transient
+    private int yearCheckCount;//年检次数
 
     @Transient
     private CapWorkOrderRecord capWorkOrderRecord;
