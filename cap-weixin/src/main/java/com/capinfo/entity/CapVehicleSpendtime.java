@@ -1,8 +1,7 @@
 package com.capinfo.entity;
 
 import com.capinfo.base.BaseEntity;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.Column;
 import javax.persistence.GeneratedValue;
@@ -13,13 +12,16 @@ import java.util.Date;
 @Getter
 @Setter
 @Table(name = "cap_vehicle_spendtime")
+@AllArgsConstructor //生成全参数构造函数
+@NoArgsConstructor//生成无参构造函数
+@Builder
 public class CapVehicleSpendtime extends BaseEntity {
 
     @Id
     @GeneratedValue(generator = "JDBC")
     private String id;
-    @Column(name = "cap_vehicle_id")
-    private String capVehicleId;
+    @Column(name = "cap_work_record_id")
+    private String capWorkRecordId;
     @Column(name = "task_name")
     private String taskName;
     @Column(name = "start_time")

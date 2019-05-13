@@ -1,10 +1,8 @@
 package com.capinfo.controller;
 
-import com.capinfo.entity.CapVehicleInfo;
-import com.capinfo.entity.CapWorkOrderRecord;
-import com.capinfo.entity.CapWxAccountFans;
-import com.capinfo.entity.MessageCode;
+import com.capinfo.entity.*;
 import com.capinfo.service.CapVehicleInfoService;
+import com.capinfo.service.CapVehicleSpendtimeService;
 import com.capinfo.service.CapWorkOrderRecordService;
 import com.capinfo.service.CapWxAccountFansService;
 import com.capinfo.shiro.token.WeiXinAuth2Token;
@@ -42,6 +40,8 @@ public class WeiXinUserController {
     private CapVehicleInfoService capVehicleInfoService;
     @Autowired
     private CapWorkOrderRecordService capWorkOrderRecordService;
+    @Autowired
+    private CapVehicleSpendtimeService capVehicleSpendtimeService;
 
     //绑定
     private WxMpService wxService;
@@ -183,10 +183,9 @@ public class WeiXinUserController {
     public String showHis(@PathVariable String appid, @PathVariable String id, Model model) {
         CapWorkOrderRecord cwor = capWorkOrderRecordService.selectOne(CapWorkOrderRecord.builder().id(id).build());
         //历史消息
+        capVehicleSpendtimeService.select(CapVehicleSpendtime.builder().capVehicleId())
 
-
-
-
+        System.out.println(cwor.getNowLink());
 
         model.addAttribute("cwor",cwor);
         return "/weixin/hisTestMsg";
