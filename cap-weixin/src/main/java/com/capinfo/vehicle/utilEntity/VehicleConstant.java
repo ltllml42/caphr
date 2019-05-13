@@ -41,13 +41,31 @@ public class VehicleConstant {
 
 
     /**
-     * 通过
+     * 检测中     在点进页面的时候改成这个状态。表示这个人签收了开始检测了
      */
-    public static final String PROCESS_NOWSTATUS_YES = "1";
+    public static final String PROCESS_NOWSTATUS_CHECKING = "1";
     /**
      * 不通过
      */
     public static final String PROCESS_NOWSTATUS_NO = "2";
+
+    /**
+     * 检测用时表里status用这几个常量表示     1：检测中
+     */
+    public static final String PROCESS_SPENDTIME_CHECKING = "1";
+    /**
+     * 2:检测完成
+     */
+    public static final String PROCESS_SPENDTIME_END = "2";
+
+    /**
+     * 是否是复检的情况     0：否
+     */
+    public static final String PROCESS_ISREPEAT_NO = "0";
+    /**
+     * 是否是复检的情况     1：是
+     */
+    public static final String PROCESS_ISREPEAT_YES = "1";
 
 
     /**

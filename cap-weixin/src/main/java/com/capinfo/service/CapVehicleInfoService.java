@@ -4,6 +4,7 @@ import com.capinfo.base.BaseMapper;
 import com.capinfo.base.CurrentUser;
 import com.capinfo.base.impl.BaseServiceImpl;
 import com.capinfo.entity.CapVehicleInfo;
+import com.capinfo.entity.CapVehicleSpendtime;
 import com.capinfo.entity.CapWorkOrderRecord;
 import com.capinfo.entity.CapWxAccountFans;
 import com.capinfo.exception.MyException;
@@ -30,8 +31,12 @@ public class CapVehicleInfoService extends BaseServiceImpl<CapVehicleInfo, Strin
 
     @Autowired
     private CapVehicleInfoMapper capVehicleInfoMapper;
-
-
+    @Autowired
+    private CapWorkOrderRecordService capWorkOrderRecordService;
+    @Autowired
+    private CapVehicleSpendtimeService capVehicleSpendtimeService;
+    @Autowired
+    private TaskService taskService;
 
 
 
@@ -88,6 +93,14 @@ public class CapVehicleInfoService extends BaseServiceImpl<CapVehicleInfo, Strin
     }
 
 
+    public List<CapVehicleInfo> selectByPlateNo(String plateNo) {
+        CapVehicleInfo vehicleInfo = new CapVehicleInfo();
+        vehicleInfo.setPlateNo(plateNo);
+        return capVehicleInfoMapper.selectListByCondition(vehicleInfo);
+    }
+
+
+
 
 
 
@@ -137,7 +150,6 @@ public class CapVehicleInfoService extends BaseServiceImpl<CapVehicleInfo, Strin
                     map.put("pass", "2");
                     flow.setNowLink(VehicleConstant.PROCESS_ONLINE);
                     flow.setNowStatus(VehicleConstant.PROCESS_NOWSTATUS_NO);
-                    flow.setStepMoney(20);
                 } else if ("nopasslight".equals(status)) {
                     map.put("pass", "3");
                     flow.setNowLink(VehicleConstant.PORCESS_LIGHT);
@@ -159,6 +171,39 @@ public class CapVehicleInfoService extends BaseServiceImpl<CapVehicleInfo, Strin
         flow.setMap(map);
         return flow;
     }
+
+
+    /**
+     * 签收。拿着主表的id找一下record那张表，找到之后用里边的流程实例id找到task签收
+     * 再insert一条用时这张表的数据
+     * @param id
+     */
+    public void claim(String id) {
+        CurrentUser currentUser = (CurrentUser) SecurityUtils.getSubject().getSession().getAttribute("curentUser");
+        String userId = StringUtils.isBlank(currentUser.getId())?VehicleConstant.USER_WORKER_ID:currentUser.getId();
+        CapWorkOrderRecord record = new CapWorkOrderRecord();
+        record.setRecordId(id);
+        CapWorkOrderRecord capWorkOrderRecord = capWorkOrderRecordService.selectListByCondition(record).get(0);
+        if (StringUtils.isBlank(capWorkOrderRecord.getNowStatus()) || "2".equals(capWorkOrderRecord.getNowStatus())) {
+            //为空或者为2不通过的时候，证明没签收过。已经是1的时候说明点进来了关掉又点进来了
+            capWorkOrderRecord.setNowStatus(VehicleConstant.PROCESS_NOWSTATUS_CHECKING);
+            capWorkOrderRecord.setUpdateDate(new Date());
+            capWorkOrderRecordService.updateByPrimaryKey(capWorkOrderRecord);
+            String processId = capWorkOrderRecord.getProcInstId();
+            Task task = taskService.createTaskQuery().processInstanceId(processId).singleResult();
+            taskService.claim(task.getId(), userId);
+
+            CapVehicleSpendtime spendtime = new CapVehicleSpendtime();
+            spendtime.setCapVehicleId(id);
+            spendtime.setStartTime(new Date());
+            spendtime.setStatus(VehicleConstant.PROCESS_SPENDTIME_CHECKING);
+            spendtime.setTaskName(task.getName());
+            capVehicleSpendtimeService.save(spendtime);
+        }
+
+    }
+
+
 
 
 

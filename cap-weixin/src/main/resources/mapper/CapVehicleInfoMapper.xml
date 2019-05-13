@@ -38,6 +38,9 @@
       <if test="capWorkOrderRecord != null and capWorkOrderRecord.nowStatus!=null and capWorkOrderRecord.nowStatus!=''">
         and b.now_status = #{capWorkOrderRecord.nowStatus}
       </if>
+      <if test="plateNo !=null and plateNo!=''">
+        and a.plate_no = #{plateNo}
+      </if>
     </where>
     order by a.create_date desc
   </select>
@@ -53,6 +56,9 @@
       </if>
       <if test="capWorkOrderRecord != null and capWorkOrderRecord.nowStatus!=null and capWorkOrderRecord.nowStatus!=''">
         and b.now_status = #{capWorkOrderRecord.nowStatus}
+      </if>
+      <if test="plateNo !=null and plateNo!=''">
+        and a.plate_no = #{plateNo}
       </if>
     </where>
   </select>
