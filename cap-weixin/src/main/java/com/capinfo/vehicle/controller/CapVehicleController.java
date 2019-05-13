@@ -195,6 +195,11 @@ public class CapVehicleController {
         model.addAttribute("pageType", pageType);
         model.addAttribute("capVehicleInfo", capVehicleInfo);
         model.addAttribute("detail", detail);
+        //在这里要做签收动作。工作流里签收一下，也把这个开始时间记到一张表里
+        //不是进入并且不是外观检测的时候签收一下
+        if (!"appear".equals(pageType) && !"enter".equals(pageType) && !"pay".equals(pageType)) {
+            capVehicleInfoService.claim(id);
+        }
         if ("pay".equals(pageType)) {
             return "vehicle/pay-vehicle";
         } else {
@@ -245,7 +250,7 @@ public class CapVehicleController {
             //在这里先写开始工作流的
             capWorkOrderRecordService.startFlow(capWorkOrderRecord);
             VehicleFlowEntity flow = new VehicleFlowEntity();
-            Map<String, Object> map = new HashMap<>();
+            Map<String, Object> map = new HashMap<String, Object>();
             if ("pass".equals(status)) {
                 //可能需要判断车牌种类。暂时先这么写，下一步到尾气检测
                 flow.setNowLink(VehicleConstant.PROCESS_GAS);
