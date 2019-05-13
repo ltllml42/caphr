@@ -3,6 +3,7 @@ package com.capinfo.service;
 import com.capinfo.base.CurrentUser;
 import com.capinfo.entity.CapWorkOrderRecord;
 import com.capinfo.entity.CarCheckFlowMessage;
+import com.capinfo.entity.SysUser;
 import com.capinfo.vehicle.utilEntity.VehicleConstant;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jms.core.JmsTemplate;
@@ -45,14 +46,43 @@ public class FlowMessagePushService {
                 car3.setPlateNo("京A-NS369");
                 car3.setDetectionState("首检");//需要判断
                 car3.setReCount("1");//如果为首检则默认为空
-                car3.setToUser(new String[]{""});//将消息发送给那些人
+                //car3.setToUser(new String[]{""});//将消息发送给那些人
                 car3.setNewIcon("新");
                 car3.setStatusCss(CarCheckFlowMessage.FONT_CSS_GREEN);
                 car3.setFlag("full");
                 jmsTemplate.convertAndSend(this.flowQuere,car3);
             }
         }
-    };
+    }
+
+    /**
+     * 添加流程。在外观检测完成后发送队列信息给尾气检测的设备
+     * @param userList
+     * @param capWorkOrderRecord
+     */
+    public void addflowByRecord(List<SysUser> userList, CapWorkOrderRecord capWorkOrderRecord) {
+        if(userList!=null&&userList.isEmpty()){
+            for (SysUser sysUser : userList) {
+                CarCheckFlowMessage carMsg = new CarCheckFlowMessage();
+                carMsg.setBuisId(capWorkOrderRecord.getRecordId());
+                carMsg.setProcInstId(capWorkOrderRecord.getProcInstId());
+                carMsg.setAction("add");
+                carMsg.setNowStatus(VehicleConstant.PROCESS_GAS);
+                carMsg.setPlateNo(capWorkOrderRecord.getPlateNo());
+                carMsg.setDetectionState("首检");//还需要加字段判断一下
+                carMsg.setReCount("1");
+                carMsg.setToUser(sysUser.getId());
+                carMsg.setNewIcon("新");
+                carMsg.setStatusCss(CarCheckFlowMessage.FONT_CSS_GREEN);
+                carMsg.setFlag("full");
+                jmsTemplate.convertAndSend(this.flowQuere,carMsg);
+            }
+        }
+    }
+
+
+
+
 
     /**
      * 更改流程状态  车牌ID不能变化
@@ -67,7 +97,7 @@ public class FlowMessagePushService {
                 car.setNowStatus(VehicleConstant.PROCESS_GAS);
                 car.setDetectionState("首检");//需要判断
                 car.setReCount("1");//如果为首检则默认为空
-                car.setToUser(new String[]{""});//将消息发送给那些人
+                //car.setToUser(new String[]{""});//将消息发送给那些人
                 car.setNewIcon("");
                 if("不通过".equals(car.getFlowStatus())){
                     car.setFlag("empty");

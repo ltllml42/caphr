@@ -19,7 +19,7 @@ public class CarCheckFlowMessage implements Serializable {
     private String procInstId;//流程id
     private String buisId;//业务表Id  后续判断
     private String action;// del 设置为空闲  add 添加检测队列 up 更新状态
-    private String[] toUser;//用户ID
+    private String toUser;//用户ID
     private String  statusCss;
     private String flag;//  full 占满  empty 清空
 

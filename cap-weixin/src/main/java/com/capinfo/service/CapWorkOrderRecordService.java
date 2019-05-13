@@ -109,7 +109,7 @@ public class CapWorkOrderRecordService extends BaseServiceImpl<CapWorkOrderRecor
         String processId = capWorkOrderRecord.getProcInstId();
         Task task = taskService.createTaskQuery().processInstanceId(processId).singleResult();
         //自动签收一下    暂时这样
-        if ("2".equals(capWorkOrderRecord.getNowLink())) {
+        if (VehicleConstant.PROCESS_APPEAR.equals(capWorkOrderRecord.getNowLink())) {
             capVehicleInfoService.claim(capWorkOrderRecord.getRecordId());
         }
         taskService.addComment(task.getId(), processId, task.getName()+",花费："+flow.getStepMoney()+"元,检测时间："+nowTime+",检测人员账号："+userName);
@@ -120,6 +120,11 @@ public class CapWorkOrderRecordService extends BaseServiceImpl<CapWorkOrderRecor
         capWorkOrderRecord.setNowStatus(flow.getNowStatus());
         addValue(capWorkOrderRecord, false);
         this.updateByPrimaryKey(capWorkOrderRecord);
+
+        //在这加推送消息队列的东西应该
+        //尾气检测结束，上线检测结束不通过的时候
+
+
     }
 
     /**

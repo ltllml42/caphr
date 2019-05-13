@@ -93,7 +93,7 @@ public class MqTestController {
         car1.setNowStatus(VehicleConstant.PROCESS_GAS);
         car1.setPlateNo("京A-FD123");
         car1.setDetectionState("首检");
-        car1.setToUser(new String[]{""});//将消息发送给那些人
+        //car1.setToUser(new String[]{""});//将消息发送给那些人
         car1.setNewIcon("新");
         car1.setStatusCss(CarCheckFlowMessage.FONT_CSS_GREEN);
         car1.setFlag("full");
@@ -104,7 +104,7 @@ public class MqTestController {
         car2.setNowStatus(VehicleConstant.PROCESS_GAS);
         car2.setPlateNo("京A-SF369");
         car2.setDetectionState("首检");
-        car2.setToUser(new String[]{""});//将消息发送给那些人
+        //car2.setToUser(new String[]{""});//将消息发送给那些人
         car2.setNewIcon("新");
         car2.setStatusCss(CarCheckFlowMessage.FONT_CSS_GREEN);
         car2.setFlag("full");
@@ -115,7 +115,7 @@ public class MqTestController {
         car3.setNowStatus(VehicleConstant.PROCESS_GAS);
         car3.setPlateNo("京A-NS369");
         car3.setDetectionState("首检");
-        car3.setToUser(new String[]{""});//将消息发送给那些人
+        //car3.setToUser(new String[]{""});//将消息发送给那些人
         car3.setNewIcon("新");
         car3.setStatusCss(CarCheckFlowMessage.FONT_CSS_GREEN);
         car3.setFlag("full");
@@ -126,7 +126,7 @@ public class MqTestController {
         car4.setNowStatus(VehicleConstant.PROCESS_GAS);
         car4.setPlateNo("京A-NS369");
         car4.setDetectionState("复检");
-        car4.setToUser(new String[]{""});//将消息发送给那些人
+        //car4.setToUser(new String[]{""});//将消息发送给那些人
         car4.setNewIcon("新");
         car4.setStatusCss(CarCheckFlowMessage.FONT_CSS_GREEN);
         car4.setFlag("full");
@@ -147,7 +147,7 @@ public class MqTestController {
 
     int i=0;
 
-    @Scheduled(fixedRate = 10000)
+    /*@Scheduled(fixedRate = 10000)
     public void sendMsg() {
         //测试数据
         if(i==list.size()){
@@ -156,7 +156,7 @@ public class MqTestController {
         jmsTemplate.convertAndSend(this.displayQueue, list.get(i++));
 
         log.debug("大屏显示消息为"+list.get(i));
-    }
+    }*/
 
 
     /**

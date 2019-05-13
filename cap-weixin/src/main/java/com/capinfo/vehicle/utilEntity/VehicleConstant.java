@@ -74,4 +74,19 @@ public class VehicleConstant {
     public static final String FLOW_NAME = "car_process";
 
 
+    /**
+     * 尾气检测人员   角色id
+     */
+    public static final String ROLEID_GAS = "cc84e70413f64a7bb0c1eee083bf21e3";
+    /**
+     * 上线检测人员   角色id
+     */
+    public static final String ROLEID_ONLINE = "f4e2d075e449402e9db65d6e1be2d480";
+    /**
+     * 车灯复检人员   角色id
+     */
+    public static final String ROLEID_LIGHT = "dcd47a1a1e6448d78de13964ac9c3ecc";
+
+
+
 }
