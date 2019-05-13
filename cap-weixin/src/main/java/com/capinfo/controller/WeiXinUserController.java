@@ -183,7 +183,7 @@ public class WeiXinUserController {
     public String showHis(@PathVariable String appid, @PathVariable String id, Model model) {
         CapWorkOrderRecord cwor = capWorkOrderRecordService.selectOne(CapWorkOrderRecord.builder().id(id).build());
         //历史消息
-        capVehicleSpendtimeService.select(CapVehicleSpendtime.builder().capVehicleId())
+        capVehicleSpendtimeService.select(CapVehicleSpendtime.builder().capWorkRecordId(cwor.getId()).build());
 
         System.out.println(cwor.getNowLink());
 
