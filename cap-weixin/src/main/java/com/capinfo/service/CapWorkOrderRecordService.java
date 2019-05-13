@@ -115,7 +115,7 @@ public class CapWorkOrderRecordService extends BaseServiceImpl<CapWorkOrderRecor
         capVehicleInfoService.claim(capWorkOrderRecord.getRecordId());
         taskService.addComment(task.getId(), processId, task.getName()+",花费："+flow.getStepMoney()+"元,检测时间："+nowTime+",检测人员账号："+userName);
         //这里把那张新表里的值也改一下    complete了就没有task了，taskName不好找，complete之前保存一下这张表好了
-        saveSpendtime(capWorkOrderRecord.getRecordId(), task.getName(), flow);
+        saveSpendtime(capWorkOrderRecord.getId(), task.getName(), flow);
         taskService.complete(task.getId(), map);
         capWorkOrderRecord.setNowLink(flow.getNowLink());
         capWorkOrderRecord.setNowStatus(flow.getNowStatus());
@@ -164,7 +164,7 @@ public class CapWorkOrderRecordService extends BaseServiceImpl<CapWorkOrderRecor
      */
     private void saveSpendtime(String id, String taskName, VehicleFlowEntity flow) {
         CapVehicleSpendtime spendtime = new CapVehicleSpendtime();
-        spendtime.setCapVehicleId(id);
+        spendtime.setCapWorkRecordId(id);
         spendtime.setTaskName(taskName);
         spendtime.setStatus(VehicleConstant.PROCESS_SPENDTIME_CHECKING);
         CapVehicleSpendtime spend = capVehicleSpendtimeService.selectListByCondition(spendtime).get(0);
@@ -200,7 +200,7 @@ public class CapWorkOrderRecordService extends BaseServiceImpl<CapWorkOrderRecor
     private boolean isRepeat(String id, String taskName) {
         boolean flag = false;
         CapVehicleSpendtime spendtime = new CapVehicleSpendtime();
-        spendtime.setCapVehicleId(id);
+        spendtime.setCapWorkRecordId(id);
         spendtime.setTaskName(taskName);
         List<CapVehicleSpendtime> list = capVehicleSpendtimeService.selectListByCondition(spendtime);
         if (list.size()>1) {

@@ -199,7 +199,7 @@ public class CapVehicleInfoService extends BaseServiceImpl<CapVehicleInfo, Strin
             taskService.claim(task.getId(), userId);
 
             CapVehicleSpendtime spendtime = new CapVehicleSpendtime();
-            spendtime.setCapVehicleId(id);
+            spendtime.setCapWorkRecordId(capWorkOrderRecord.getId());
             spendtime.setStartTime(new Date());
             spendtime.setStatus(VehicleConstant.PROCESS_SPENDTIME_CHECKING);
             spendtime.setTaskName(task.getName());
