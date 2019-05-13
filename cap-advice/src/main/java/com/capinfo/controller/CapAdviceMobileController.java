@@ -39,8 +39,8 @@ public class CapAdviceMobileController extends BaseController {
     UploadUtil uploadUtil;
     @Value("${capsp.imagePath}")
     private String imagePath;
-    @Value("${capsp.prodAddress}")
-    private String prodAddress;
+    /*@Value("${capsp.prodAddress}")
+    private String prodAddress;*/
 
 
     @GetMapping(value = "adviceIndex")
@@ -177,7 +177,7 @@ public class CapAdviceMobileController extends BaseController {
         CapAdvice capAdvice = capAdviceService.selectByPrimaryKey(id);
         model.addAttribute("capAdvice", capAdvice);
         model.addAttribute("pageType", request.getParameter("pageType"));
-        model.addAttribute("prodAddress", prodAddress);
+        //model.addAttribute("prodAddress", prodAddress);
         return "/system/advice/mobile/addadvice-result";
     }
 
