@@ -49,8 +49,9 @@
 <script type="text/javascript">
     var countOk = 0;
     var countNotOk = 0;
+    var countLight = 0;
 
-    function subUp(v) {
+    function subUp(v, buisId) {
         countOk++;
         if (countOk == 1) {
             $(v).text("再点击一次");
@@ -61,11 +62,33 @@
             reOk();
             reNotOk();
             //提交表单
-            $("#adelePage").panel("close");
+            var data = {};
+            data.id=buisId;
+            data.status="pass";
+            var jsonStr = JSON.stringify(data);
+            if (jsonStr != null || jsonStr != [{}]) {
+                $.ajax({
+                    url: '/vehicle/completeVehicleMobile',
+                    dataType: "json",
+                    data: jsonStr,
+                    type : 'post',
+                    contentType: "application/json", //必须有
+                    success: function (data) {
+                        if(data.flag){
+                            //alert("success");
+                        } else {
+                            //window.location.href="/wx/message/fail";
+                            //alert("fail");
+                        }
+                        $("#adelePage").panel("close");
+                    }
+                });
+            }
+
         }
     }
 
-    function subNotOk(v) {
+    function subNotOk(v, buisId) {
         countNotOk++;
         if (countNotOk == 1) {
             $(v).text("再点一次确认");
@@ -74,9 +97,66 @@
             $(v).text("不通过");
             reOk();
             reNotOk();
-            $("#adelePage").panel("close");
+            var data = {};
+            data.id=buisId;
+            data.status="nopass";
+            var jsonStr = JSON.stringify(data);
+            if (jsonStr != null || jsonStr != [{}]) {
+                $.ajax({
+                    url: '/vehicle/completeVehicleMobile',
+                    dataType: "json",
+                    data: jsonStr,
+                    type : 'post',
+                    contentType: "application/json", //必须有
+                    success: function (data) {
+                        if(data.flag=="true"){
+                            //alert("success");
+                        } else {
+                            //window.location.href="/wx/message/fail";
+                            //alert("fail");
+                        }
+                        $("#adelePage").panel("close");
+                    }
+                });
+            }
+            //$("#adelePage").panel("close");
         }
     }
+
+    function checkLight(v, buisId) {
+        countLight++;
+        if (countLight == 1) {
+            $(v).text("再点一次确认");
+            reOk();
+        } else {
+            $(v).text("不通过");
+            reOk();
+            reNotOk();
+            var data = {};
+            data.id=buisId;
+            data.status="nopasslight";
+            var jsonStr = JSON.stringify(data);
+            if (jsonStr != null || jsonStr != [{}]) {
+                $.ajax({
+                    url: '/vehicle/completeVehicleMobile',
+                    dataType: "json",
+                    data: jsonStr,
+                    type : 'post',
+                    contentType: "application/json", //必须有
+                    success: function (data) {
+                        if(data.flag=="true"){
+                            //alert("success");
+                        } else {
+                            //window.location.href="/wx/message/fail";
+                            //alert("fail");
+                        }
+                        $("#adelePage").panel("close");
+                    }
+                });
+            }
+        }
+    }
+
 
     function reOk() {
         countOk = 0;
@@ -101,20 +181,22 @@
 
 <script id="channel" type="text/html">
     <li id="channel_{{d.buisId}}" flag="empty" >
-        <a href="javascript:void(0);" onclick="showPanel('{{d.procInstId}}','{{d.plateNo}}','{{d.detectionState}}')" data-swipe-close="false" data-dismissible="false">
+        <a href="javascript:void(0);" onclick="showPanel('{{d.procInstId}}','{{d.plateNo}}','{{d.detectionState}}','{{d.buisId}}')" data-swipe-close="false" data-dismissible="false">
             <span class="ui-listview-inset">{{d.plateNo}}</span>
             <span class="ui-listview-inset" style="margin-left: 50px;">{{d.detectionState}}</span>
             <span class="ui-listview-inset {{d.statusCss}} " style="margin-left: 50px;">{{d.nowStatus}}</span>
+            <span class="ui-listview-inset" style="margin-left: 50px;">{{d.flowStatus}}</span>
             <span class="ui-li-count">{{d.newIcon}}</span>
         </a>
     </li>
 </script>
 
 <script id="updateChannel" type="text/html">
-        <a href="javascript:void(0);" onclick="showPanel('{{d.procInstId}}','{{d.plateNo}}','{{d.detectionState}}')" data-swipe-close="false" data-dismissible="false">
+        <a href="javascript:void(0);" onclick="showPanel('{{d.procInstId}}','{{d.plateNo}}','{{d.detectionState}}','{{d.buisId}}')" data-swipe-close="false" data-dismissible="false">
             <span class="ui-listview-inset">{{d.plateNo}}</span>
             <span class="ui-listview-inset" style="margin-left: 50px;">{{d.detectionState}}</span>
             <span class="ui-listview-inset {{d.statusCss}} " style="margin-left: 50px;">{{d.nowStatus}}</span>
+            <span class="ui-listview-inset" style="margin-left: 50px;">{{d.flowStatus}}</span>
             <span class="ui-li-count">{{d.newIcon}}</span>
         </a>
 </script>
@@ -129,11 +211,15 @@
         </p>
         <p>双击确认！！</p>
         <div  data-role="controlgroup" data-type="vertical">
-            <a href="#" data-role="button" id="ok" onclick="subUp(this,{{d.procInstId}})"
+            <a href="#" data-role="button" id="ok" onclick="subUp(this,'{{d.buisId}}')"
                class="ui-btn ui-mini ui-shadow  ui-icon-check ui-btn-icon-left">通过</a>
-            <a href="#" data-role="button" id="notOk" onclick="subNotOk(this,{{d.procInstId}})"
+            <a href="#" data-role="button" id="notOk" onclick="subNotOk(this,'{{d.buisId}}')"
                class="ui-btn ui-mini ui-shadow  ui-icon-delete ui-btn-icon-left">不通过</a>
-            <a href="#" data-role="button" id="re" onclick="revokeProgram(this,{{d.procInstId}})"
+            {{#if(d.flowStatus == '上线检测'){ }}
+            <a href="#" data-role="button" id="onlylight" onclick="checkLight(this,'{{d.busiId}}')"
+               class="ui-btn ui-mini ui-shadow  ui-icon-delete ui-btn-icon-left">只复检车灯</a>
+            {{# } }}
+            <a href="#" data-role="button" id="re" onclick="revokeProgram(this,'{{d.buisId}}')"
                class="ui-btn ui-mini ui-shadow ui-icon-back ui-btn-icon-left">撤销</a>
         </div>
 </script>
@@ -153,6 +239,7 @@
                 console.log(result.body);
                 var json = JSON.parse(result.body);
                 var data = $.parseJSON( json.content );
+                console.log(data);
                 if(data.action=='add'){
                     if(selectOne(data.buisId)){
                         var uptpl = document.getElementById('updateChannel').innerHTML;
@@ -175,7 +262,7 @@
                             $('#dataEx').listview('refresh');
                         });
                     }else{
-                        voiceTTs(data.plateNo + "状态变更为"+data.detectionState)
+                        voiceTTs(data.plateNo + "状态变更为"+data.nowStatus)
                         var uptpl = document.getElementById('updateChannel').innerHTML;
                         laytpl(uptpl).render(data, function (html) {
                             $(eId).html(html)
@@ -192,7 +279,7 @@
                     if(!selectOne(data.buisId)){
                         return;
                     };
-                    voiceTTs(data.plateNo + "状态变更为"+data.detectionState)
+                    voiceTTs(data.plateNo + "状态变更为"+data.nowStatus)
                     var uptpl = document.getElementById('updateChannel').innerHTML;
                     laytpl(uptpl).render(data, function (html) {
                         $("#channel_"+data.buisId).html(html);
@@ -272,8 +359,8 @@
         sorce.parentNode.load();
     }
     //showPanel('{{d.procInstId}}','{{d.plateNo}}','{{d.detectionState}}')
-    function showPanel(procInstId,plateNo,detectionState){
-        var data = {procInstId:procInstId,plateNo:plateNo,detectionState:detectionState};
+    function showPanel(procInstId,plateNo,detectionState,buisId){
+        var data = {procInstId:procInstId,plateNo:plateNo,detectionState:detectionState,buisId:buisId};
         var gettpl2 = document.getElementById('message').innerHTML;
         laytpl(gettpl2).render(data, function (html) {
             $("#adelePage").html(html);

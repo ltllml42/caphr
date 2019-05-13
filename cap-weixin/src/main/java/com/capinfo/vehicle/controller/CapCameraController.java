@@ -156,12 +156,10 @@ public class CapCameraController {
             capWorkOrderRecordService.completeFlow(capWorkOrderRecord, flow);
 
             //插入队列里     先找到对应的尾气检测角色的用户
-            List<SysUser> userList = sysUserService.getUserByRoleId(VehicleConstant.ROLEID_GAS,1, 100);
-            flowMessagePushService.addflowByRecord(userList, capWorkOrderRecord);
+            List<SysUser> userList = sysUserService.getUserListByRoleId(VehicleConstant.ROLEID_GAS);
+            flowMessagePushService.addflowByRecord(userList, capWorkOrderRecord, "add");
 
         }
-
-
         String jsonStr ="{\"Response\":{\"Open\":1,\"SerialData\":{\"data\":\"/pgAbJdUAAAAAAAAAAAAAQEB/lxLiVkAAAAxAABsuUYAAAAwMDAwMDAwMDEsAQT/MDEwMTAxOTkxMjMxEwAAAFWqAAA3MjIxMTEAAAgAEAABEQASAAAAu7bTrbniwdn/AAEAAQABAGd8//+BbII=\",\"datalen\":148}}}";
         return jsonStr;
     }

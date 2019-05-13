@@ -75,6 +75,10 @@ public class VehicleConstant {
 
 
     /**
+     * 外观检测人员   角色id
+     */
+    public static final String ROLEID_APPEAR = "ef2ec0f7546a47e6b4e9fcb4b12350ad";
+    /**
      * 尾气检测人员   角色id
      */
     public static final String ROLEID_GAS = "cc84e70413f64a7bb0c1eee083bf21e3";

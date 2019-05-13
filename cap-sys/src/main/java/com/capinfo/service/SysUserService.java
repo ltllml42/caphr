@@ -64,5 +64,7 @@ public interface SysUserService extends BaseService<SysUser,String> {
 
   List<SysUser> getUserByRoleId(String roleId,int page,int limit);
 
+  List<SysUser> getUserListByRoleId(String roleId);
+
   int countUserByRoleId(String roleId,int page,int limit);
 }

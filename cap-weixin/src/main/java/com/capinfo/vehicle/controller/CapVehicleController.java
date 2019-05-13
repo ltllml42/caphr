@@ -1,28 +1,31 @@
 package com.capinfo.vehicle.controller;
 
+import com.capinfo.base.CurrentUser;
 import com.capinfo.entity.CapVehicleInfo;
 import com.capinfo.entity.CapWorkOrderRecord;
+import com.capinfo.entity.SysUser;
 import com.capinfo.exception.MyException;
 import com.capinfo.service.CapVehicleInfoService;
 import com.capinfo.service.CapWorkOrderRecordService;
+import com.capinfo.service.FlowMessagePushService;
+import com.capinfo.service.SysUserService;
 import com.capinfo.util.JsonUtil;
 import com.capinfo.util.ReType;
+import com.capinfo.vehicle.utilEntity.NowLinkUtils;
+import com.capinfo.vehicle.utilEntity.ResultBean;
 import com.capinfo.vehicle.utilEntity.VehicleConstant;
 import com.capinfo.vehicle.utilEntity.VehicleFlowEntity;
 import io.swagger.annotations.ApiOperation;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 @Controller
 @RequestMapping(value = "/vehicle")
@@ -34,6 +37,10 @@ public class CapVehicleController {
     private CapVehicleInfoService capVehicleInfoService;
     @Autowired
     private CapWorkOrderRecordService capWorkOrderRecordService;
+    @Autowired
+    private FlowMessagePushService flowMessagePushService;
+    @Autowired
+    private SysUserService sysUserService;
 
 
 
@@ -197,9 +204,10 @@ public class CapVehicleController {
         model.addAttribute("detail", detail);
         //在这里要做签收动作。工作流里签收一下，也把这个开始时间记到一张表里
         //不是进入并且不是外观检测的时候签收一下
-        if (!"appear".equals(pageType) && !"enter".equals(pageType) && !"pay".equals(pageType)) {
+        //暂时变成点通过不通过的时候自动签收
+        /*if (!"appear".equals(pageType) && !"enter".equals(pageType) && !"pay".equals(pageType)) {
             capVehicleInfoService.claim(id);
-        }
+        }*/
         if ("pay".equals(pageType)) {
             return "vehicle/pay-vehicle";
         } else {
@@ -310,6 +318,68 @@ public class CapVehicleController {
         }
         return jsonUtil;
     }
+
+    /**
+     * 其他时候暂时调这个。有情况再说
+     * @param
+     * @return
+     */
+    @ApiOperation(value = "/completeVehicleMobile", httpMethod = "POST", notes = "完成检测")
+    @PostMapping(value = "completeVehicleMobile")
+    @ResponseBody
+    public JsonUtil completeVehicleMobile(@RequestBody ResultBean bean, HttpServletRequest request) {
+        CurrentUser currentUser = (CurrentUser) SecurityUtils.getSubject().getSession().getAttribute("curentUser");
+        JsonUtil jsonUtil = new JsonUtil();
+        jsonUtil.setFlag(false);
+        String status = bean.getStatus();
+        if (StringUtils.isBlank(bean.getId())) {
+            jsonUtil.setMsg("获取数据失败");
+            return jsonUtil;
+        }
+        try {
+            CapWorkOrderRecord record = new CapWorkOrderRecord();
+            record.setRecordId(bean.getId());
+            CapWorkOrderRecord capWorkOrderRecord = capWorkOrderRecordService.selectListByCondition(record).get(0);
+            String beforeNowLink = capWorkOrderRecord.getNowLink();
+            /*if (VehicleConstant.PROCESS_ONLINE.equals(beforeNowLink)) {
+                String onlylight = request.getParameter("onlylight");
+                if ("yes".equals(onlylight)) {
+                    status = "nopasslight";
+                }
+            }*/
+            VehicleFlowEntity flow = capVehicleInfoService.getMatchMap(status, capWorkOrderRecord);
+            capWorkOrderRecordService.completeFlow(capWorkOrderRecord, flow);
+
+            //在这加推送消息队列的东西应该
+            //尾气检测结束，上线检测结束不通过的时候
+            if (VehicleConstant.PROCESS_GAS.equals(beforeNowLink) || VehicleConstant.PROCESS_ONLINE.equals(beforeNowLink)) {
+                String roleId = NowLinkUtils.getRoleIdByNowLink(beforeNowLink);
+                List<SysUser> userList = sysUserService.getUserListByRoleId(roleId);
+                //自己也要把页面上数据的状态改一下。暂时不去remove当前用户了
+                /*SysUser current = sysUserService.selectByPrimaryKey(currentUser.getId());
+                Iterator<SysUser> iterator = userList.iterator();
+                while (iterator.hasNext()) {
+                    SysUser user = iterator.next();
+                    if (user.getId().equals(current.getId())) {
+                        iterator.remove();
+                    }
+                }*/
+                flowMessagePushService.upflowByRecord(userList, capWorkOrderRecord, status, beforeNowLink, "up");
+                //给下一步的发消息
+                String nextRoleId = NowLinkUtils.getRoleIdByNowLink(capWorkOrderRecord.getNowLink());
+                List<SysUser> nextUserList = sysUserService.getUserListByRoleId(nextRoleId);
+                flowMessagePushService.addflowByRecord(nextUserList, capWorkOrderRecord, "add");
+            }
+            jsonUtil.setFlag(true);
+            jsonUtil.setMsg("修改成功");
+        } catch (Exception e) {
+            jsonUtil.setMsg("修改失败");
+            e.printStackTrace();
+        }
+        return jsonUtil;
+    }
+
+
 
 
     /**

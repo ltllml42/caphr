@@ -167,7 +167,7 @@ public class MqTestController {
      *     @Autowired
      *     private Queue flowQuere;
      */
-    @Scheduled(fixedRate = 2000)
+    /*@Scheduled(fixedRate = 2000)
     public void sendOrdinaryQueue() {
         //测试数据
         if(i>=list.size()-1){
@@ -196,7 +196,7 @@ public class MqTestController {
       //      log.debug("还未重新登录！");
       //  }
 
-    }
+    }*/
 
 
 

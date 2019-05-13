@@ -4,7 +4,9 @@ import com.capinfo.base.CurrentUser;
 import com.capinfo.entity.CapWorkOrderRecord;
 import com.capinfo.entity.CarCheckFlowMessage;
 import com.capinfo.entity.SysUser;
+import com.capinfo.vehicle.utilEntity.NowLinkUtils;
 import com.capinfo.vehicle.utilEntity.VehicleConstant;
+import com.capinfo.vehicle.utilEntity.VehicleProcessEnum;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jms.core.JmsTemplate;
 import org.springframework.stereotype.Service;
@@ -36,7 +38,7 @@ public class FlowMessagePushService {
      * @param meesage 发送内容
      */
     public void addflow(List<CurrentUser> toUser,Object meesage){
-        if(toUser!=null&&toUser.isEmpty()){
+        if(toUser!=null&&!toUser.isEmpty()){
             for (CurrentUser currentUser : toUser) {
                 CarCheckFlowMessage car3 = new CarCheckFlowMessage();
                 car3.setBuisId("3");//工单表ID
@@ -60,20 +62,26 @@ public class FlowMessagePushService {
      * @param userList
      * @param capWorkOrderRecord
      */
-    public void addflowByRecord(List<SysUser> userList, CapWorkOrderRecord capWorkOrderRecord) {
-        if(userList!=null&&userList.isEmpty()){
+    public void addflowByRecord(List<SysUser> userList, CapWorkOrderRecord capWorkOrderRecord, String action) {
+        if(userList!=null&&!userList.isEmpty()){
             for (SysUser sysUser : userList) {
                 CarCheckFlowMessage carMsg = new CarCheckFlowMessage();
                 carMsg.setBuisId(capWorkOrderRecord.getRecordId());
                 carMsg.setProcInstId(capWorkOrderRecord.getProcInstId());
-                carMsg.setAction("add");
-                carMsg.setNowStatus(VehicleConstant.PROCESS_GAS);
+                carMsg.setAction(action);//页面上对应的操作标识
+                //carMsg.setNowStatus(VehicleConstant.PROCESS_GAS);
+                carMsg.setNowStatus("未检测");
+                carMsg.setFlowStatus(NowLinkUtils.getNowLinkStr(capWorkOrderRecord.getNowLink()));
                 carMsg.setPlateNo(capWorkOrderRecord.getPlateNo());
-                carMsg.setDetectionState("首检");//还需要加字段判断一下
+                if (VehicleConstant.PROCESS_NOWSTATUS_NO.equals(capWorkOrderRecord.getNowStatus())) {
+                    carMsg.setDetectionState("复检");//还需要加字段判断一下
+                } else {
+                    carMsg.setDetectionState("首检");//还需要加字段判断一下
+                }
                 carMsg.setReCount("1");
                 carMsg.setToUser(sysUser.getId());
                 carMsg.setNewIcon("新");
-                carMsg.setStatusCss(CarCheckFlowMessage.FONT_CSS_GREEN);
+                carMsg.setStatusCss(CarCheckFlowMessage.FONT_CSS_YELLOW);
                 carMsg.setFlag("full");
                 jmsTemplate.convertAndSend(this.flowQuere,carMsg);
             }
@@ -90,7 +98,7 @@ public class FlowMessagePushService {
      * @param car
      */
     public void upflow(List<CurrentUser> toUser,CarCheckFlowMessage car){
-        if(toUser!=null&&toUser.isEmpty()){
+        if(toUser!=null&&!toUser.isEmpty()){
             for (CurrentUser currentUser : toUser) {
                 car.setProcInstId("");//流程ID
                 car.setAction("up");//不动
@@ -112,5 +120,52 @@ public class FlowMessagePushService {
                 jmsTemplate.convertAndSend(this.flowQuere,car);
             }
         }
-    };
+    }
+
+    public void upflowByRecord(List<SysUser> userList, CapWorkOrderRecord capWorkOrderRecord, String status, String beforeNowLink, String action) {
+        if(userList!=null&&!userList.isEmpty()){
+            for (SysUser sysUser : userList) {
+                CarCheckFlowMessage carMsg = new CarCheckFlowMessage();
+                carMsg.setProcInstId(capWorkOrderRecord.getProcInstId());
+                carMsg.setAction(action);
+                carMsg.setBuisId(capWorkOrderRecord.getRecordId());
+                carMsg.setPlateNo(capWorkOrderRecord.getPlateNo());
+                //carMsg.setNowStatus(NowLinkUtils.getNowLinkStr(beforeNowLink));
+                carMsg.setFlowStatus(NowLinkUtils.getNowLinkStr(beforeNowLink));
+                if (VehicleConstant.PROCESS_NOWSTATUS_NO.equals(capWorkOrderRecord.getNowStatus())) {
+                    carMsg.setDetectionState("复检");//还需要加字段判断一下
+                } else {
+                    carMsg.setDetectionState("首检");//还需要加字段判断一下
+                }
+                carMsg.setReCount("1");
+                carMsg.setNewIcon("");
+                carMsg.setToUser(sysUser.getId());
+                if ("pass".equals(status)) {
+                    carMsg.setFlag("empty");
+                    carMsg.setNowStatus("通过");
+                    carMsg.setStatusCss(CarCheckFlowMessage.FONT_CSS_GREEN);
+                } else if ("nopass".equals(status)) {
+                    carMsg.setFlag("empty");
+                    carMsg.setNowStatus("不通过");
+                    carMsg.setStatusCss(CarCheckFlowMessage.FONT_CSS_RED);
+                } else if ("nopasslight".equals(status)) {
+                    carMsg.setFlag("empty");
+                    carMsg.setNowStatus("不通过");
+                    carMsg.setStatusCss(CarCheckFlowMessage.FONT_CSS_RED);
+                }
+                jmsTemplate.convertAndSend(this.flowQuere,carMsg);
+            }
+        }
+
+
+    }
+
+
+
+
+
+
+
+
+
 }

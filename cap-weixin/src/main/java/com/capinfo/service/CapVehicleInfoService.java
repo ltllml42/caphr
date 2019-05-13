@@ -180,7 +180,12 @@ public class CapVehicleInfoService extends BaseServiceImpl<CapVehicleInfo, Strin
      */
     public void claim(String id) {
         CurrentUser currentUser = (CurrentUser) SecurityUtils.getSubject().getSession().getAttribute("curentUser");
-        String userId = StringUtils.isBlank(currentUser.getId())?VehicleConstant.USER_WORKER_ID:currentUser.getId();
+        String userId = "";
+        if (currentUser == null) {
+            userId = VehicleConstant.USER_WORKER_ID;
+        } else {
+            userId = currentUser.getId();
+        }
         CapWorkOrderRecord record = new CapWorkOrderRecord();
         record.setRecordId(id);
         CapWorkOrderRecord capWorkOrderRecord = capWorkOrderRecordService.selectListByCondition(record).get(0);

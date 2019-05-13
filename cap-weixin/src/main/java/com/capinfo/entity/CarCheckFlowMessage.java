@@ -9,6 +9,7 @@ public class CarCheckFlowMessage implements Serializable {
 
     public final static String FONT_CSS_RED = "colorRed";
     public final static String FONT_CSS_GREEN = "colorGreen";
+    public final static String FONT_CSS_YELLOW = "colorYellow";//未检测的时候用这个颜色样式暂时
 
     private String plateNo;//车牌号
     private String flowStatus;//流程状态

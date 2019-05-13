@@ -41,8 +41,9 @@ public class GiantCurtainController {
     @JmsListener(destination = ActiveMQConfig.MSG_FLOW_QUEUE)
     public void gccIndex(CarCheckFlowMessage message){
         //CurrentUser user = CommonUtil.getUser();
-        if(!StringUtils.isEmpty("acfc0e9232f54732a5d9ffe9071bf572")){//将消息发送到各种流程
-            simpleMessageService.sendTopicMessage("/topic/flow/"+"acfc0e9232f54732a5d9ffe9071bf572",JsonUtils.toJson(message));
+
+        if(!StringUtils.isEmpty(message.getToUser())){//将消息发送到各种流程
+            simpleMessageService.sendTopicMessage("/topic/flow/"+message.getToUser(),JsonUtils.toJson(message));
         }
     }
 

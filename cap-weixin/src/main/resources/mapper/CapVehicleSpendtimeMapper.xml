@@ -14,6 +14,7 @@
     <result column="status" property="status" jdbcType="VARCHAR" />
     <result column="spend_money" property="spendMoney" jdbcType="DOUBLE"/>
     <result column="isrepeat" property="isrepeat" jdbcType="VARCHAR"/>
+    <result column="now_status" property="nowStatus" jdbcType="VARCHAR"/>
     <result column="create_date" property="createDate" jdbcType="TIMESTAMP" />
     <result column="create_by" property="createBy" jdbcType="VARCHAR" />
     <result column="update_date" property="updateDate" jdbcType="TIMESTAMP" />
@@ -38,6 +39,9 @@
       </if>
       <if test="isrepeat!=null and isrepeat!=''">
         and isrepeat = #{isrepeat}
+      </if>
+      <if test="nowStatus!=null and nowStatus!=''">
+        and now_status = #{nowStatus}
       </if>
     </where>
     order by create_date desc

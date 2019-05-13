@@ -28,5 +28,8 @@ public interface SysUserMapper extends com.capinfo.base.BaseMapper<SysUser,Strin
     int rePass(SysUser user);
 
     List<SysUser> getUserByRoleId(Map map);
+
+    List<SysUser> getUserListByRoleId(Map map);
+
     int countUserByRoleId(Map map);
 }

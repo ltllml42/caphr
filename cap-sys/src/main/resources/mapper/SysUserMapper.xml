@@ -146,6 +146,12 @@
     limit #{page},#{limit}
   </select>
 
+  <!-- 不分页的，根据角色id找用户 -->
+  <select id="getUserListByRoleId" parameterType="java.util.Map" resultMap="BaseResultMap">
+    select sysuser.id,sysuser.real_name,sysuser.username from sys_user sysuser inner join sys_role_user roleuser on sysuser.id = roleuser.user_id and roleuser.role_id = #{roleId,jdbcType=VARCHAR}
+  </select>
+
+
   <select id="countUserByRoleId" parameterType="java.util.Map" resultType="java.lang.Integer">
     select count(1) from sys_user sysuser inner join sys_role_user roleuser on sysuser.id = roleuser.user_id and roleuser.role_id = #{roleId,jdbcType=VARCHAR}
   </select>

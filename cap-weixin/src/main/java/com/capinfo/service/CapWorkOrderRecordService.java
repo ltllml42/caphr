@@ -109,9 +109,10 @@ public class CapWorkOrderRecordService extends BaseServiceImpl<CapWorkOrderRecor
         String processId = capWorkOrderRecord.getProcInstId();
         Task task = taskService.createTaskQuery().processInstanceId(processId).singleResult();
         //自动签收一下    暂时这样
-        if (VehicleConstant.PROCESS_APPEAR.equals(capWorkOrderRecord.getNowLink())) {
+        /*if (!VehicleConstant.PROCESS_APPEAR.equals(capWorkOrderRecord.getNowLink())) {
             capVehicleInfoService.claim(capWorkOrderRecord.getRecordId());
-        }
+        }*/
+        capVehicleInfoService.claim(capWorkOrderRecord.getRecordId());
         taskService.addComment(task.getId(), processId, task.getName()+",花费："+flow.getStepMoney()+"元,检测时间："+nowTime+",检测人员账号："+userName);
         //这里把那张新表里的值也改一下    complete了就没有task了，taskName不好找，complete之前保存一下这张表好了
         saveSpendtime(capWorkOrderRecord.getRecordId(), task.getName(), flow);
@@ -120,11 +121,6 @@ public class CapWorkOrderRecordService extends BaseServiceImpl<CapWorkOrderRecor
         capWorkOrderRecord.setNowStatus(flow.getNowStatus());
         addValue(capWorkOrderRecord, false);
         this.updateByPrimaryKey(capWorkOrderRecord);
-
-        //在这加推送消息队列的东西应该
-        //尾气检测结束，上线检测结束不通过的时候
-
-
     }
 
     /**
@@ -175,6 +171,11 @@ public class CapWorkOrderRecordService extends BaseServiceImpl<CapWorkOrderRecor
         spend.setStatus(VehicleConstant.PROCESS_SPENDTIME_END);
         spend.setEndTime(new Date());
         spend.setSpendMoney(flow.getStepMoney());
+        if (VehicleConstant.PROCESS_NOWSTATUS_NO.equals(flow.getNowStatus())) {
+            spend.setNowStatus("2");
+        } else {
+            spend.setNowStatus("1");
+        }
         //还得判断一下是不是复检的情况。还是去查这张表就可以了。如果查出来多于1条那么就是复检的情况
         boolean flag = isRepeat(id, taskName);
         if (flag) {

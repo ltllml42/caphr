@@ -45,7 +45,12 @@ public class CapVehicleSpendtimeService extends BaseServiceImpl<CapVehicleSpendt
 
     public void save(CapVehicleSpendtime capVehicleSpendtime) {
         CurrentUser currentUser = (CurrentUser) SecurityUtils.getSubject().getSession().getAttribute("curentUser");
-        String userId = StringUtils.isBlank(currentUser.getId())?VehicleConstant.USER_WORKER_ID:currentUser.getId();
+        String userId = "";
+        if (currentUser == null) {
+            userId = VehicleConstant.USER_WORKER_ID;
+        } else {
+            userId = currentUser.getId();
+        }
         String id = capVehicleSpendtime.getId();
         if (StringUtils.isBlank(id)) {
             capVehicleSpendtime.setId(UUID.randomUUID().toString().replaceAll("-", ""));

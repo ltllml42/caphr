@@ -36,5 +36,7 @@ public class CapVehicleSpendtime extends BaseEntity {
     private double spendMoney;
     @Column(name = "isrepeat")
     private String isrepeat;
+    @Column(name = "now_status")
+    private String nowStatus;//加个字段记一下当前这一步最后的状态。1通过2不通过
 
 }

@@ -195,6 +195,13 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUser,String> implemen
   }
 
   @Override
+  public List<SysUser> getUserListByRoleId(String roleId) {
+    Map map = new HashMap<>();
+    map.put("roleId", roleId);
+    return sysUserMapper.getUserListByRoleId(map);
+  }
+
+  @Override
   public int countUserByRoleId(String roleId,int page,int limit)
   {
     Map map = new HashMap<>();
