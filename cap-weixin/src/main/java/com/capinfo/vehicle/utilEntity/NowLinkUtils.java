@@ -24,7 +24,11 @@ public class NowLinkUtils {
         return str;
     }
 
-
+    /**
+     * 根据传入的nowlink车检步骤，得到对应的能查看这一步数据的角色id
+     * @param nowLink
+     * @return
+     */
     public static String getRoleIdByNowLink(String nowLink) {
         String roleId = "";
         if (VehicleConstant.PROCESS_APPEAR.equals(nowLink)) {
@@ -37,6 +41,30 @@ public class NowLinkUtils {
             roleId = VehicleConstant.PORCESS_LIGHT;
         }
         return roleId;
+    }
+
+    /**
+     * 根据传入的角色id判断对应的应该显示哪一步的数据
+     * @param roleId
+     * @return
+     */
+    public static String getNowLinkByRoleId(String roleId) {
+        String nowLink = "";
+        switch (roleId) {
+            case VehicleConstant.ROLEID_APPEAR:
+                nowLink = VehicleConstant.PROCESS_APPEAR;
+                break;
+            case VehicleConstant.ROLEID_GAS:
+                nowLink = VehicleConstant.PROCESS_GAS;
+                break;
+            case VehicleConstant.ROLEID_ONLINE:
+                nowLink = VehicleConstant.PROCESS_ONLINE;
+                break;
+            case VehicleConstant.ROLEID_LIGHT:
+                nowLink = VehicleConstant.PORCESS_LIGHT;
+                break;
+        }
+        return nowLink;
     }
 
 

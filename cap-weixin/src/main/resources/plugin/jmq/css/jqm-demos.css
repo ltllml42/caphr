@@ -706,6 +706,9 @@
 .colorGreen {
 	color: #1DC116 !important;
 }
+.colorYellow {
+	color: yellow !important;
+}
 
 .charList{
 	font-size: 19px;

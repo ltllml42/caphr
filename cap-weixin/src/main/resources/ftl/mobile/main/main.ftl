@@ -23,9 +23,9 @@
             <@shiro.hasPermission name="car:light">车灯复检消息列表</@shiro.hasPermission>
         </h2>
         <form class="ui-filterable">
-            <input id="myFilter" data-type="search">
+            <input id="myFilter" data-type="search" placeholder="根据名称搜索.."/>
         </form>
-        <ol id="dataEx" class="charList" data-role="listview" data-filter="true" data-input="#myFilter" placeholder="根据名称搜索.." data-inset="true">
+        <ol id="dataEx" class="charList" data-role="listview" data-filter="true" data-input="#myFilter"  data-inset="true">
 
         </ol>
     </div>
@@ -51,7 +51,7 @@
     var countNotOk = 0;
     var countLight = 0;
 
-    function subUp(v, buisId) {
+    function subUp(v, buisId, flowStatus) {
         countOk++;
         if (countOk == 1) {
             $(v).text("再点击一次");
@@ -62,13 +62,19 @@
             reOk();
             reNotOk();
             //提交表单
+            var url = "";
+            if (flowStatus != "缴费核算") {
+                url = "/vehicle/completeVehicleMobile";
+            } else {
+                url = "/vehicle/endVehicle";
+            }
             var data = {};
             data.id=buisId;
             data.status="pass";
             var jsonStr = JSON.stringify(data);
             if (jsonStr != null || jsonStr != [{}]) {
                 $.ajax({
-                    url: '/vehicle/completeVehicleMobile',
+                    url: url,
                     dataType: "json",
                     data: jsonStr,
                     type : 'post',
@@ -88,7 +94,7 @@
         }
     }
 
-    function subNotOk(v, buisId) {
+    function subNotOk(v, buisId, flowStatus) {
         countNotOk++;
         if (countNotOk == 1) {
             $(v).text("再点一次确认");
@@ -97,13 +103,19 @@
             $(v).text("不通过");
             reOk();
             reNotOk();
+            var url = "";
+            if (flowStatus != "缴费核算") {
+                url = "/vehicle/completeVehicleMobile";
+            } else {
+                url = "/vehicle/endVehicle";
+            }
             var data = {};
             data.id=buisId;
             data.status="nopass";
             var jsonStr = JSON.stringify(data);
             if (jsonStr != null || jsonStr != [{}]) {
                 $.ajax({
-                    url: '/vehicle/completeVehicleMobile',
+                    url: url,
                     dataType: "json",
                     data: jsonStr,
                     type : 'post',
@@ -172,6 +184,51 @@
         reOk();
         reNotOk();
     }
+
+    //加载这个用户角色对应下所有的数据
+    function loadData() {
+
+        $.ajax({
+            url: '/vehicle/loadData',
+            dataType: "json",
+            type : 'post',
+            contentType: "application/json", //必须有
+            success: function (data) {
+                if(data.flag){
+                    //循环拿到的数组
+                    var arr = data.data;
+                    //console.log(arr);
+                    $("#dataEx").empty();
+                    for(var i = 0; i < arr.length; i++) {
+                        /*var str = "<li id='channel_"+arr[i].buisId+"' flag='empty' >"
+                        +"<a href='javascript:void(0);' onclick='showPanel('"+arr[i].procInstId+"','"+arr[i].plateNo+"','"+arr[i].detectionState+"','"+arr[i].buisId+"')' data-swipe-close='false' data-dismissible='false'>"
+                        +"<span class='ui-listview-inset'>"+arr[i].plateNo+"</span>"
+                        +"<span class='ui-listview-inset' style='margin-left: 50px;'>"+arr[i].detectionState+"</span>"
+                        +"<span class='ui-listview-inset "+arr[i].statusCss+"' style='margin-left: 50px;'>"+arr[i].nowStatus+"</span>"
+                        +"<span class='ui-listview-inset' style='margin-left: 50px;'>"+arr[i].flowStatus+"</span>"
+                        +"<span class='ui-li-count'>"+arr[i].newIcon+"</span>"
+                        +"</a>"
+                        +"</li>";
+                        $("#dataEx").append(str);*/
+                        var gettpl = document.getElementById('channel').innerHTML;
+                        laytpl(gettpl).render(arr[i], function (html) {
+                            $("#dataEx").append(html);
+                            $("#channel_"+arr[i].buisId).slideDown();
+                            $("#channel_"+arr[i].buisId).attr("flag",arr[i].flag);
+                        });
+                    }
+                    $('#dataEx').listview('refresh');
+                } else {
+                    //window.location.href="/wx/message/fail";
+                }
+                $("#adelePage").panel("close");
+            }
+        });
+
+    }
+
+
+
 </script>
 
 
@@ -181,7 +238,7 @@
 
 <script id="channel" type="text/html">
     <li id="channel_{{d.buisId}}" flag="empty" >
-        <a href="javascript:void(0);" onclick="showPanel('{{d.procInstId}}','{{d.plateNo}}','{{d.detectionState}}','{{d.buisId}}')" data-swipe-close="false" data-dismissible="false">
+        <a href="javascript:void(0);" onclick="showPanel('{{d.procInstId}}','{{d.plateNo}}','{{d.detectionState}}','{{d.buisId}}','{{d.flowStatus}}')" data-swipe-close="false" data-dismissible="false">
             <span class="ui-listview-inset">{{d.plateNo}}</span>
             <span class="ui-listview-inset" style="margin-left: 50px;">{{d.detectionState}}</span>
             <span class="ui-listview-inset {{d.statusCss}} " style="margin-left: 50px;">{{d.nowStatus}}</span>
@@ -192,7 +249,7 @@
 </script>
 
 <script id="updateChannel" type="text/html">
-        <a href="javascript:void(0);" onclick="showPanel('{{d.procInstId}}','{{d.plateNo}}','{{d.detectionState}}','{{d.buisId}}')" data-swipe-close="false" data-dismissible="false">
+        <a href="javascript:void(0);" onclick="showPanel('{{d.procInstId}}','{{d.plateNo}}','{{d.detectionState}}','{{d.buisId}}','{{d.flowStatus}}')" data-swipe-close="false" data-dismissible="false">
             <span class="ui-listview-inset">{{d.plateNo}}</span>
             <span class="ui-listview-inset" style="margin-left: 50px;">{{d.detectionState}}</span>
             <span class="ui-listview-inset {{d.statusCss}} " style="margin-left: 50px;">{{d.nowStatus}}</span>
@@ -207,14 +264,17 @@
         <h2>检测完成确认!</h2>
         <p>车牌号：</p>
         <p>{{d.plateNo}}
+        <p>{{d.flowStatus}}</p>
         <br>{{d.detectionState}}
         </p>
         <p>双击确认！！</p>
         <div  data-role="controlgroup" data-type="vertical">
-            <a href="#" data-role="button" id="ok" onclick="subUp(this,'{{d.buisId}}')"
+            <a href="#" data-role="button" id="ok" onclick="subUp(this,'{{d.buisId}}','{{d.flowStatus}}')"
                class="ui-btn ui-mini ui-shadow  ui-icon-check ui-btn-icon-left">通过</a>
-            <a href="#" data-role="button" id="notOk" onclick="subNotOk(this,'{{d.buisId}}')"
+            {{#if(d.flowStatus != '缴费核算'){ }}
+            <a href="#" data-role="button" id="notOk" onclick="subNotOk(this,'{{d.buisId}}','{{d.flowStatus}}')"
                class="ui-btn ui-mini ui-shadow  ui-icon-delete ui-btn-icon-left">不通过</a>
+            {{# } }}
             {{#if(d.flowStatus == '上线检测'){ }}
             <a href="#" data-role="button" id="onlylight" onclick="checkLight(this,'{{d.busiId}}')"
                class="ui-btn ui-mini ui-shadow  ui-icon-delete ui-btn-icon-left">只复检车灯</a>
@@ -228,6 +288,14 @@
 </div>
 
 <script type="text/javascript">
+
+    $(document).ready(function() {
+        loadData();
+
+        $("#myFilter").click(function () {
+            loadData();
+        });
+    })
 
     var stompClient = null;
     $(function () {
@@ -359,8 +427,8 @@
         sorce.parentNode.load();
     }
     //showPanel('{{d.procInstId}}','{{d.plateNo}}','{{d.detectionState}}')
-    function showPanel(procInstId,plateNo,detectionState,buisId){
-        var data = {procInstId:procInstId,plateNo:plateNo,detectionState:detectionState,buisId:buisId};
+    function showPanel(procInstId,plateNo,detectionState,buisId,flowStatus){
+        var data = {procInstId:procInstId,plateNo:plateNo,detectionState:detectionState,buisId:buisId,flowStatus:flowStatus};
         var gettpl2 = document.getElementById('message').innerHTML;
         laytpl(gettpl2).render(data, function (html) {
             $("#adelePage").html(html);

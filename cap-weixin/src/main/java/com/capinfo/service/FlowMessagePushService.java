@@ -66,7 +66,7 @@ public class FlowMessagePushService {
         if(userList!=null&&!userList.isEmpty()){
             for (SysUser sysUser : userList) {
                 CarCheckFlowMessage carMsg = new CarCheckFlowMessage();
-                carMsg.setBuisId(capWorkOrderRecord.getRecordId());
+                carMsg.setBuisId(capWorkOrderRecord.getId());
                 carMsg.setProcInstId(capWorkOrderRecord.getProcInstId());
                 carMsg.setAction(action);//页面上对应的操作标识
                 //carMsg.setNowStatus(VehicleConstant.PROCESS_GAS);
@@ -128,7 +128,7 @@ public class FlowMessagePushService {
                 CarCheckFlowMessage carMsg = new CarCheckFlowMessage();
                 carMsg.setProcInstId(capWorkOrderRecord.getProcInstId());
                 carMsg.setAction(action);
-                carMsg.setBuisId(capWorkOrderRecord.getRecordId());
+                carMsg.setBuisId(capWorkOrderRecord.getId());
                 carMsg.setPlateNo(capWorkOrderRecord.getPlateNo());
                 //carMsg.setNowStatus(NowLinkUtils.getNowLinkStr(beforeNowLink));
                 carMsg.setFlowStatus(NowLinkUtils.getNowLinkStr(beforeNowLink));
@@ -159,13 +159,5 @@ public class FlowMessagePushService {
 
 
     }
-
-
-
-
-
-
-
-
 
 }

@@ -3,16 +3,15 @@ package com.capinfo.service;
 import com.capinfo.base.BaseMapper;
 import com.capinfo.base.CurrentUser;
 import com.capinfo.base.impl.BaseServiceImpl;
-import com.capinfo.entity.CapVehicleInfo;
-import com.capinfo.entity.CapVehicleSpendtime;
-import com.capinfo.entity.CapWorkOrderRecord;
-import com.capinfo.entity.CapWxAccountFans;
+import com.capinfo.entity.*;
 import com.capinfo.exception.MyException;
 import com.capinfo.mapper.CapVehicleInfoMapper;
 import com.capinfo.mapper.CapWxAccountFansMapper;
 import com.capinfo.util.ReType;
+import com.capinfo.vehicle.utilEntity.NowLinkUtils;
 import com.capinfo.vehicle.utilEntity.VehicleConstant;
 import com.capinfo.vehicle.utilEntity.VehicleFlowEntity;
+import com.capinfo.vehicle.utilEntity.VehicleProcessEnum;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import org.activiti.engine.RuntimeService;
@@ -37,7 +36,8 @@ public class CapVehicleInfoService extends BaseServiceImpl<CapVehicleInfo, Strin
     private CapVehicleSpendtimeService capVehicleSpendtimeService;
     @Autowired
     private TaskService taskService;
-
+    @Autowired
+    private RuntimeService runtimeService;
 
 
     @Override
@@ -186,9 +186,7 @@ public class CapVehicleInfoService extends BaseServiceImpl<CapVehicleInfo, Strin
         } else {
             userId = currentUser.getId();
         }
-        CapWorkOrderRecord record = new CapWorkOrderRecord();
-        record.setRecordId(id);
-        CapWorkOrderRecord capWorkOrderRecord = capWorkOrderRecordService.selectListByCondition(record).get(0);
+        CapWorkOrderRecord capWorkOrderRecord = capWorkOrderRecordService.selectByPrimaryKey(id);
         if (StringUtils.isBlank(capWorkOrderRecord.getNowStatus()) || "2".equals(capWorkOrderRecord.getNowStatus())) {
             //为空或者为2不通过的时候，证明没签收过。已经是1的时候说明点进来了关掉又点进来了
             capWorkOrderRecord.setNowStatus(VehicleConstant.PROCESS_NOWSTATUS_CHECKING);
@@ -209,6 +207,45 @@ public class CapVehicleInfoService extends BaseServiceImpl<CapVehicleInfo, Strin
     }
 
 
+
+    public void createVehicleInfo(String license) {
+        CapVehicleInfo vehicleInfo = new CapVehicleInfo();
+        vehicleInfo.setPlateNo(license);
+        List<CapVehicleInfo> list = this.selectListByCondition(vehicleInfo);
+        if (list!=null&&!list.isEmpty()) {
+            CapVehicleInfo vehicle = list.get(0);
+            CapWorkOrderRecord record = new CapWorkOrderRecord();
+            record.setRecordId(vehicle.getId());
+            List<CapWorkOrderRecord> recordList = capWorkOrderRecordService.selectListByCondition(record);
+            record = recordList.get(0);
+            ProcessInstance instance = runtimeService.createProcessInstanceQuery()
+                    .processInstanceId(record.getProcInstId()).singleResult();
+            if (instance == null) {
+                CapWorkOrderRecord capWorkOrderRecord = capWorkOrderRecordService.saveRecordByVehicleInfo(vehicle);
+                //加一条spendtime这张表的数据
+                CapVehicleSpendtime spendtime = new CapVehicleSpendtime();
+                spendtime.setNowStatus(VehicleConstant.PROCESS_SPENDTIME_CHECKING);
+                spendtime.setCapWorkRecordId(capWorkOrderRecord.getId());
+                spendtime.setStartTime(new Date());
+                spendtime.setTaskName(VehicleProcessEnum.PROCESS_ENTER.getTypeName());
+                capVehicleSpendtimeService.save(spendtime);
+            }
+        } else {
+            CapVehicleInfo capVehicleInfo = new CapVehicleInfo();
+            capVehicleInfo.setPlateNo(license);
+            capVehicleInfo = this.save(capVehicleInfo);
+            //在这要再加一条record表的数据
+            CapWorkOrderRecord capWorkOrderRecord = capWorkOrderRecordService.saveRecordByVehicleInfo(capVehicleInfo);
+            //加一条spendtime这张表的数据
+            CapVehicleSpendtime spendtime = new CapVehicleSpendtime();
+            spendtime.setStatus(VehicleConstant.PROCESS_SPENDTIME_END);
+            spendtime.setNowStatus(VehicleConstant.PROCESS_SPENDTIME_CHECKING);
+            spendtime.setCapWorkRecordId(capWorkOrderRecord.getId());
+            spendtime.setStartTime(new Date());
+            spendtime.setTaskName(VehicleProcessEnum.PROCESS_ENTER.getTypeName());
+            capVehicleSpendtimeService.save(spendtime);
+        }
+    }
 
 
 

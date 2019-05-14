@@ -5,7 +5,11 @@ import com.capinfo.base.impl.BaseServiceImpl;
 import com.capinfo.entity.SysRole;
 import com.capinfo.mapper.SysRoleMapper;
 import com.capinfo.service.RoleService;
+
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -59,5 +63,12 @@ public class RoleServiceImpl extends BaseServiceImpl<SysRole,String> implements 
   @Override
   public List<SysRole> selectListByPage(SysRole sysRole) {
     return roleMapper.selectListByPage(sysRole);
+  }
+
+  @Override
+  public List<SysRole> getUserListByRoleId(String userId) {
+    Map map = new HashMap<>();
+    map.put("userId", userId);
+    return roleMapper.selectRoleListByUser(map);
   }
 }

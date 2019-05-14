@@ -179,7 +179,7 @@ public class WeiXinUserController {
         model.addAttribute("workList",workList);
         return "/weixin/hisTestMsg";
     }
-    @GetMapping("/{id}/hisTestMsg")
+    /*@GetMapping("/{id}/hisTestMsg")
     public String showHis(@PathVariable String appid, @PathVariable String id, Model model) {
         CapWorkOrderRecord cwor = capWorkOrderRecordService.selectOne(CapWorkOrderRecord.builder().id(id).build());
         //历史消息
@@ -189,7 +189,7 @@ public class WeiXinUserController {
 
         model.addAttribute("cwor",cwor);
         return "/weixin/hisTestMsg";
-    }
+    }*/
 
 
 

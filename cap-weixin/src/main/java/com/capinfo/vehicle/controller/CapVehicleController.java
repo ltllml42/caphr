@@ -1,20 +1,12 @@
 package com.capinfo.vehicle.controller;
 
 import com.capinfo.base.CurrentUser;
-import com.capinfo.entity.CapVehicleInfo;
-import com.capinfo.entity.CapWorkOrderRecord;
-import com.capinfo.entity.SysUser;
+import com.capinfo.entity.*;
 import com.capinfo.exception.MyException;
-import com.capinfo.service.CapVehicleInfoService;
-import com.capinfo.service.CapWorkOrderRecordService;
-import com.capinfo.service.FlowMessagePushService;
-import com.capinfo.service.SysUserService;
+import com.capinfo.service.*;
 import com.capinfo.util.JsonUtil;
 import com.capinfo.util.ReType;
-import com.capinfo.vehicle.utilEntity.NowLinkUtils;
-import com.capinfo.vehicle.utilEntity.ResultBean;
-import com.capinfo.vehicle.utilEntity.VehicleConstant;
-import com.capinfo.vehicle.utilEntity.VehicleFlowEntity;
+import com.capinfo.vehicle.utilEntity.*;
 import io.swagger.annotations.ApiOperation;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.SecurityUtils;
@@ -41,6 +33,10 @@ public class CapVehicleController {
     private FlowMessagePushService flowMessagePushService;
     @Autowired
     private SysUserService sysUserService;
+    @Autowired
+    private CapVehicleSpendtimeService capVehicleSpendtimeService;
+    @Autowired
+    private RoleService roleService;
 
 
 
@@ -177,7 +173,15 @@ public class CapVehicleController {
         try {
             capVehicleInfo = capVehicleInfoService.save(capVehicleInfo);
             //在这要再加一条record表的数据
-            capWorkOrderRecordService.saveRecordByVehicleInfo(capVehicleInfo);
+            CapWorkOrderRecord capWorkOrderRecord = capWorkOrderRecordService.saveRecordByVehicleInfo(capVehicleInfo);
+            //加一条spendtime这张表的数据
+            CapVehicleSpendtime spendtime = new CapVehicleSpendtime();
+            spendtime.setStatus(VehicleConstant.PROCESS_SPENDTIME_END);
+            spendtime.setNowStatus(VehicleConstant.PROCESS_SPENDTIME_CHECKING);
+            spendtime.setCapWorkRecordId(capWorkOrderRecord.getId());
+            spendtime.setStartTime(new Date());
+            spendtime.setTaskName(VehicleProcessEnum.PROCESS_ENTER.getTypeName());
+            capVehicleSpendtimeService.save(spendtime);
             j.setMsg("保存成功");
         } catch (MyException e) {
             j.setMsg("保存失败");
@@ -337,38 +341,33 @@ public class CapVehicleController {
             return jsonUtil;
         }
         try {
-            CapWorkOrderRecord record = new CapWorkOrderRecord();
-            record.setRecordId(bean.getId());
-            CapWorkOrderRecord capWorkOrderRecord = capWorkOrderRecordService.selectListByCondition(record).get(0);
+            CapWorkOrderRecord capWorkOrderRecord = capWorkOrderRecordService.selectByPrimaryKey(bean.getId());
             String beforeNowLink = capWorkOrderRecord.getNowLink();
-            /*if (VehicleConstant.PROCESS_ONLINE.equals(beforeNowLink)) {
-                String onlylight = request.getParameter("onlylight");
-                if ("yes".equals(onlylight)) {
-                    status = "nopasslight";
-                }
-            }*/
             VehicleFlowEntity flow = capVehicleInfoService.getMatchMap(status, capWorkOrderRecord);
             capWorkOrderRecordService.completeFlow(capWorkOrderRecord, flow);
-
             //在这加推送消息队列的东西应该
             //尾气检测结束，上线检测结束不通过的时候
             if (VehicleConstant.PROCESS_GAS.equals(beforeNowLink) || VehicleConstant.PROCESS_ONLINE.equals(beforeNowLink)) {
                 String roleId = NowLinkUtils.getRoleIdByNowLink(beforeNowLink);
                 List<SysUser> userList = sysUserService.getUserListByRoleId(roleId);
                 //自己也要把页面上数据的状态改一下。暂时不去remove当前用户了
-                /*SysUser current = sysUserService.selectByPrimaryKey(currentUser.getId());
-                Iterator<SysUser> iterator = userList.iterator();
-                while (iterator.hasNext()) {
-                    SysUser user = iterator.next();
-                    if (user.getId().equals(current.getId())) {
-                        iterator.remove();
-                    }
-                }*/
+
                 flowMessagePushService.upflowByRecord(userList, capWorkOrderRecord, status, beforeNowLink, "up");
-                //给下一步的发消息
-                String nextRoleId = NowLinkUtils.getRoleIdByNowLink(capWorkOrderRecord.getNowLink());
-                List<SysUser> nextUserList = sysUserService.getUserListByRoleId(nextRoleId);
-                flowMessagePushService.addflowByRecord(nextUserList, capWorkOrderRecord, "add");
+                //给下一步的发消息  如果下一步是在尾气检测、上线检测、灯光复检的时候
+                if (VehicleConstant.PROCESS_GAS.equals(capWorkOrderRecord.getNowLink()) || VehicleConstant.PROCESS_ONLINE.equals(capWorkOrderRecord.getNowLink()) || VehicleConstant.PORCESS_LIGHT.equals(capWorkOrderRecord.getNowLink())) {
+                    //给下一步的用户发消息的时候要排除当前用户。这一步不通过的时候下一步可能还是这一步，会冲掉
+                    String nextRoleId = NowLinkUtils.getRoleIdByNowLink(capWorkOrderRecord.getNowLink());
+                    List<SysUser> nextUserList = sysUserService.getUserListByRoleId(nextRoleId);
+                    SysUser current = sysUserService.selectByPrimaryKey(currentUser.getId());
+                    Iterator<SysUser> iterator = nextUserList.iterator();
+                    while (iterator.hasNext()) {
+                        SysUser user = iterator.next();
+                        if (user.getId().equals(current.getId())) {
+                            iterator.remove();
+                        }
+                    }
+                    flowMessagePushService.addflowByRecord(nextUserList, capWorkOrderRecord, "add");
+                }
             }
             jsonUtil.setFlag(true);
             jsonUtil.setMsg("修改成功");
@@ -378,6 +377,37 @@ public class CapVehicleController {
         }
         return jsonUtil;
     }
+
+
+    /**
+     * pad端刷新加载数据时候用这个玩意。消息推送后刷新或者退出再回来页面需要用这个刷新
+     * @param request
+     * @return
+     */
+    @ApiOperation(value = "/loadData", httpMethod = "POST", notes = "加载数据")
+    @PostMapping(value = "loadData")
+    @ResponseBody
+    public ResultData loadData(HttpServletRequest request) {
+        CurrentUser currentUser = (CurrentUser) SecurityUtils.getSubject().getSession().getAttribute("curentUser");
+        ResultData result = new ResultData();
+        result.setFlag(false);
+        try {
+            List<SysRole> roleList = roleService.getUserListByRoleId(currentUser.getId());
+            List<CapWorkOrderRecord> list = new ArrayList<CapWorkOrderRecord>();
+            for (SysRole sysRole : roleList) {
+                capWorkOrderRecordService.selectListByRoleId(sysRole.getId(), list);
+            }
+            List<CarCheckFlowMessage> carMsgList = capWorkOrderRecordService.putDataToEntity(list);
+            result.setFlag(true);
+            result.setMsg("加载成功");
+            result.setData(carMsgList);
+        } catch (Exception e) {
+            result.setMsg("加载失败");
+            e.printStackTrace();
+        }
+        return result;
+    }
+
 
 
 

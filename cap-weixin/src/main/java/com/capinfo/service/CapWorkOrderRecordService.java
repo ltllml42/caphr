@@ -6,9 +6,12 @@ import com.capinfo.base.impl.BaseServiceImpl;
 import com.capinfo.entity.CapVehicleInfo;
 import com.capinfo.entity.CapVehicleSpendtime;
 import com.capinfo.entity.CapWorkOrderRecord;
+import com.capinfo.entity.CarCheckFlowMessage;
 import com.capinfo.mapper.CapWorkOrderRecordMapper;
+import com.capinfo.vehicle.utilEntity.NowLinkUtils;
 import com.capinfo.vehicle.utilEntity.VehicleConstant;
 import com.capinfo.vehicle.utilEntity.VehicleFlowEntity;
+import com.capinfo.vehicle.utilEntity.VehicleProcessEnum;
 import org.activiti.engine.RuntimeService;
 import org.activiti.engine.TaskService;
 import org.activiti.engine.runtime.ProcessInstance;
@@ -19,10 +22,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 /**
  * 用于处理工单的逻辑功能
@@ -50,18 +50,17 @@ public class CapWorkOrderRecordService extends BaseServiceImpl<CapWorkOrderRecor
     }
 
 
-    public void saveRecordByVehicleInfo(CapVehicleInfo capVehicleInfo) {
+    public CapWorkOrderRecord saveRecordByVehicleInfo(CapVehicleInfo capVehicleInfo) {
         CapWorkOrderRecord capWorkOrderRecord = new CapWorkOrderRecord();
         capWorkOrderRecord.setId(UUID.randomUUID().toString().replaceAll("-", ""));
         capWorkOrderRecord.setPlateNo(capVehicleInfo.getPlateNo());
         capWorkOrderRecord.setRecordId(capVehicleInfo.getId());
         capWorkOrderRecord.setDelFlag("0");
-        capWorkOrderRecord.setCreateBy(capVehicleInfo.getCreateBy());
-        capWorkOrderRecord.setCreateDate(new Date());
         capWorkOrderRecord.setUpdateBy(capVehicleInfo.getUpdateBy());
         capWorkOrderRecord.setUpdateDate(new Date());
         capWorkOrderRecord.setNowLink(VehicleConstant.PROCESS_ENTER);
         this.insertSelective(capWorkOrderRecord);
+        return capWorkOrderRecord;
     }
 
 
@@ -82,7 +81,6 @@ public class CapWorkOrderRecordService extends BaseServiceImpl<CapWorkOrderRecor
         ProcessInstance processInstance = runtimeService.startProcessInstanceByKey(VehicleConstant.FLOW_NAME);
         capWorkOrderRecord.setProcInstId(processInstance.getId());
         capWorkOrderRecord.setStartTime(new Date());
-        addValue(capWorkOrderRecord, false);
         this.updateByPrimaryKey(capWorkOrderRecord);
     }
 
@@ -112,14 +110,13 @@ public class CapWorkOrderRecordService extends BaseServiceImpl<CapWorkOrderRecor
         /*if (!VehicleConstant.PROCESS_APPEAR.equals(capWorkOrderRecord.getNowLink())) {
             capVehicleInfoService.claim(capWorkOrderRecord.getRecordId());
         }*/
-        capVehicleInfoService.claim(capWorkOrderRecord.getRecordId());
+        capVehicleInfoService.claim(capWorkOrderRecord.getId());
         taskService.addComment(task.getId(), processId, task.getName()+",花费："+flow.getStepMoney()+"元,检测时间："+nowTime+",检测人员账号："+userName);
         //这里把那张新表里的值也改一下    complete了就没有task了，taskName不好找，complete之前保存一下这张表好了
         saveSpendtime(capWorkOrderRecord.getId(), task.getName(), flow);
         taskService.complete(task.getId(), map);
         capWorkOrderRecord.setNowLink(flow.getNowLink());
         capWorkOrderRecord.setNowStatus(flow.getNowStatus());
-        addValue(capWorkOrderRecord, false);
         this.updateByPrimaryKey(capWorkOrderRecord);
     }
 
@@ -149,10 +146,18 @@ public class CapWorkOrderRecordService extends BaseServiceImpl<CapWorkOrderRecor
             taskService.complete(task.getId());
             capWorkOrderRecord.setNowLink(VehicleConstant.PROCESS_END);
             capWorkOrderRecord.setEndTime(new Date());
+            //这里应该也需要记一条spendtime那张表的数据
+            CapVehicleSpendtime spendtime = new CapVehicleSpendtime();
+            spendtime.setStatus(VehicleConstant.PROCESS_SPENDTIME_END);
+            spendtime.setNowStatus(VehicleConstant.PROCESS_SPENDTIME_CHECKING);
+            spendtime.setCapWorkRecordId(capWorkOrderRecord.getId());
+            spendtime.setStartTime(new Date());
+            spendtime.setTaskName(VehicleProcessEnum.PROCESS_END.getTypeName());
+            capVehicleSpendtimeService.save(spendtime);
+
         } else {
 
         }
-        addValue(capWorkOrderRecord, false);
         this.updateByPrimaryKey(capWorkOrderRecord);
     }
 
@@ -220,6 +225,64 @@ public class CapWorkOrderRecordService extends BaseServiceImpl<CapWorkOrderRecor
         int second = (int)(endtime.getTime()-starttime.getTime())/1000;
         spend.setDuration(second);
     }
+
+
+
+    /**
+     * 根据对应的角色，查出来对应的所在流程的数据。放到参数中的list里
+     * @param roleId
+     * @param recordList
+     */
+    public void selectListByRoleId(String roleId, List<CapWorkOrderRecord> recordList) {
+        String nowLink = NowLinkUtils.getNowLinkByRoleId(roleId);
+        CapWorkOrderRecord record = new CapWorkOrderRecord();
+        record.setNowLink(nowLink);
+        List<CapWorkOrderRecord> list = capWorkOrderRecordMapper.selectListByCondition(record);
+        for (CapWorkOrderRecord capWorkOrderRecord : list) {
+            String id = capWorkOrderRecord.getId();
+            boolean flag = true;
+            for (CapWorkOrderRecord workOrderRecord : recordList) {
+                if (workOrderRecord.getId().equals(id)) {
+                    flag = false;
+                    break;
+                }
+            }
+            if (flag) {
+                recordList.add(capWorkOrderRecord);
+            }
+        }
+    }
+
+    /**
+     * 把机动车的list根据数据判断一下具体值，放到pad页面上用到的对象里
+     * @param recordList
+     * @return
+     */
+    public List<CarCheckFlowMessage> putDataToEntity(List<CapWorkOrderRecord> recordList) {
+        List<CarCheckFlowMessage> list = new ArrayList<CarCheckFlowMessage>();
+        for (CapWorkOrderRecord capWorkOrderRecord : recordList) {
+            CarCheckFlowMessage carMsg = new CarCheckFlowMessage();
+            carMsg.setBuisId(capWorkOrderRecord.getId());
+            carMsg.setProcInstId(capWorkOrderRecord.getProcInstId());
+            carMsg.setAction("add");
+            carMsg.setNowStatus("未检测");
+            carMsg.setFlowStatus(NowLinkUtils.getNowLinkStr(capWorkOrderRecord.getNowLink()));
+            carMsg.setPlateNo(capWorkOrderRecord.getPlateNo());
+            if (VehicleConstant.PROCESS_NOWSTATUS_NO.equals(capWorkOrderRecord.getNowStatus())) {
+                carMsg.setDetectionState("复检");//还需要加字段判断一下
+            } else {
+                carMsg.setDetectionState("首检");//还需要加字段判断一下
+            }
+            carMsg.setReCount("1");
+            carMsg.setNewIcon("新");
+            carMsg.setStatusCss(CarCheckFlowMessage.FONT_CSS_YELLOW);
+            carMsg.setFlag("full");
+            list.add(carMsg);
+        }
+        return list;
+    }
+
+
 
 
 }

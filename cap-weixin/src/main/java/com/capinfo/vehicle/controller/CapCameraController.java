@@ -51,37 +51,11 @@ public class CapCameraController {
     @RequestMapping(value = "getCarCardInfo")
     @ResponseBody
     public String getCarCardInfo(HttpServletRequest request) throws IOException {
-
         InputStream in=request.getInputStream();
         int size=request.getContentLength();
         String charset=null;
         CarCardInfo info = getPostData(in,size,charset);
-
-        CapVehicleInfo vehicleInfo = new CapVehicleInfo();
-        vehicleInfo.setPlateNo(info.getLicense());
-        List<CapVehicleInfo> list = capVehicleInfoService.selectListByCondition(vehicleInfo);
-        int count = 0;
-        for (int i = 0; i < list.size(); i++) {
-            String nowLink = list.get(i).getCapWorkOrderRecord().getNowLink();
-            String procInstId = list.get(i).getCapWorkOrderRecord().getProcInstId();
-            ProcessInstance instance = runtimeService.createProcessInstanceQuery()
-                    .processInstanceId(procInstId).singleResult();
-            if (instance != null || !"7".equals(nowLink)) {
-                count++;
-            }
-        }
-        //可能需要判断一下是哪一步的摄像头。如果第进入车检厂的这个摄像头，那么这样判断。如果是外观检测的摄像头
-        // ip地址摄像头id应该不一样，如果都用这个方法那么再做判断
-        if (count == 0) {
-            //这个时候添数据到数据库里
-            CapVehicleInfo capVehicleInfo = new CapVehicleInfo();
-            capVehicleInfo.setPlateNo(info.getLicense());
-
-            capVehicleInfo = capVehicleInfoService.save(capVehicleInfo);
-            //在这要再加一条record表的数据
-            capWorkOrderRecordService.saveRecordByVehicleInfo(capVehicleInfo);
-        }
-
+        capVehicleInfoService.createVehicleInfo(info.getLicense());
         String jsonStr ="{\"Response\":{\"Open\":1,\"SerialData\":{\"data\":\"/pgAbJdUAAAAAAAAAAAAAQEB/lxLiVkAAAAxAABsuUYAAAAwMDAwMDAwMDEsAQT/MDEwMTAxOTkxMjMxEwAAAFWqAAA3MjIxMTEAAAgAEAABEQASAAAAu7bTrbniwdn/AAEAAQABAGd8//+BbII=\",\"datalen\":148}}}";
         return jsonStr;
     }
@@ -95,31 +69,7 @@ public class CapCameraController {
     @RequestMapping(value = "testGetCarCardInfo")
     @ResponseBody
     public String testGetCarCardInfo(HttpServletRequest request) {
-
-        CapVehicleInfo vehicleInfo = new CapVehicleInfo();
-        vehicleInfo.setPlateNo("京A-TE123");
-        List<CapVehicleInfo> list = capVehicleInfoService.selectListByCondition(vehicleInfo);
-        int count = 0;
-        for (int i = 0; i < list.size(); i++) {
-            String nowLink = list.get(i).getCapWorkOrderRecord().getNowLink();
-            String procInstId = list.get(i).getCapWorkOrderRecord().getProcInstId();
-            ProcessInstance instance = runtimeService.createProcessInstanceQuery()
-                    .processInstanceId(procInstId).singleResult();
-            if (instance != null || !"7".equals(nowLink)) {
-                count++;
-            }
-        }
-        //可能需要判断一下是哪一步的摄像头。如果第进入车检厂的这个摄像头，那么这样判断。如果是外观检测的摄像头
-        // ip地址摄像头id应该不一样，如果都用这个方法那么再做判断
-        if (count == 0) {
-            //这个时候添数据到数据库里
-            CapVehicleInfo capVehicleInfo = new CapVehicleInfo();
-            capVehicleInfo.setPlateNo("京A-TE123");
-
-            capVehicleInfo = capVehicleInfoService.save(capVehicleInfo);
-            //在这要再加一条record表的数据
-            capWorkOrderRecordService.saveRecordByVehicleInfo(capVehicleInfo);
-        }
+        capVehicleInfoService.createVehicleInfo("京A-TE123");
         String jsonStr ="{\"Response\":{\"Open\":1,\"SerialData\":{\"data\":\"/pgAbJdUAAAAAAAAAAAAAQEB/lxLiVkAAAAxAABsuUYAAAAwMDAwMDAwMDEsAQT/MDEwMTAxOTkxMjMxEwAAAFWqAAA3MjIxMTEAAAgAEAABEQASAAAAu7bTrbniwdn/AAEAAQABAGd8//+BbII=\",\"datalen\":148}}}";
         return jsonStr;
     }
@@ -255,9 +205,5 @@ public class CapCameraController {
 
 
     }
-
-
-
-
 
 }

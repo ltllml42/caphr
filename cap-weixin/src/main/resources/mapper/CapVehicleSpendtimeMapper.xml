@@ -6,7 +6,7 @@
       WARNING - @mbg.generated
     -->
     <id column="id" property="id" jdbcType="VARCHAR" />
-    <result column="cap_vehicle_id" property="capVehicleId" jdbcType="VARCHAR" />
+    <result column="cap_work_record_id" property="capWorkRecordId" jdbcType="VARCHAR" />
     <result column="task_name" property="taskName" jdbcType="VARCHAR" />
     <result column="start_time" property="startTime" jdbcType="TIMESTAMP" />
     <result column="end_time" property="endTime" jdbcType="TIMESTAMP" />
@@ -28,8 +28,8 @@
     SELECT * from cap_vehicle_spendtime
     <where>
       del_flag = '0'
-      <if test="capVehicleId!=null and capVehicleId!=''">
-        and cap_vehicle_id = #{capVehicleId}
+      <if test="capWorkRecordId!=null and capWorkRecordId!=''">
+        and cap_work_record_id = #{capWorkRecordId}
       </if>
       <if test="taskName!=null and taskName!=''">
         and task_name = #{taskName}

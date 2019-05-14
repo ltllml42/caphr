@@ -23,4 +23,13 @@
     </where>
     order by create_date desc
   </select>
+
+  <!-- 查询一个用户对应的角色list -->
+  <select id="selectRoleListByUser" parameterType="java.util.Map" resultMap="BaseResultMap">
+      select r.id,r.role_name from sys_role r
+      inner join sys_role_user roleuser on r.id = roleuser.role_id
+      where roleuser.user_id = #{userId,jdbcType=VARCHAR}
+  </select>
+
+
 </mapper>
