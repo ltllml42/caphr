@@ -2,6 +2,7 @@ package com.capinfo.base;
 
 import tk.mybatis.mapper.common.IdsMapper;
 import tk.mybatis.mapper.common.MySqlMapper;
+import tk.mybatis.mapper.common.example.SelectByExampleMapper;
 
 import java.io.Serializable;
 import java.util.List;
@@ -12,7 +13,7 @@ import java.util.List;
  * @email 154040976@qq.com
  * mapper封装 crud
  */
-public interface BaseMapper<T, E extends Serializable> extends tk.mybatis.mapper.common.BaseMapper<T>, MySqlMapper<T>, IdsMapper<T> {
+public interface BaseMapper<T, E extends Serializable> extends tk.mybatis.mapper.common.BaseMapper<T>, MySqlMapper<T>, IdsMapper<T>, SelectByExampleMapper<T> {
     /*
      *//**
      * 根据id删除
@@ -58,14 +59,16 @@ public interface BaseMapper<T, E extends Serializable> extends tk.mybatis.mapper
 
     */
 
+    List<T> selectByExample(Object var1);
+
     /**
      * 查询
      *
      * @param record
      * @return
      */
-
-
-
     List<T> selectListByPage(T record);
+
+
+
 }

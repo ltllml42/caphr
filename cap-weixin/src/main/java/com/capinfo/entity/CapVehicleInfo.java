@@ -1,6 +1,7 @@
 package com.capinfo.entity;
 
 import com.capinfo.base.BaseEntity;
+import com.capinfo.util.DateUtils;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import org.apache.commons.lang3.StringUtils;
@@ -134,7 +135,21 @@ public class CapVehicleInfo extends BaseEntity {
         }else{
             this.plateNo = plateNo;
         }
+    }
 
+
+    public String getLastTestTimeStr() {
+        if(lastTestTime!=null){
+            this.lastTestTimeStr= DateUtils.formatDate(lastTestTime);
+        }
+        return lastTestTimeStr;
+    }
+
+    public String getBuyTimeStr() {
+        if(buyTime!=null){
+            this.buyTimeStr= DateUtils.formatDate(buyTime);
+        }
+        return buyTimeStr;
     }
 
     public static void main(String[] args) {

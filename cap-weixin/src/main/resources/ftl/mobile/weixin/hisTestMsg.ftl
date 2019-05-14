@@ -22,7 +22,7 @@
 					<label class="weui-label">车牌号</label>
 				</div>
 				<div class="weui-cell__bd">
-					<label class="weui-label">${cvInfo.}</label>
+					<label class="weui-label">${cvInfo.plateNo}</label>
 				</div>
 				<div class="weui-cell__ft">
 					<i class="weui-icon-warn"></i>
@@ -50,21 +50,29 @@
                     <i class="weui-icon-warn"></i>
                 </div>
             </div>
-
-
-			<div class="weui-cells__title">验车时间</div>
-			<div class="weui-cells">
-				 <#assign wxUser = Session["weiXinUser"]>
-				  <#list works as workList>
-						<a class="weui-cell weui-cell_access" href="${re.contextPath}/oauth2/${wxUser.appid}/${works.id}/showHis">
-							<div class="weui-cell__bd">
-								<p>${works.endTime}</p>
-							</div>
-							<div class="weui-cell__ft">
-							</div>
-						</a>
-				  </#list>
-			</div>
+            <div class="weui-cells__title">验车时间 </div>
+			<#if workList?? && (workList?size gt 0) >
+				<div class="weui-cells">
+					 <#assign wxUser = Session["weiXinUser"]>
+					  <#list works as workList>
+							<a class="weui-cell weui-cell_access" href="${re.contextPath}/oauth2/${wxUser.appid}/${works.id}/showHis">
+                                <div class="weui-cell__bd">
+                                    <p>${works.endTime}</p>
+                                </div>
+                                <div class="weui-cell__ft">
+                                </div>
+                            </a>
+					  </#list>
+                </div>
+			<#else>
+				<div class="weui-cells">
+					  <a class="weui-cell weui-cell_access" href="javascript:void(0);">
+						  <div class="weui-cell__bd">
+							  <p>暂时没有年检记录</p>
+						  </div>
+					  </a>
+				</div>
+			</#if>
 		</div>
 
 	    <style>

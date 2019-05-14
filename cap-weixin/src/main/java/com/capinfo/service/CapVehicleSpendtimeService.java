@@ -18,6 +18,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import tk.mybatis.mapper.entity.Example;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -73,4 +74,11 @@ public class CapVehicleSpendtimeService extends BaseServiceImpl<CapVehicleSpendt
     }
 
 
+    public List<CapVehicleSpendtime> selectBySort(CapVehicleSpendtime cvst) {
+        Example example = new Example(CapVehicleSpendtime.class);
+        Example.Criteria criteria = example.createCriteria();
+        criteria.andEqualTo("cap_work_record_id",cvst.getCapWorkRecordId());
+        example.setOrderByClause("end_time desc");
+        return capVehicleSpendtimeMapper.selectByExample(example);
+    }
 }

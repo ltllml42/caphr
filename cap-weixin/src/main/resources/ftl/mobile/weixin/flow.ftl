@@ -13,80 +13,43 @@
 
 </head>
 <body>
-
+<#assign wxUser = Session["weiXinUser"]>
 <header class="wy-header">
-    <a href="http://www.baidu.com"><div class="wy-header-icon-back"><span></span></div></a>
-    <div class="wy-header-title"><h3>历史查询</h3></div>
+    <a href="javascript:void(0);"><div class="wy-header-icon-back"><span></span></div></a>
+    <div class="wy-header-title"><h3>历史记录详情</h3></div>
 </header>
 
-
-
-	<section id="cd-timeline" class="cd-container">
+<div class="weui-cells weui-cells_form">
+    <div class="weui-cells__title">验车时间</div>
+    <div class="weui-cells">
+		<a class="weui-cell weui-cell_access" href="javascript:void(0);">
+			<div class="weui-cell__bd">
+				<p>${cwor.endTime}</p>
+			</div>
+			<div class="weui-cell__ft">
+			</div>
+		</a>
+    </div>
+</div>
+<div class="weui-cells weui-cells_form">
+    <div class="weui-cells__title">时间线</div>
+    <section id="cd-timeline" class="cd-container">
+	<#list cvst as cvstList>
 		<div class="cd-timeline-block">
-			<div class="cd-timeline-img cd-picture">
-				<img src="${re.contextPath}/plugin/images/cd-icon-movie.svg" alt="Picture">
-			</div><!-- cd-timeline-img -->
-
-			<div class="cd-timeline-content">
-				<h2> 9:10:15 </h2>
-				<p>入场检查</p>
-				<span class="cd-date">2019-12-23</span>
-			</div> <!-- cd-timeline-content -->
+				<div class="cd-timeline-img cd-picture">
+					<img src="${re.contextPath}/plugin/images/${cvst.iconImg}" alt="摄像头">
+				</div><!-- cd-timeline-img -->
+				<div class="cd-timeline-content">
+					<h2 class="cd-date">${cvst.endTime}</h2>
+					<p>${cvst.taskName}</p>
+                    <p>${cvst.nowStatuStr}</p>
+					<span class="cd-date">消耗时长:${cvst.duration}</span>
+				</div> <!-- cd-timeline-content -->
 		</div> <!-- cd-timeline-block -->
-
-		<div class="cd-timeline-block">
-			<div class="cd-timeline-img cd-picture">
-				<img src="${re.contextPath}/plugin/images/cd-icon-movie.svg" alt="Movie">
-			</div> <!-- cd-timeline-img -->
-			<div class="cd-timeline-content">
-				<h2>9:30:15</h2>
-				<p>外观检测</p>
-				<span class="cd-date">2019-12-23</span>
-			</div> <!-- cd-timeline-content -->
-		</div> <!-- cd-timeline-block -->
-
-		<div class="cd-timeline-block">
-			<div class="cd-timeline-img cd-picture">
-				<img src="${re.contextPath}/plugin/images/cd-icon-movie.svg" alt="Movie">
-			</div> <!-- cd-timeline-img -->
-			<div class="cd-timeline-content">
-				<h2>9:30:15</h2>
-				<p>上线检测</p>
-				<span class="cd-date">2019-12-23</span>
-			</div> <!-- cd-timeline-content -->
-		</div> <!-- cd-timeline-block -->
-		<div class="cd-timeline-block">
-			<div class="cd-timeline-img cd-picture">
-				<img src="${re.contextPath}/plugin/images/cd-icon-movie.svg" alt="Movie">
-			</div> <!-- cd-timeline-img -->
-			<div class="cd-timeline-content">
-				<h2>9:30:15</h2>
-				<p>进入停车场</p>
-				<span class="cd-date">2019-12-23</span>
-			</div> <!-- cd-timeline-content -->
-		</div> <!-- cd-timeline-block -->
-		<div class="cd-timeline-block">
-			<div class="cd-timeline-img cd-picture">
-				<img src="${re.contextPath}/plugin/images/cd-icon-movie.svg" alt="Movie">
-			</div> <!-- cd-timeline-img -->
-			<div class="cd-timeline-content">
-				<h2>9:30:15</h2>
-				<p>缴费核算</p>
-				<span class="cd-date">2019-12-23</span>
-			</div> <!-- cd-timeline-content -->
-		</div> <!-- cd-timeline-block -->
-		<div class="cd-timeline-block">
-			<div class="cd-timeline-img cd-picture">
-				<img src="${re.contextPath}/plugin/images/cd-icon-movie.svg" alt="Movie">
-			</div> <!-- cd-timeline-img -->
-			<div class="cd-timeline-content">
-				<h2>9:30:15</h2>
-				<p>完成</p>
-				<span class="cd-date">2019-12-23</span>
-			</div> <!-- cd-timeline-content -->
-		</div> <!-- cd-timeline-block -->
-
+	</#list>
 	</section> <!-- cd-timeline -->
+</div>
+
 	
 <script type="text/javascript">
 $(function(){

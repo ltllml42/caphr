@@ -13,7 +13,7 @@ public class BindingCarBean {
 
     private String sex;
 
-    private String telphone;
+    private String telPhone;
 
     private String plateNo;
 
