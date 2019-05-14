@@ -138,7 +138,7 @@ public class WeiXinUserController {
                 CapWxAccountFans capWxAccountFans = capWxAccountFansService.selectByPrimaryKey(fansInfo);
                 capWxAccountFans.setName(bean.getName());
                 capWxAccountFans.setSex(bean.getSex());
-                capWxAccountFans.setTelPhone(bean.getTelphone());
+                capWxAccountFans.setTelPhone(bean.getTelPhone());
                 capWxAccountFansService.updateByPrimaryKey(capWxAccountFans);
                 Date lastTestTime = DateUtils.parseDate(vehicleInfo.getLastTestTimeStr(), CapVehicleInfo.FORMAT_DATE);
                 Date buyTime = DateUtils.parseDate(vehicleInfo.getBuyTimeStr(), CapVehicleInfo.FORMAT_DATE);
@@ -171,26 +171,25 @@ public class WeiXinUserController {
     }
 
 
-    @GetMapping("/{id}/hisTestMsg")
+    @GetMapping("{id}/hisTestMsg")
     public String hisTestMsg(@PathVariable String appid, @PathVariable String id, Model model) {
         CapVehicleInfo cvInfo = capVehicleInfoService.selectOne(CapVehicleInfo.builder().id(id).build());
         List<CapWorkOrderRecord> workList = capWorkOrderRecordService.select(CapWorkOrderRecord.builder().vehicleId(id).build());
         model.addAttribute("cvInfo", cvInfo);
-        model.addAttribute("workList",workList);
+        model.addAttribute("workList", workList);
         return "/weixin/hisTestMsg";
     }
-    /*@GetMapping("/{id}/hisTestMsg")
+
+    @GetMapping("/{id}/showHis")
     public String showHis(@PathVariable String appid, @PathVariable String id, Model model) {
         CapWorkOrderRecord cwor = capWorkOrderRecordService.selectOne(CapWorkOrderRecord.builder().id(id).build());
         //历史消息
-        capVehicleSpendtimeService.select(CapVehicleSpendtime.builder().capWorkRecordId(cwor.getId()).build());
-
-        System.out.println(cwor.getNowLink());
-
-        model.addAttribute("cwor",cwor);
-        return "/weixin/hisTestMsg";
-    }*/
-
+        List<CapVehicleSpendtime> cvstList =
+                capVehicleSpendtimeService.selectBySort(CapVehicleSpendtime.builder().capWorkRecordId(cwor.getId()).build());
+        model.addAttribute("cwor", cwor);
+        model.addAttribute("cvstList", cvstList);
+        return "/weixin/flow";
+    }
 
 
     @GetMapping("flow")
