@@ -27,7 +27,8 @@
   </div>
   <div class="weui-msg__opr-area">
     <p class="weui-btn-area">
-      <a href="javascript:;" class="weui-btn weui-btn_primary">确定</a>
+      <#assign wxUser = Session["weiXinUser"]>
+      <a href="${re.contextPath}/oauth2/${wxUser.appid}/bingingCar"" class="weui-btn weui-btn_primary">确定</a>
     </p>
   </div>
   <div class="weui-msg__extra-area">

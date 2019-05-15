@@ -90,7 +90,12 @@ public class CapVehicleSpendtime extends BaseEntity {
         //iconImg
         if(StringUtils.isNotBlank(taskName)){
             VehicleProcessEnum vpe = getVehicleProcessEnum(VehicleProcessEnum.class, taskName);
-            return vpe.getRemarks();
+            if(vpe!=null){
+                return vpe.getRemarks();
+            }else{
+                System.out.println(taskName);
+            }
+
         }
         return iconImg;
     }

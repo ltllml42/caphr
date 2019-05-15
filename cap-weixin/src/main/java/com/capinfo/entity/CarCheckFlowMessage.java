@@ -1,10 +1,12 @@
 package com.capinfo.entity;
 
 import lombok.Data;
+import lombok.ToString;
 
 import java.io.Serializable;
 
 @Data
+@ToString
 public class CarCheckFlowMessage implements Serializable {
 
     public final static String FONT_CSS_RED = "colorRed";
@@ -23,9 +25,7 @@ public class CarCheckFlowMessage implements Serializable {
     private String toUser;//用户ID
     private String  statusCss;
     private String flag;//  full 占满  empty 清空
-
-
-
+    private String openId;//发消息的用户OpenId 保存
     //colorRed
     //colorGreen
 }

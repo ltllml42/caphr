@@ -90,46 +90,50 @@ public class MqTestController {
         CarCheckFlowMessage car1 = new CarCheckFlowMessage();
         car1.setBuisId("1");
         car1.setAction("add");
-        car1.setNowStatus(VehicleConstant.PROCESS_GAS);
+        car1.setFlowStatus(VehicleConstant.PROCESS_GAS);
         car1.setPlateNo("京A-FD123");
         car1.setDetectionState("首检");
         //car1.setToUser(new String[]{""});//将消息发送给那些人
         car1.setNewIcon("新");
         car1.setStatusCss(CarCheckFlowMessage.FONT_CSS_GREEN);
         car1.setFlag("full");
+        car1.setOpenId("ojeHm1LGVIqyFGkrSd3UMspKn5lg");
 
         CarCheckFlowMessage car2 = new CarCheckFlowMessage();
         car2.setBuisId("2");
         car2.setAction("add");
-        car2.setNowStatus(VehicleConstant.PROCESS_GAS);
+        car2.setFlowStatus(VehicleConstant.PROCESS_GAS);
         car2.setPlateNo("京A-SF369");
         car2.setDetectionState("首检");
         //car2.setToUser(new String[]{""});//将消息发送给那些人
         car2.setNewIcon("新");
         car2.setStatusCss(CarCheckFlowMessage.FONT_CSS_GREEN);
         car2.setFlag("full");
+        car2.setOpenId("ojeHm1LGVIqyFGkrSd3UMspKn5lg");
 
         CarCheckFlowMessage car3 = new CarCheckFlowMessage();
         car3.setBuisId("3");
         car3.setAction("add");
-        car3.setNowStatus(VehicleConstant.PROCESS_GAS);
+        car3.setFlowStatus(VehicleConstant.PROCESS_GAS);
         car3.setPlateNo("京A-NS369");
         car3.setDetectionState("首检");
         //car3.setToUser(new String[]{""});//将消息发送给那些人
         car3.setNewIcon("新");
         car3.setStatusCss(CarCheckFlowMessage.FONT_CSS_GREEN);
         car3.setFlag("full");
+        car3.setOpenId("ojeHm1LGVIqyFGkrSd3UMspKn5lg");
 
         CarCheckFlowMessage car4 = new CarCheckFlowMessage();
         car4.setBuisId("3");
         car4.setAction("add");
-        car4.setNowStatus(VehicleConstant.PROCESS_GAS);
+        car4.setFlowStatus(VehicleConstant.PROCESS_GAS);
         car4.setPlateNo("京A-NS369");
         car4.setDetectionState("复检");
         //car4.setToUser(new String[]{""});//将消息发送给那些人
         car4.setNewIcon("新");
         car4.setStatusCss(CarCheckFlowMessage.FONT_CSS_GREEN);
         car4.setFlag("full");
+        car4.setOpenId("ojeHm1LGVIqyFGkrSd3UMspKn5lg");
 
         cvInfos.add(car1);
         cvInfos.add(car2);
@@ -146,6 +150,19 @@ public class MqTestController {
     private JmsTemplate jmsTemplate;
 
     int i=0;
+    @Scheduled(fixedRate = 10000)
+    public void sendOrdinaryQueue() {
+        //测试数据
+        if(i==list.size()){
+            i=0;
+        }
+        jmsTemplate.convertAndSend(this.ordinaryQueue, cvInfos.get(i));
+        i++;
+        System.out.println("msg发送成功");
+    }
+
+
+
 
     /*@Scheduled(fixedRate = 10000)
     public void sendMsg() {

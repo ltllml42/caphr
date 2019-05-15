@@ -6,6 +6,7 @@ import lombok.Data;
 import org.apache.shiro.authc.AuthenticationToken;
 
 import javax.servlet.ServletRequest;
+import javax.servlet.ServletResponse;
 import java.util.Date;
 import java.util.List;
 
@@ -22,6 +23,7 @@ public class WeiXinAuth2Token implements AuthenticationToken {
     private List<CapVehicleInfo> cvInfoList;
     private String appid;
     private ServletRequest request;
+    private ServletResponse response;
 
     @Override
     public Object getPrincipal() {
@@ -34,8 +36,9 @@ public class WeiXinAuth2Token implements AuthenticationToken {
     }
 
 
-    public WeiXinAuth2Token(ServletRequest request) {
+    public WeiXinAuth2Token(ServletRequest request, ServletResponse response) {
         this.request = request;
+        this.response = response;
     }
 
     public WeiXinAuth2Token() {

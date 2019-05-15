@@ -1,29 +1,14 @@
 package com.capinfo.controller;
 
-import com.capinfo.base.CurrentUser;
 import com.capinfo.config.ActiveMQConfig;
-import com.capinfo.entity.CapVehicleInfo;
-import com.capinfo.entity.CarCheckFlowMessage;
-import com.capinfo.service.JsonUtils;
 import com.capinfo.service.SimpleMessageService;
-import com.capinfo.shiro.token.WeiXinAuth2Token;
-import com.capinfo.util.CommonUtil;
-import com.capinfo.util.JsonUtil;
-import com.capinfo.utils.WeiXinUtils;
-import org.apache.shiro.util.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jms.annotation.JmsListener;
-import org.springframework.jms.annotation.JmsListeners;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @Controller
 @RequestMapping(value = "/gcc/{appid}")
@@ -38,14 +23,7 @@ public class GiantCurtainController {
         simpleMessageService.sendTopicMessage("/topic/gcc",text);
     }
 
-    @JmsListener(destination = ActiveMQConfig.MSG_FLOW_QUEUE)
-    public void gccIndex(CarCheckFlowMessage message){
-        //CurrentUser user = CommonUtil.getUser();
 
-        if(!StringUtils.isEmpty(message.getToUser())){//将消息发送到各种流程
-            simpleMessageService.sendTopicMessage("/topic/flow/"+message.getToUser(),JsonUtils.toJson(message));
-        }
-    }
 
 
 

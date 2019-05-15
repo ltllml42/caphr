@@ -59,7 +59,6 @@ public interface BaseMapper<T, E extends Serializable> extends tk.mybatis.mapper
 
     */
 
-    List<T> selectByExample(Object var1);
 
     /**
      * 查询

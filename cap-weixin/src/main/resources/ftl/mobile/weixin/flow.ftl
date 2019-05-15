@@ -2,12 +2,9 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>检测项目</title>
-<link rel="stylesheet" href="${re.contextPath}/plugin/lib/weui.css">
-    <link rel="stylesheet" href="${re.contextPath}/plugin/css/jquery-weui.css">
-    <link rel="stylesheet" href="${re.contextPath}/plugin/css/demos.css">
 <link href="${re.contextPath}/plugin/css/timeline.css" rel="stylesheet" type="text/css" />
-
 <script type="text/javascript" src="${re.contextPath}/plugin/js/modernizr.js"></script>
 <script type="text/javascript" src="${re.contextPath}/plugin/js/jquery-1.8.3.min.js"></script>
 
@@ -18,41 +15,35 @@
     <a href="javascript:void(0);"><div class="wy-header-icon-back"><span></span></div></a>
     <div class="wy-header-title"><h3>历史记录详情</h3></div>
 </header>
-
-<div class="weui-cells weui-cells_form">
-    <div class="weui-cells__title">验车时间</div>
-    <div class="weui-cells">
-		<a class="weui-cell weui-cell_access" href="javascript:void(0);">
-			<div class="weui-cell__bd">
-				<p>${cwor.endTime}</p>
-			</div>
-			<div class="weui-cell__ft">
-			</div>
-		</a>
-    </div>
-</div>
-<div class="weui-cells weui-cells_form">
-    <div class="weui-cells__title">时间线</div>
-    <section id="cd-timeline" class="cd-container">
-	<#list cvst as cvstList>
+	<#list cvstList as cvst>
 		<div class="cd-timeline-block">
-				<div class="cd-timeline-img cd-picture">
-					<img src="${re.contextPath}/plugin/images/${cvst.iconImg}" alt="摄像头">
-				</div><!-- cd-timeline-img -->
-				<div class="cd-timeline-content">
-					<h2 class="cd-date">${cvst.endTime}</h2>
-					<p>${cvst.taskName}</p>
-                    <p>${cvst.nowStatuStr}</p>
-					<span class="cd-date">消耗时长:${cvst.duration}</span>
-				</div> <!-- cd-timeline-content -->
-		</div> <!-- cd-timeline-block -->
+            <div class="cd-timeline-img cd-picture">
+                <img src="${re.contextPath}/plugin/images/${cvst.iconImg}" alt="摄像头">
+            </div><!-- cd-timeline-img -->
+            <div class="cd-timeline-content">
+                <h2>${cvst.taskName}</h2>
+                <span class="cd-date">开始时间：${(cvst.startTime?string("yyyy-MM-dd"))!}</span>
+                <span class="cd-date">结束时间：${(cvst.endTime?string("yyyy-MM-dd"))!}</span>
+                <p class="cd-date">${cvst.nowStatuStr} 消耗时长:${cvst.duration}</p>
+            </div> <!-- cd-timeline-content -->
+        </div> <!-- cd-timeline-block -->
 	</#list>
-	</section> <!-- cd-timeline -->
-</div>
+</section> <!-- cd-timeline -->
 
 	
 <script type="text/javascript">
 $(function(){
+
+    var win = window,
+            doc = document;
+    function setFontSize() {
+        var winWidth = $(window).width();
+
+        //750这个数字是根据你的设计图的实际大小来的，所以值具体根据设计图的大小
+        var size = (winWidth / 750) * 100;
+        doc.documentElement.style.fontSize = (size < 100 ? size : 100) + 'px';
+    };
+
 	var $timeline_block = $('.cd-timeline-block');
 	//hide timeline blocks which are outside the viewport
 	$timeline_block.each(function(){

@@ -1,12 +1,10 @@
 package com.capinfo.entity;
 
 import com.capinfo.base.BaseEntity;
+import com.capinfo.util.DateUtils;
 import lombok.*;
 
-import javax.persistence.Column;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.util.Date;
 
 /**
@@ -41,15 +39,25 @@ public class CapWorkOrderRecord  extends BaseEntity {
     @Column(name = "now_status")
     private String nowStatus;//检查状态  通过--未通过
     @Column(name = "total_money")
-    private float totalMoney; //总钱数
+    private Float totalMoney; //总钱数
     @Column(name = "total_limit")
-    private int totalLimit;  //分钟   统计的进入停车场环节。
+    private Integer totalLimit;  //分钟   统计的进入停车场环节。
+
+    @Transient
+    private String startTimeStr;
+
+    public String getStartTimeStr() {
+        if(startTime!=null){
+            this.startTimeStr = DateUtils.formatDate(startTime);
+        }
+        return startTimeStr;
+    }
 
     /*@Column(name = "total_last_limit")
-    private int nowLastTime;//最后一个环节花费时间*/
+        private int nowLastTime;//最后一个环节花费时间*/
     //不知道为啥名字和mapper里的不一样，先这样改一下
     @Column(name = "total_last_limit")
-    private int totalLastLimit;
+    private Integer totalLastLimit;
 
 
     @Column(name = "proc_inst_id")

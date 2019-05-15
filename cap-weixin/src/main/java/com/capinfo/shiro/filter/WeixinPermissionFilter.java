@@ -104,7 +104,7 @@ public class WeixinPermissionFilter extends AuthenticatingFilter {
 
     @Override
     protected AuthenticationToken createToken(ServletRequest request, ServletResponse response) throws Exception {
-        WeiXinAuth2Token wxToken = new WeiXinAuth2Token(request);
+        WeiXinAuth2Token wxToken = new WeiXinAuth2Token(request,response);
         HttpServletRequest httpRequest = WebUtils.toHttp(request);
         String code = httpRequest.getParameter("code");
         if (StringUtils.isNotBlank(code)) {

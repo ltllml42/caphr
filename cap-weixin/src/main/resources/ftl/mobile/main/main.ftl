@@ -26,7 +26,6 @@
             <input id="myFilter" data-type="search" placeholder="根据名称搜索.."/>
         </form>
         <ol id="dataEx" class="charList" data-role="listview" data-filter="true" data-input="#myFilter"  data-inset="true">
-
         </ol>
     </div>
 

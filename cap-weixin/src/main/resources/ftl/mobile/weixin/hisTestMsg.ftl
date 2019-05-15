@@ -52,12 +52,13 @@
             </div>
             <div class="weui-cells__title">验车时间 </div>
 			<#if workList?? && (workList?size gt 0) >
+
 				<div class="weui-cells">
 					 <#assign wxUser = Session["weiXinUser"]>
-					  <#list works as workList>
+					  <#list workList as works>
 							<a class="weui-cell weui-cell_access" href="${re.contextPath}/oauth2/${wxUser.appid}/${works.id}/showHis">
                                 <div class="weui-cell__bd">
-                                    <p>${works.endTime}</p>
+                                    <p>${works.startTimeStr}</p>
                                 </div>
                                 <div class="weui-cell__ft">
                                 </div>
