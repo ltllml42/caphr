@@ -27,6 +27,7 @@
     a.plate_no AS "plateNo",
     a.vehicle_type AS "vehicleType",
     a.create_date AS "createDate",
+    b.id AS "capWorkOrderRecord.id",
     b.now_link AS "capWorkOrderRecord.nowLink",
     b.now_status AS "capWorkOrderRecord.nowStatus"
     from cap_vehicle_info a left join cap_work_order_record b on a.id=b.record_id

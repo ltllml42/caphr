@@ -365,6 +365,14 @@ public class CapVehicleController {
                     }
                     flowMessagePushService.addflowByRecord(nextUserList, capWorkOrderRecord, "add");
                 }
+
+                //不通过的时候，给微信公众号推送一条消息
+                if (VehicleConstant.PROCESS_NOWSTATUS_NO.equals(capWorkOrderRecord.getNowStatus())) {
+                    String recordId = capWorkOrderRecord.getRecordId();
+                    CapVehicleInfo vehicleInfo = capVehicleInfoService.selectByPrimaryKey(recordId);
+                    vehicleInfo.setCapWorkOrderRecord(capWorkOrderRecord);
+                    flowMessagePushService.sendRecordToWx(vehicleInfo);
+                }
             }
             jsonUtil.setFlag(true);
             jsonUtil.setMsg("修改成功");

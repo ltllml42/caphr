@@ -222,15 +222,22 @@ public class CapVehicleInfoService extends BaseServiceImpl<CapVehicleInfo, Strin
 
 
     public void createVehicleInfo(String license) {
+        //记下来这么一个车的对象，在最后发一个消息给微信的队列里
+        CapVehicleInfo vehicleMsg = new CapVehicleInfo();
         CapVehicleInfo vehicleInfo = new CapVehicleInfo();
         vehicleInfo.setPlateNo(license);
         List<CapVehicleInfo> list = this.selectListByCondition(vehicleInfo);
         if (list!=null&&!list.isEmpty()) {
             CapVehicleInfo vehicle = list.get(0);
+            vehicleMsg = vehicle;
+
             CapWorkOrderRecord record = new CapWorkOrderRecord();
             record.setRecordId(vehicle.getId());
             List<CapWorkOrderRecord> recordList = capWorkOrderRecordService.selectListByCondition(record);
             record = recordList.get(0);
+
+            vehicleMsg.setCapWorkOrderRecord(record);
+
             if (VehicleConstant.PROCESS_END.equals(record.getNowLink())) {
                 CapWorkOrderRecord capWorkOrderRecord = capWorkOrderRecordService.saveRecordByVehicleInfo(vehicle);
                 //加一条spendtime这张表的数据
@@ -265,9 +272,12 @@ public class CapVehicleInfoService extends BaseServiceImpl<CapVehicleInfo, Strin
             capVehicleInfo.setDelFlag("0");
             this.insertSelective(capVehicleInfo);
 
+            vehicleMsg = capVehicleInfo;
             //capVehicleInfo = this.save(capVehicleInfo);
             //在这要再加一条record表的数据
             CapWorkOrderRecord capWorkOrderRecord = capWorkOrderRecordService.saveRecordByVehicleInfo(capVehicleInfo);
+            vehicleMsg.setCapWorkOrderRecord(capWorkOrderRecord);
+
             //加一条spendtime这张表的数据
             CapVehicleSpendtime spendtime = new CapVehicleSpendtime();
             spendtime.setStatus(VehicleConstant.PROCESS_SPENDTIME_END);
@@ -276,6 +286,11 @@ public class CapVehicleInfoService extends BaseServiceImpl<CapVehicleInfo, Strin
             spendtime.setStartTime(new Date());
             spendtime.setTaskName(VehicleProcessEnum.PROCESS_ENTER.getTypeName());
             capVehicleSpendtimeService.save(spendtime);
+        }
+        //进入车检厂，判断一下vehicleMsg里有没有微信的openId,如果有给微信公众号发一条消息
+        String openId = vehicleMsg.getOpenid();
+        if (StringUtils.isNotBlank(openId)) {
+            flowMessagePushService.sendRecordToWx(vehicleMsg);
         }
     }
 

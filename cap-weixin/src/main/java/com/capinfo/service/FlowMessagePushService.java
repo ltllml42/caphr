@@ -1,6 +1,7 @@
 package com.capinfo.service;
 
 import com.capinfo.base.CurrentUser;
+import com.capinfo.entity.CapVehicleInfo;
 import com.capinfo.entity.CapWorkOrderRecord;
 import com.capinfo.entity.CarCheckFlowMessage;
 import com.capinfo.entity.SysUser;
@@ -156,8 +157,27 @@ public class FlowMessagePushService {
                 jmsTemplate.convertAndSend(this.flowQuere,carMsg);
             }
         }
-
-
     }
+
+
+    /**
+     * 发送给微信公众号消息
+     */
+    public void sendRecordToWx(CapVehicleInfo capVehicleInfo) {
+        CarCheckFlowMessage carMsg = new CarCheckFlowMessage();
+        carMsg.setBuisId(capVehicleInfo.getCapWorkOrderRecord().getId());
+        carMsg.setFlowStatus(capVehicleInfo.getCapWorkOrderRecord().getNowLink());
+        carMsg.setPlateNo(capVehicleInfo.getPlateNo());
+        carMsg.setOpenId(capVehicleInfo.getOpenid());
+        String nowStatus = capVehicleInfo.getCapWorkOrderRecord().getNowStatus();
+        if (VehicleConstant.PROCESS_NOWSTATUS_NO.equals(nowStatus)) {
+            carMsg.setNowStatus("不通过");
+        } else {
+            carMsg.setNowStatus("通过");
+        }
+        jmsTemplate.convertAndSend(this.ordinaryQueue, carMsg);
+    }
+
+
 
 }
