@@ -191,6 +191,9 @@ public abstract class BaseServiceImpl<T, E extends Serializable> implements Base
         return getMappser().insertUseGeneratedKeys(t);
     }
 
+
+
+
     /**
      * 公共展示类
      *
@@ -227,4 +230,8 @@ public abstract class BaseServiceImpl<T, E extends Serializable> implements Base
         return JSON.toJSONString(tList);
     }
 
+    @Override
+    public List<T> selectByExample(Object var1) {
+        return getMappser().selectByExample(var1);
+    }
 }

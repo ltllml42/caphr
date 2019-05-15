@@ -1,7 +1,6 @@
 package com.capinfo.shiro;
 
 import com.capinfo.core.shiro.ShiroUtil;
-import com.capinfo.core.utils.ParseUrlUtil;
 import com.capinfo.entity.CapVehicleInfo;
 import com.capinfo.entity.CapWxAccountFans;
 import com.capinfo.service.CapVehicleInfoService;
@@ -74,6 +73,7 @@ public class WeChatOauth2Realm extends AuthenticatingRealm {
             }
             WxMpOAuth2AccessToken accessToken = wxService.oauth2getAccessToken(xwToken.getCode());
             WxMpUser user = wxService.oauth2getUserInfo(accessToken, null);
+            xwToken.setAppid(appId);
             xwToken.setAccessTaken(accessToken.getAccessToken());
             xwToken.setRefreshToken(accessToken.getRefreshToken());
             xwToken.setCodeCount(xwToken.getCodeCount()+1);

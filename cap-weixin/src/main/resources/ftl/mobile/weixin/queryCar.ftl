@@ -16,10 +16,9 @@
 		  <div class="weui-cells__title">个人信息</div>
 			<div class="weui-cells">
 			<a class="weui-cell weui-cell_access" href="http://www.baidu.com">
-			  <div class="weui-cell__hd"><img height="80px" width="80px" src="https://raw.githubusercontent.com/ltllml42/img/master/img/20190429001008.png"></div>
+			  <div class="weui-cell__hd"><img height="80px" width="80px" src="${fans.headImgUrl}"></div>
 			  <div class="weui-cell__bd">
-				<p>litaolin</p>
-				<p class="weui-footer__text">微信号</p>
+				<p>${fans.nick_name}</p>
 			  </div>
 			  <div class="weui-cell__ft">
 			  </div>
@@ -52,8 +51,7 @@
 	   </div>
 		 </div>
 	</div>
-  	
-  	
+
         <div class="weui-cells__title">车辆信息</div>
         <div class="weui-cells">
           <div class="weui-cell">
@@ -72,10 +70,10 @@
 					<p>${cvInfo.plateNo}</p>
               	</div>
                 <div class="weui-cell__bd left_150 " >
-                 	 <p><a href="javascript:void(0);">5</a></p>
+                 	 <p><a href="javascript:void(0);">${cvInfo.yearCheckCount}</a></p>
                 </div>
-				  <#assign wxUser = Session["weiXinUser"]>
-                <div class="weui-cell__ft"><a href="${re.contextPath}/oauth2/${wxUser.appid}/${cvInfo.id}/show">查看详情</a></div>
+			    <#assign wxUser = Session["weiXinUser"]>
+                <div class="weui-cell__ft"><a href="${re.contextPath}/oauth2/${wxUser.appid}/${cvInfo.id}/hisTestMsg">查看详情</a></div>
               </div>
             </div>
             <div class="weui-cell__ft">
@@ -115,8 +113,5 @@
     FastClick.attach(document.body);
   });
 </script>
-
-
   </body>
-
 </html>

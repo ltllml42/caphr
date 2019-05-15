@@ -9,7 +9,7 @@ import java.util.List;
 /**
  *
  */
-public interface CapVehicleSpendtimeMapper extends BaseMapper<CapVehicleSpendtime,String> {
+public interface CapVehicleSpendtimeMapper extends BaseMapper<CapVehicleSpendtime,String>  {
 
     List<CapVehicleSpendtime> selectListByCondition(CapVehicleSpendtime capVehicleSpendtime);
 

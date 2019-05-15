@@ -1,13 +1,17 @@
 package com.capinfo.entity;
 
 import com.capinfo.base.BaseEntity;
+import com.capinfo.vehicle.utilEntity.VehicleProcess;
+import com.capinfo.vehicle.utilEntity.VehicleProcessEnum;
+import com.capinfo.vehicle.utilEntity.WorkOrderStautsEnum;
 import lombok.*;
+import org.apache.commons.lang.enums.Enum;
+import org.apache.commons.lang3.EnumUtils;
+import org.apache.commons.lang3.StringUtils;
 
-import javax.persistence.Column;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.util.Date;
+import java.util.List;
 
 @Getter
 @Setter
@@ -40,5 +44,54 @@ public class CapVehicleSpendtime extends BaseEntity {
     private String isrepeat;
     @Column(name = "now_status")
     private String nowStatus;//加个字段记一下当前这一步最后的状态。1通过2不通过
+    @Transient
+    private String nowStatuStr;
+    @Transient
+    private String iconImg;
 
+    /**
+     *     STAUTS_OK("1","通过",""),
+     *     STATUS_NO("2","不通过",""),
+     *     STATUS_UNDETECTED("3","未检测","");
+     * @return
+     */
+    public String getNowStatuStr() {
+        if(StringUtils.isNotBlank(nowStatus)){
+            WorkOrderStautsEnum newEnum = getWorkOrderStautsEnum(WorkOrderStautsEnum.class,nowStatus);
+            if(newEnum!=null){
+                return newEnum.getTypeName();
+            }
+        }
+        return "";
+    }
+
+    private WorkOrderStautsEnum getWorkOrderStautsEnum(Class clazz,String typeName){
+        List<WorkOrderStautsEnum> enumList = EnumUtils.getEnumList(clazz);
+        for (WorkOrderStautsEnum workOrderStautsEnum : enumList) {
+            if(typeName.equals(workOrderStautsEnum.getType())){
+                return workOrderStautsEnum;
+            }
+        }
+        return null;
+    }
+
+    private VehicleProcessEnum getVehicleProcessEnum(Class clazz,String typeName){
+        List<VehicleProcessEnum> enumList = EnumUtils.getEnumList(clazz);
+        for (VehicleProcessEnum vehicleProcessEnum : enumList) {
+            if(typeName.equals(vehicleProcessEnum.getTypeName())){
+                return vehicleProcessEnum;
+            }
+        }
+        return null;
+    }
+
+
+    public String getIconImg() {
+        //iconImg
+        if(StringUtils.isNotBlank(taskName)){
+            VehicleProcessEnum vpe = getVehicleProcessEnum(VehicleProcessEnum.class, taskName);
+            return vpe.getRemarks();
+        }
+        return iconImg;
+    }
 }
