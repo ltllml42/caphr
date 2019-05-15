@@ -13,6 +13,7 @@ import com.capinfo.vehicle.utilEntity.VehicleFlowEntity;
 import net.sf.json.JSONObject;
 import org.activiti.engine.RuntimeService;
 import org.activiti.engine.runtime.ProcessInstance;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -53,9 +54,13 @@ public class CapCameraController {
     public String getCarCardInfo(HttpServletRequest request) throws IOException {
         InputStream in=request.getInputStream();
         int size=request.getContentLength();
-        String charset=null;
+        String charset= "gb2312";
         CarCardInfo info = getPostData(in,size,charset);
-        capVehicleInfoService.createVehicleInfo(info.getLicense());
+        if (info != null) {
+            if (StringUtils.isNotBlank(info.getLicense())) {
+                capVehicleInfoService.createVehicleInfo(info.getLicense());
+            }
+        }
         String jsonStr ="{\"Response\":{\"Open\":1,\"SerialData\":{\"data\":\"/pgAbJdUAAAAAAAAAAAAAQEB/lxLiVkAAAAxAABsuUYAAAAwMDAwMDAwMDEsAQT/MDEwMTAxOTkxMjMxEwAAAFWqAAA3MjIxMTEAAAgAEAABEQASAAAAu7bTrbniwdn/AAEAAQABAGd8//+BbII=\",\"datalen\":148}}}";
         return jsonStr;
     }
@@ -69,10 +74,49 @@ public class CapCameraController {
     @RequestMapping(value = "testGetCarCardInfo")
     @ResponseBody
     public String testGetCarCardInfo(HttpServletRequest request) {
-        capVehicleInfoService.createVehicleInfo("京A-TE123");
+        capVehicleInfoService.createVehicleInfo("京A-QW123");
         String jsonStr ="{\"Response\":{\"Open\":1,\"SerialData\":{\"data\":\"/pgAbJdUAAAAAAAAAAAAAQEB/lxLiVkAAAAxAABsuUYAAAAwMDAwMDAwMDEsAQT/MDEwMTAxOTkxMjMxEwAAAFWqAAA3MjIxMTEAAAgAEAABEQASAAAAu7bTrbniwdn/AAEAAQABAGd8//+BbII=\",\"datalen\":148}}}";
         return jsonStr;
     }
+
+
+    /**
+     * 外观检测通过后的摄像头接口
+     * @param request
+     * @return
+     */
+    @RequestMapping(value = "checkAppearInfo")
+    @ResponseBody
+    public String checkAppearInfo(HttpServletRequest request) throws IOException {
+
+        InputStream in=request.getInputStream();
+        int size=request.getContentLength();
+        String charset = "gb2312";
+        CarCardInfo carInfo = getPostData(in,size,charset);
+        if (carInfo != null) {
+            //capVehicleInfoService.createVehicleInfo(info.getLicense());
+           /* CapVehicleInfo vehicleInfo = new CapVehicleInfo();
+            vehicleInfo.setPlateNo(carInfo.getLicense());
+            List<CapVehicleInfo> list = capVehicleInfoService.selectListByCondition(vehicleInfo);*/
+           CapWorkOrderRecord record = new CapWorkOrderRecord();
+           record.setPlateNo(carInfo.getLicense());
+           record.setNowLink(VehicleConstant.PROCESS_ENTER);
+            List<CapWorkOrderRecord> list = capWorkOrderRecordService.selectListByCondition(record);
+            if (list.size()>0) {
+                capVehicleInfoService.startFlowByCamera(carInfo.getLicense());
+            } else {
+                //判断一下有没有在其他步骤的数据。
+                // 如果没有就去创建，如果有，那么可能是某一步没有通过进入车检厂复检的情况，这种情况不去创建，这种情况直接发送给对应步骤的用户消息
+                capVehicleInfoService.createVehicleInfo(carInfo.getLicense());
+                capVehicleInfoService.startFlowByCamera(carInfo.getLicense());
+            }
+
+        }
+        String jsonStr ="{\"Response\":{\"Open\":1,\"SerialData\":{\"data\":\"/pgAbJdUAAAAAAAAAAAAAQEB/lxLiVkAAAAxAABsuUYAAAAwMDAwMDAwMDEsAQT/MDEwMTAxOTkxMjMxEwAAAFWqAAA3MjIxMTEAAAgAEAABEQASAAAAu7bTrbniwdn/AAEAAQABAGd8//+BbII=\",\"datalen\":148}}}";
+        return jsonStr;
+    }
+
+
 
 
     /**
@@ -86,29 +130,18 @@ public class CapCameraController {
     @ResponseBody
     public String testCheckAppear(HttpServletRequest request) {
 
-        CapVehicleInfo vehicleInfo = new CapVehicleInfo();
+        /*CapVehicleInfo vehicleInfo = new CapVehicleInfo();
         vehicleInfo.setPlateNo("京A-TE123");
-        List<CapVehicleInfo> list = capVehicleInfoService.selectListByCondition(vehicleInfo);
+        List<CapVehicleInfo> list = capVehicleInfoService.selectListByCondition(vehicleInfo);*/
+        CapWorkOrderRecord record = new CapWorkOrderRecord();
+        record.setPlateNo("京Q7Z8Q6");
+        record.setNowLink(VehicleConstant.PROCESS_ENTER);
+        List<CapWorkOrderRecord> list = capWorkOrderRecordService.selectListByCondition(record);
         if (list.size()>0) {
-            CapVehicleInfo info = list.get(0);
-            CapWorkOrderRecord record = new CapWorkOrderRecord();
-            record.setRecordId(info.getId());
-            CapWorkOrderRecord capWorkOrderRecord = capWorkOrderRecordService.selectListByCondition(record).get(0);
-            //这里还要加工作流的东西。判断之前开始工作流，判断之后走下一步或者这一步不通过去灯光复检那一步
-            //在这里先写开始工作流的
-            capWorkOrderRecordService.startFlow(capWorkOrderRecord);
-            VehicleFlowEntity flow = new VehicleFlowEntity();
-            Map<String, Object> map = new HashMap<String, Object>();
-            flow.setNowLink(VehicleConstant.PROCESS_GAS);
-            map.put("pass", "1");
-            flow.setMap(map);
-            flow.setStepMoney(20);
-            capWorkOrderRecordService.completeFlow(capWorkOrderRecord, flow);
-
-            //插入队列里     先找到对应的尾气检测角色的用户
-            List<SysUser> userList = sysUserService.getUserListByRoleId(VehicleConstant.ROLEID_GAS);
-            flowMessagePushService.addflowByRecord(userList, capWorkOrderRecord, "add");
-
+            capVehicleInfoService.startFlowByCamera("京Q7Z8Q6");
+        } else {
+            capVehicleInfoService.createVehicleInfo("京Q7Z8Q6");
+            capVehicleInfoService.startFlowByCamera("京Q7Z8Q6");
         }
         String jsonStr ="{\"Response\":{\"Open\":1,\"SerialData\":{\"data\":\"/pgAbJdUAAAAAAAAAAAAAQEB/lxLiVkAAAAxAABsuUYAAAAwMDAwMDAwMDEsAQT/MDEwMTAxOTkxMjMxEwAAAFWqAAA3MjIxMTEAAAgAEAABEQASAAAAu7bTrbniwdn/AAEAAQABAGd8//+BbII=\",\"datalen\":148}}}";
         return jsonStr;
@@ -142,12 +175,21 @@ public class CapCameraController {
                     //readCount += in.read(buf, readCount, size - readCount);
                 }
 
-                if ((charset == null || charset.length() == 0) && (size ==readCount))
+                if ((charset == null || charset.length() == 0))
                 {
                     //m_savetxt.m_fwrite(buf,"D:/newfile.txt");
                     //show_json(new String(buf));
-                    CarCardInfo info = getJson(new String(buf));
-                    System.out.println("车辆信息：车牌号-"+info.getLicense()+ "=====车牌颜色-" + info.getPlatecolor() + "====识别时间-" + info.getRecotime());
+                    if (size ==readCount) {
+                        CarCardInfo info = getJson(new String(buf));
+                        return info;
+                    }
+
+                } else {
+                    /*if (size ==readCount) {
+                        CarCardInfo info = getJson(new String(buf, charset));
+                        return info;
+                    }*/
+                    CarCardInfo info = getJson(new String(buf, charset));
                     return info;
                 }
             } catch (IOException e) {
@@ -163,45 +205,50 @@ public class CapCameraController {
      * @param
      */
     public static CarCardInfo getJson(String m_str) {
-        CarCardInfo info = new CarCardInfo();
-        //获取设备名称
-        JSONObject Json = JSONObject.fromObject(m_str);
-        String deviceName= Json.getJSONObject("AlarmInfoPlate").getString("deviceName");
-        System.out.println(deviceName);
+        try {
+            CarCardInfo info = new CarCardInfo();
+            //获取设备名称
+            JSONObject Json = JSONObject.fromObject(m_str);
+            String deviceName= Json.getJSONObject("AlarmInfoPlate").getString("deviceName");
+            System.out.println(deviceName);
 
-        //设备IP地址
-        String ipaddr= Json.getJSONObject("AlarmInfoPlate").getString("ipaddr");
-        System.out.println(ipaddr);
-        //获取识别车牌号
-        String license= Json.getJSONObject("AlarmInfoPlate").getJSONObject("result").getJSONObject("PlateResult").getString("license");
-        System.out.println(license);
+            //设备IP地址
+            String ipaddr= Json.getJSONObject("AlarmInfoPlate").getString("ipaddr");
+            System.out.println(ipaddr);
+            //获取识别车牌号
+            String license= Json.getJSONObject("AlarmInfoPlate").getJSONObject("result").getJSONObject("PlateResult").getString("license");
+            System.out.println(license);
 
-        //获取并保存识别结果大图
-        //String imageFile=Json.getJSONObject("AlarmInfoPlate").getJSONObject("result").getJSONObject("PlateResult").getString("imageFile");
-        //int imageFileLen=Json.getJSONObject("AlarmInfoPlate").getJSONObject("result").getJSONObject("PlateResult").getInt("imageFileLen");
+            //获取并保存识别结果大图
+            //String imageFile=Json.getJSONObject("AlarmInfoPlate").getJSONObject("result").getJSONObject("PlateResult").getString("imageFile");
+            //int imageFileLen=Json.getJSONObject("AlarmInfoPlate").getJSONObject("result").getJSONObject("PlateResult").getInt("imageFileLen");
         /*if(imageFileLen!=0)
             m_savetxt.m_fwrite(m_decode(imageFile),"D:/imageFile.gif");*/
 
-        //获取并保存识别结果小图
-        //String imageFragmentFile=Json.getJSONObject("AlarmInfoPlate").getJSONObject("result").getJSONObject("PlateResult").getString("imageFragmentFile");
-        //int imageFragmentFileLen=Json.getJSONObject("AlarmInfoPlate").getJSONObject("result").getJSONObject("PlateResult").getInt("imageFragmentFileLen");
+            //获取并保存识别结果小图
+            //String imageFragmentFile=Json.getJSONObject("AlarmInfoPlate").getJSONObject("result").getJSONObject("PlateResult").getString("imageFragmentFile");
+            //int imageFragmentFileLen=Json.getJSONObject("AlarmInfoPlate").getJSONObject("result").getJSONObject("PlateResult").getInt("imageFragmentFileLen");
         /*if(imageFragmentFileLen!=0)
             m_savetxt.m_fwrite(m_decode(imageFragmentFile),"D:/imageFragmentFile.gif");*/
 
-        //车牌颜色
-        String platecolor = Json.getJSONObject("AlarmInfoPlate").getJSONObject("result").getJSONObject("PlateResult").getString("platecolor");
-        System.out.println(platecolor);
-        //识别时间
-        String recotime = Json.getJSONObject("AlarmInfoPlate").getJSONObject("result").getJSONObject("PlateResult").getString("recotime");
-        String parkId = Json.getJSONObject("AlarmInfoPlate").getString("ParkID");
+            //车牌颜色
+            String platecolor = Json.getJSONObject("AlarmInfoPlate").getJSONObject("result").getJSONObject("PlateResult").getString("platecolor");
+            System.out.println(platecolor);
+            //识别时间
+            String recotime = Json.getJSONObject("AlarmInfoPlate").getJSONObject("result").getJSONObject("PlateResult").getString("recotime");
+            String parkId = Json.getJSONObject("AlarmInfoPlate").getString("ParkID");
 
-        info.setIpaddr(ipaddr);
-        info.setLicense(license);
-        info.setPlatecolor(platecolor);
-        info.setRecotime(recotime);
-        info.setParkId(parkId);
+            info.setIpaddr(ipaddr);
+            info.setLicense(license);
+            info.setPlatecolor(platecolor);
+            info.setRecotime(recotime);
+            info.setParkId(parkId);
 
-        return info;
+            return info;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
 
 
     }

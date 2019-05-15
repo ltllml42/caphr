@@ -50,6 +50,7 @@
     var countOk = 0;
     var countNotOk = 0;
     var countLight = 0;
+    var countFree = 0;
 
     function subUp(v, buisId, flowStatus) {
         countOk++;
@@ -71,6 +72,9 @@
             var data = {};
             data.id=buisId;
             data.status="pass";
+            if (flowStatus == '尾气检测') {
+                data.free='0';
+            }
             var jsonStr = JSON.stringify(data);
             if (jsonStr != null || jsonStr != [{}]) {
                 $.ajax({
@@ -112,6 +116,9 @@
             var data = {};
             data.id=buisId;
             data.status="nopass";
+            if (flowStatus == '尾气检测') {
+                data.free='0';
+            }
             var jsonStr = JSON.stringify(data);
             if (jsonStr != null || jsonStr != [{}]) {
                 $.ajax({
@@ -121,7 +128,7 @@
                     type : 'post',
                     contentType: "application/json", //必须有
                     success: function (data) {
-                        if(data.flag=="true"){
+                        if(data.flag){
                             //alert("success");
                         } else {
                             //window.location.href="/wx/message/fail";
@@ -135,7 +142,7 @@
         }
     }
 
-    function checkLight(v, buisId) {
+    function checkLight(v, buisId, flowStatus) {
         countLight++;
         if (countLight == 1) {
             $(v).text("再点一次确认");
@@ -156,7 +163,7 @@
                     type : 'post',
                     contentType: "application/json", //必须有
                     success: function (data) {
-                        if(data.flag=="true"){
+                        if(data.flag){
                             //alert("success");
                         } else {
                             //window.location.href="/wx/message/fail";
@@ -168,6 +175,43 @@
             }
         }
     }
+
+    function subFree(v, buisId) {
+        countFree++;
+        if (countLight == 1) {
+            $(v).text("再点一次确认");
+            reOk();
+        } else {
+            $(v).text("免检");
+            reOk();
+            reNotOk();
+            var data = {};
+            data.id=buisId;
+            data.status="pass";
+            data.free="1";
+            var jsonStr = JSON.stringify(data);
+            if (jsonStr != null || jsonStr != [{}]) {
+                $.ajax({
+                    url: '/vehicle/completeVehicleMobile',
+                    dataType: "json",
+                    data: jsonStr,
+                    type : 'post',
+                    contentType: "application/json", //必须有
+                    success: function (data) {
+                        if(data.flag){
+                            //alert("success");
+                        } else {
+                            //window.location.href="/wx/message/fail";
+                            //alert("fail");
+                        }
+                        $("#adelePage").panel("close");
+                    }
+                });
+            }
+        }
+
+    }
+
 
 
     function reOk() {
@@ -278,6 +322,10 @@
             {{#if(d.flowStatus == '上线检测'){ }}
             <a href="#" data-role="button" id="onlylight" onclick="checkLight(this,'{{d.busiId}}')"
                class="ui-btn ui-mini ui-shadow  ui-icon-delete ui-btn-icon-left">只复检车灯</a>
+            {{# } }}
+            {{#if(d.flowStatus == '尾气检测'){ }}
+            <a href="#" data-role="button" id="onlylight" onclick="subFree(this,'{{d.buisId}}','{{d.flowStatus}}')"
+               class="ui-btn ui-mini ui-shadow  ui-icon-delete ui-btn-icon-left">新能源免检</a>
             {{# } }}
             <a href="#" data-role="button" id="re" onclick="revokeProgram(this,'{{d.buisId}}')"
                class="ui-btn ui-mini ui-shadow ui-icon-back ui-btn-icon-left">撤销</a>

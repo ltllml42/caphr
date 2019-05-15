@@ -111,9 +111,19 @@ public class CapWorkOrderRecordService extends BaseServiceImpl<CapWorkOrderRecor
             capVehicleInfoService.claim(capWorkOrderRecord.getRecordId());
         }*/
         capVehicleInfoService.claim(capWorkOrderRecord.getId());
-        taskService.addComment(task.getId(), processId, task.getName()+",花费："+flow.getStepMoney()+"元,检测时间："+nowTime+",检测人员账号："+userName);
-        //这里把那张新表里的值也改一下    complete了就没有task了，taskName不好找，complete之前保存一下这张表好了
-        saveSpendtime(capWorkOrderRecord.getId(), task.getName(), flow);
+        //新能源车辆在到尾气检测这一步的时候判断一下子
+        String nowLink = capWorkOrderRecord.getNowLink();
+        if (VehicleConstant.PROCESS_GAS.equals(nowLink)) {
+            if (VehicleConstant.IS_POWERFREE_NO.equals(capWorkOrderRecord.getIsPowerfree())) {
+                taskService.addComment(task.getId(), processId, task.getName()+",花费："+flow.getStepMoney()+"元,检测时间："+nowTime+",检测人员账号："+userName);
+                //这里把那张新表里的值也改一下    complete了就没有task了，taskName不好找，complete之前保存一下这张表好了
+                saveSpendtime(capWorkOrderRecord.getId(), task.getName(), flow);
+            }
+        } else {
+            taskService.addComment(task.getId(), processId, task.getName()+",花费："+flow.getStepMoney()+"元,检测时间："+nowTime+",检测人员账号："+userName);
+            //这里把那张新表里的值也改一下    complete了就没有task了，taskName不好找，complete之前保存一下这张表好了
+            saveSpendtime(capWorkOrderRecord.getId(), task.getName(), flow);
+        }
         taskService.complete(task.getId(), map);
         capWorkOrderRecord.setNowLink(flow.getNowLink());
         capWorkOrderRecord.setNowStatus(flow.getNowStatus());
@@ -147,14 +157,7 @@ public class CapWorkOrderRecordService extends BaseServiceImpl<CapWorkOrderRecor
             capWorkOrderRecord.setNowLink(VehicleConstant.PROCESS_END);
             capWorkOrderRecord.setEndTime(new Date());
             //这里应该也需要记一条spendtime那张表的数据
-            CapVehicleSpendtime spendtime = new CapVehicleSpendtime();
-            spendtime.setStatus(VehicleConstant.PROCESS_SPENDTIME_END);
-            spendtime.setNowStatus(VehicleConstant.PROCESS_SPENDTIME_CHECKING);
-            spendtime.setCapWorkRecordId(capWorkOrderRecord.getId());
-            spendtime.setStartTime(new Date());
-            spendtime.setTaskName(VehicleProcessEnum.PROCESS_END.getTypeName());
-            capVehicleSpendtimeService.save(spendtime);
-
+            capVehicleSpendtimeService.insertSpendtime(capWorkOrderRecord.getId(), VehicleProcessEnum.PROCESS_END.getTypeName(), VehicleConstant.PROCESS_SPENDTIME_END);
         } else {
 
         }

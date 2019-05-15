@@ -8,7 +8,7 @@ public enum VehicleProcessEnum {
     PROCESS_ONLINE("4","上线检测","online"),
     PROCESS_PAY("5","缴费核算","pay"),
     PROCESS_LIGHT("6","车灯复检","light"),
-    PROCESS_END("7","车检完成","end");
+    PROCESS_END("7","完成","end");
 
 
     private String type;

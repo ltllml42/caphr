@@ -18,7 +18,7 @@ public class TransactionalConfig {
 
   private static final String  PROPAGATION_REQUIRED="PROPAGATION_REQUIRED,-Throwable";
   private static final String  PROPAGATION_REQUIRED_READ="PROPAGATION_REQUIRED,-Throwable,readOnly";
-  private static final String[]  REQUIRED_RULE_TRANSACTION={"insert*","add*","update*","del*","create*"};
+  private static final String[]  REQUIRED_RULE_TRANSACTION={"insert*","add*","update*","del*","create*","save*"};
   private static final String[]  READ_RULE_TRANSACTION={"select*","get*","count*","find*"};
 
   /**
@@ -45,7 +45,7 @@ public class TransactionalConfig {
     public BeanNameAutoProxyCreator getBeanNameAutoProxyCreator(){
       BeanNameAutoProxyCreator proxyCreator=new BeanNameAutoProxyCreator();
       proxyCreator.setProxyTargetClass(true);
-      proxyCreator.setBeanNames("*ServiceImpl","*Controller","*Service");
+      proxyCreator.setBeanNames("*ServiceImpl","*Service");
       proxyCreator.setInterceptorNames("transactionInterceptor");
       return proxyCreator;
   }

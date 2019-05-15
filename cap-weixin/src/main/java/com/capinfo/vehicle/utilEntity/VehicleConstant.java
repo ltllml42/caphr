@@ -92,5 +92,14 @@ public class VehicleConstant {
     public static final String ROLEID_LIGHT = "dcd47a1a1e6448d78de13964ac9c3ecc";
 
 
+    /**
+     * 是否是新能源车在尾气检测步骤免检     0：不免检   （普通车辆）
+     */
+    public static final String IS_POWERFREE_NO = "0";
+    /**
+     * 是否是新能源车在尾气检测步骤免检     1:免检      （新能源车辆）
+     */
+    public static final String IS_POWERFREE_YES = "1";
+
 
 }

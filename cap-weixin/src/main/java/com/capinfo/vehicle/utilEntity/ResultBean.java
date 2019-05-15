@@ -9,4 +9,6 @@ public class ResultBean {
 
     private String status;
 
+    private String free;
+
 }

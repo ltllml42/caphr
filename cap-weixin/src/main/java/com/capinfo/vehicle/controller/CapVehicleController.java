@@ -175,13 +175,7 @@ public class CapVehicleController {
             //在这要再加一条record表的数据
             CapWorkOrderRecord capWorkOrderRecord = capWorkOrderRecordService.saveRecordByVehicleInfo(capVehicleInfo);
             //加一条spendtime这张表的数据
-            CapVehicleSpendtime spendtime = new CapVehicleSpendtime();
-            spendtime.setStatus(VehicleConstant.PROCESS_SPENDTIME_END);
-            spendtime.setNowStatus(VehicleConstant.PROCESS_SPENDTIME_CHECKING);
-            spendtime.setCapWorkRecordId(capWorkOrderRecord.getId());
-            spendtime.setStartTime(new Date());
-            spendtime.setTaskName(VehicleProcessEnum.PROCESS_ENTER.getTypeName());
-            capVehicleSpendtimeService.save(spendtime);
+            capVehicleSpendtimeService.insertSpendtime(capWorkOrderRecord.getId(), VehicleProcessEnum.PROCESS_ENTER.getTypeName(), VehicleConstant.PROCESS_SPENDTIME_END);
             j.setMsg("保存成功");
         } catch (MyException e) {
             j.setMsg("保存失败");
@@ -343,6 +337,9 @@ public class CapVehicleController {
         try {
             CapWorkOrderRecord capWorkOrderRecord = capWorkOrderRecordService.selectByPrimaryKey(bean.getId());
             String beforeNowLink = capWorkOrderRecord.getNowLink();
+            if (VehicleConstant.PROCESS_GAS.equals(beforeNowLink)) {
+                capWorkOrderRecord.setIsPowerfree(bean.getFree());
+            }
             VehicleFlowEntity flow = capVehicleInfoService.getMatchMap(status, capWorkOrderRecord);
             capWorkOrderRecordService.completeFlow(capWorkOrderRecord, flow);
             //在这加推送消息队列的东西应该

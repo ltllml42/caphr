@@ -63,6 +63,9 @@ public class NowLinkUtils {
             case VehicleConstant.ROLEID_LIGHT:
                 nowLink = VehicleConstant.PORCESS_LIGHT;
                 break;
+            default:
+                nowLink = "0";
+                break;
         }
         return nowLink;
     }

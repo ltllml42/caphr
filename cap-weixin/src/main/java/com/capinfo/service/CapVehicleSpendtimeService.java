@@ -73,4 +73,16 @@ public class CapVehicleSpendtimeService extends BaseServiceImpl<CapVehicleSpendt
     }
 
 
+    public void insertSpendtime(String recordId, String taskName, String status) {
+        CapVehicleSpendtime spendtime = new CapVehicleSpendtime();
+        spendtime.setStatus(status);
+        spendtime.setCapWorkRecordId(recordId);
+        spendtime.setStartTime(new Date());
+        spendtime.setStatus(VehicleConstant.PROCESS_SPENDTIME_CHECKING);
+        spendtime.setTaskName(taskName);
+        this.save(spendtime);
+    }
+
+
+
 }

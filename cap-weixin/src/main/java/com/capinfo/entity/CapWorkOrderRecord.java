@@ -58,6 +58,8 @@ public class CapWorkOrderRecord  extends BaseEntity {
     //数据库里没有这个字段不知道为啥。暂时去掉了
     /*@Column(name="remarks")
     private String remarks; //备注*/
+    @Column(name = "is_powerfree")
+    private String isPowerfree;
 
 
 

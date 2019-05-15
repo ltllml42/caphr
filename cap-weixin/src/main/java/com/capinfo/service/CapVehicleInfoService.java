@@ -22,6 +22,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
 
@@ -38,6 +39,10 @@ public class CapVehicleInfoService extends BaseServiceImpl<CapVehicleInfo, Strin
     private TaskService taskService;
     @Autowired
     private RuntimeService runtimeService;
+    @Autowired
+    private FlowMessagePushService flowMessagePushService;
+    @Autowired
+    private SysUserService sysUserService;
 
 
     @Override
@@ -139,7 +144,12 @@ public class CapVehicleInfoService extends BaseServiceImpl<CapVehicleInfo, Strin
                     flow.setNowLink(VehicleConstant.PROCESS_GAS);
                     flow.setNowStatus(VehicleConstant.PROCESS_NOWSTATUS_NO);
                 }
-                flow.setStepMoney(20);
+                //暂时用新加入的变量判断是新能源车辆还是普通车辆
+                if (VehicleConstant.IS_POWERFREE_YES.equals(capWorkOrderRecord.getIsPowerfree())) {
+                    flow.setStepMoney(0);
+                } else {
+                    flow.setStepMoney(20);
+                }
                 break;
             case VehicleConstant.PROCESS_ONLINE:
                 //上线检测
@@ -196,14 +206,17 @@ public class CapVehicleInfoService extends BaseServiceImpl<CapVehicleInfo, Strin
             Task task = taskService.createTaskQuery().processInstanceId(processId).singleResult();
             taskService.claim(task.getId(), userId);
 
-            CapVehicleSpendtime spendtime = new CapVehicleSpendtime();
-            spendtime.setCapWorkRecordId(capWorkOrderRecord.getId());
-            spendtime.setStartTime(new Date());
-            spendtime.setStatus(VehicleConstant.PROCESS_SPENDTIME_CHECKING);
-            spendtime.setTaskName(task.getName());
-            capVehicleSpendtimeService.save(spendtime);
-        }
+            String nowLink = capWorkOrderRecord.getNowLink();
 
+            if (VehicleConstant.PROCESS_GAS.equals(nowLink)) {
+                String free = capWorkOrderRecord.getIsPowerfree();
+                if (VehicleConstant.IS_POWERFREE_NO.equals(free)) {
+                    capVehicleSpendtimeService.insertSpendtime(capWorkOrderRecord.getId(), task.getName(), "");
+                }
+            } else {
+                capVehicleSpendtimeService.insertSpendtime(capWorkOrderRecord.getId(), task.getName(), "");
+            }
+        }
     }
 
 
@@ -218,9 +231,7 @@ public class CapVehicleInfoService extends BaseServiceImpl<CapVehicleInfo, Strin
             record.setRecordId(vehicle.getId());
             List<CapWorkOrderRecord> recordList = capWorkOrderRecordService.selectListByCondition(record);
             record = recordList.get(0);
-            ProcessInstance instance = runtimeService.createProcessInstanceQuery()
-                    .processInstanceId(record.getProcInstId()).singleResult();
-            if (instance == null) {
+            if (VehicleConstant.PROCESS_END.equals(record.getNowLink())) {
                 CapWorkOrderRecord capWorkOrderRecord = capWorkOrderRecordService.saveRecordByVehicleInfo(vehicle);
                 //加一条spendtime这张表的数据
                 CapVehicleSpendtime spendtime = new CapVehicleSpendtime();
@@ -229,11 +240,32 @@ public class CapVehicleInfoService extends BaseServiceImpl<CapVehicleInfo, Strin
                 spendtime.setStartTime(new Date());
                 spendtime.setTaskName(VehicleProcessEnum.PROCESS_ENTER.getTypeName());
                 capVehicleSpendtimeService.save(spendtime);
+            } else {
+                //这个时候不需要在添加数据。这个时候说明还有没结束流程的年检记录
+                //在这看是在哪一步就给哪一步的用户发消息
+                String procInstId = record.getProcInstId();
+                if (StringUtils.isNotBlank(procInstId)) {
+                    Task task = taskService.createTaskQuery().processInstanceId(procInstId).singleResult();
+                    if (task != null) {
+                        String nextRoleId = NowLinkUtils.getRoleIdByNowLink(record.getNowLink());
+                        List<SysUser> nextUserList = sysUserService.getUserListByRoleId(nextRoleId);
+                        flowMessagePushService.addflowByRecord(nextUserList, record, "add");
+                    }
+                }
             }
         } else {
             CapVehicleInfo capVehicleInfo = new CapVehicleInfo();
             capVehicleInfo.setPlateNo(license);
-            capVehicleInfo = this.save(capVehicleInfo);
+            capVehicleInfo.setId(UUID.randomUUID().toString().replaceAll("-", ""));
+            //因为是模拟摄像头拍下车牌后记录数据，createby写一个默认的用户
+            capVehicleInfo.setCreateBy(VehicleConstant.USER_WORKER_ID);
+            capVehicleInfo.setCreateDate(new Date());
+            capVehicleInfo.setUpdateBy(VehicleConstant.USER_WORKER_ID);
+            capVehicleInfo.setUpdateDate(new Date());
+            capVehicleInfo.setDelFlag("0");
+            this.insertSelective(capVehicleInfo);
+
+            //capVehicleInfo = this.save(capVehicleInfo);
             //在这要再加一条record表的数据
             CapWorkOrderRecord capWorkOrderRecord = capWorkOrderRecordService.saveRecordByVehicleInfo(capVehicleInfo);
             //加一条spendtime这张表的数据
@@ -245,6 +277,51 @@ public class CapVehicleInfoService extends BaseServiceImpl<CapVehicleInfo, Strin
             spendtime.setTaskName(VehicleProcessEnum.PROCESS_ENTER.getTypeName());
             capVehicleSpendtimeService.save(spendtime);
         }
+    }
+
+
+
+    public void startFlowByCamera(String license) {
+        CapVehicleInfo vehicleInfo = new CapVehicleInfo();
+        vehicleInfo.setPlateNo(license);
+        List<CapVehicleInfo> list = this.selectListByCondition(vehicleInfo);
+        if (list.size()>0) {
+            CapVehicleInfo info = list.get(0);
+            CapWorkOrderRecord record = new CapWorkOrderRecord();
+            record.setRecordId(info.getId());
+            CapWorkOrderRecord capWorkOrderRecord = capWorkOrderRecordService.selectListByCondition(record).get(0);
+            //这里还要加工作流的东西。判断之前开始工作流，判断之后走下一步或者这一步不通过去灯光复检那一步
+            //在这里先写开始工作流的
+            capWorkOrderRecordService.startFlow(capWorkOrderRecord);
+            VehicleFlowEntity flow = new VehicleFlowEntity();
+            Map<String, Object> map = new HashMap<String, Object>();
+            //String plateNo = capWorkOrderRecord.getPlateNo();
+            //int length = plateNo.length();
+            /*if (length == 7) {
+                //电动车
+                flow.setNowLink(VehicleConstant.PROCESS_ONLINE);
+                map.put("pass", "3");
+                flow.setMap(map);
+                flow.setStepMoney(0);
+            } else {
+                //普通车
+                flow.setNowLink(VehicleConstant.PROCESS_GAS);
+                map.put("pass", "1");
+                flow.setMap(map);
+                flow.setStepMoney(0);
+            }*/
+            //暂时不好判断，让所有的都过到尾气检测那一步，在那一步里加一个“免检”按钮，走免检的不算尾气检测
+            flow.setNowLink(VehicleConstant.PROCESS_GAS);
+            map.put("pass", "1");
+            flow.setMap(map);
+            flow.setStepMoney(0);
+            capWorkOrderRecordService.completeFlow(capWorkOrderRecord, flow);
+            //插入队列里     先找到对应的尾气检测角色的用户
+            List<SysUser> userList = sysUserService.getUserListByRoleId(VehicleConstant.ROLEID_GAS);
+            flowMessagePushService.addflowByRecord(userList, capWorkOrderRecord, "add");
+
+        }
+
     }
 
 
