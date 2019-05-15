@@ -44,6 +44,15 @@
       <if test="isPowerfree!=null and isPowerfree!=''">
         and is_powerfree = #{isPowerfree}
       </if>
+      <if test="plateNo!=null and plateNo!=''">
+        and plate_no = #{plateNo}
+      </if>
+      <if test="vehicleId!=null and vehicleId!=''">
+        and vehicle_id = #{vehicleId}
+      </if>
+      <if test="recordId!=null and recordId!=''">
+        and record_id = #{recordId}
+      </if>
     </where>
     order by create_date desc
   </select>

@@ -250,7 +250,8 @@ public class CapVehicleController {
             //selectByPrimaryKey
             //找到这条数据的子表数据，把nowlink改掉
             CapWorkOrderRecord record = new CapWorkOrderRecord();
-            record.setRecordId(id);
+            //record.setRecordId(id);
+            record.setVehicleId(id);
             CapWorkOrderRecord capWorkOrderRecord = capWorkOrderRecordService.selectListByCondition(record).get(0);
             //这里还要加工作流的东西。判断之前开始工作流，判断之后走下一步或者这一步不通过去灯光复检那一步
             //在这里先写开始工作流的
@@ -298,7 +299,8 @@ public class CapVehicleController {
         }
         try {
             CapWorkOrderRecord record = new CapWorkOrderRecord();
-            record.setRecordId(id);
+            //record.setRecordId(id);
+            record.setVehicleId(id);
             CapWorkOrderRecord capWorkOrderRecord = capWorkOrderRecordService.selectListByCondition(record).get(0);
             if (VehicleConstant.PROCESS_ONLINE.equals(capWorkOrderRecord.getNowLink())) {
                 String onlylight = request.getParameter("onlylight");
@@ -435,7 +437,8 @@ public class CapVehicleController {
         }
         try {
             CapWorkOrderRecord record = new CapWorkOrderRecord();
-            record.setRecordId(id);
+            //record.setRecordId(id);
+            record.setVehicleId(id);
             CapWorkOrderRecord capWorkOrderRecord = capWorkOrderRecordService.selectListByCondition(record).get(0);
             capWorkOrderRecordService.endFlow(capWorkOrderRecord, status);
             jsonUtil.setFlag(true);

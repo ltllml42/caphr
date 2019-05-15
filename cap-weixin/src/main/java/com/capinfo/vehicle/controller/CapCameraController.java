@@ -74,7 +74,7 @@ public class CapCameraController {
     @RequestMapping(value = "testGetCarCardInfo")
     @ResponseBody
     public String testGetCarCardInfo(HttpServletRequest request) {
-        capVehicleInfoService.createVehicleInfo("京A-QW123");
+        capVehicleInfoService.createVehicleInfo("京A·TE012");
         String jsonStr ="{\"Response\":{\"Open\":1,\"SerialData\":{\"data\":\"/pgAbJdUAAAAAAAAAAAAAQEB/lxLiVkAAAAxAABsuUYAAAAwMDAwMDAwMDEsAQT/MDEwMTAxOTkxMjMxEwAAAFWqAAA3MjIxMTEAAAgAEAABEQASAAAAu7bTrbniwdn/AAEAAQABAGd8//+BbII=\",\"datalen\":148}}}";
         return jsonStr;
     }
@@ -134,14 +134,14 @@ public class CapCameraController {
         vehicleInfo.setPlateNo("京A-TE123");
         List<CapVehicleInfo> list = capVehicleInfoService.selectListByCondition(vehicleInfo);*/
         CapWorkOrderRecord record = new CapWorkOrderRecord();
-        record.setPlateNo("京Q7Z8Q6");
+        record.setPlateNo("京A·TE012");
         record.setNowLink(VehicleConstant.PROCESS_ENTER);
         List<CapWorkOrderRecord> list = capWorkOrderRecordService.selectListByCondition(record);
         if (list.size()>0) {
-            capVehicleInfoService.startFlowByCamera("京Q7Z8Q6");
+            capVehicleInfoService.startFlowByCamera("京A·TE012");
         } else {
-            capVehicleInfoService.createVehicleInfo("京Q7Z8Q6");
-            capVehicleInfoService.startFlowByCamera("京Q7Z8Q6");
+            capVehicleInfoService.createVehicleInfo("京A·TE012");
+            capVehicleInfoService.startFlowByCamera("京A·TE012");
         }
         String jsonStr ="{\"Response\":{\"Open\":1,\"SerialData\":{\"data\":\"/pgAbJdUAAAAAAAAAAAAAQEB/lxLiVkAAAAxAABsuUYAAAAwMDAwMDAwMDEsAQT/MDEwMTAxOTkxMjMxEwAAAFWqAAA3MjIxMTEAAAgAEAABEQASAAAAu7bTrbniwdn/AAEAAQABAGd8//+BbII=\",\"datalen\":148}}}";
         return jsonStr;

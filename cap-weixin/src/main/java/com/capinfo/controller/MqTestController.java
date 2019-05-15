@@ -150,7 +150,7 @@ public class MqTestController {
     private JmsTemplate jmsTemplate;
 
     int i=0;
-    @Scheduled(fixedRate = 10000)
+    /*@Scheduled(fixedRate = 10000)
     public void sendOrdinaryQueue() {
         //测试数据
         if(i==list.size()){
@@ -159,7 +159,7 @@ public class MqTestController {
         jmsTemplate.convertAndSend(this.ordinaryQueue, cvInfos.get(i));
         i++;
         System.out.println("msg发送成功");
-    }
+    }*/
 
 
 

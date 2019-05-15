@@ -27,6 +27,7 @@
     a.plate_no AS "plateNo",
     a.vehicle_type AS "vehicleType",
     a.create_date AS "createDate",
+    a.openId AS "openid",
     b.id AS "capWorkOrderRecord.id",
     b.now_link AS "capWorkOrderRecord.nowLink",
     b.now_status AS "capWorkOrderRecord.nowStatus"
@@ -41,6 +42,9 @@
       </if>
       <if test="plateNo !=null and plateNo!=''">
         and a.plate_no = #{plateNo}
+      </if>
+      <if test="openid!= null and openid!=''">
+        and a.openId = #{openid}
       </if>
     </where>
     order by a.create_date desc

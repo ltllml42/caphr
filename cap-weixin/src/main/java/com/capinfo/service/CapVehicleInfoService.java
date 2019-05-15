@@ -232,9 +232,23 @@ public class CapVehicleInfoService extends BaseServiceImpl<CapVehicleInfo, Strin
             vehicleMsg = vehicle;
 
             CapWorkOrderRecord record = new CapWorkOrderRecord();
-            record.setRecordId(vehicle.getId());
+            //record.setRecordId(vehicle.getId());
+            record.setVehicleId(vehicle.getId());
             List<CapWorkOrderRecord> recordList = capWorkOrderRecordService.selectListByCondition(record);
-            record = recordList.get(0);
+            if (recordList.size() == 0) {
+                CapWorkOrderRecord capWorkOrderRecord = capWorkOrderRecordService.saveRecordByVehicleInfo(vehicle);
+                //加一条spendtime这张表的数据
+                CapVehicleSpendtime spendtime = new CapVehicleSpendtime();
+                spendtime.setNowStatus(VehicleConstant.PROCESS_SPENDTIME_CHECKING);
+                spendtime.setCapWorkRecordId(capWorkOrderRecord.getId());
+                spendtime.setStartTime(new Date());
+                spendtime.setTaskName(VehicleProcessEnum.PROCESS_ENTER.getTypeName());
+                capVehicleSpendtimeService.save(spendtime);
+                record = capWorkOrderRecord;
+            } else {
+                record = recordList.get(0);
+            }
+
 
             vehicleMsg.setCapWorkOrderRecord(record);
 
@@ -303,7 +317,8 @@ public class CapVehicleInfoService extends BaseServiceImpl<CapVehicleInfo, Strin
         if (list.size()>0) {
             CapVehicleInfo info = list.get(0);
             CapWorkOrderRecord record = new CapWorkOrderRecord();
-            record.setRecordId(info.getId());
+            //record.setRecordId(info.getId());
+            record.setVehicleId(info.getId());
             CapWorkOrderRecord capWorkOrderRecord = capWorkOrderRecordService.selectListByCondition(record).get(0);
             //这里还要加工作流的东西。判断之前开始工作流，判断之后走下一步或者这一步不通过去灯光复检那一步
             //在这里先写开始工作流的

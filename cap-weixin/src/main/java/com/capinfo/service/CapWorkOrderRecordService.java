@@ -54,7 +54,8 @@ public class CapWorkOrderRecordService extends BaseServiceImpl<CapWorkOrderRecor
         CapWorkOrderRecord capWorkOrderRecord = new CapWorkOrderRecord();
         capWorkOrderRecord.setId(UUID.randomUUID().toString().replaceAll("-", ""));
         capWorkOrderRecord.setPlateNo(capVehicleInfo.getPlateNo());
-        capWorkOrderRecord.setRecordId(capVehicleInfo.getId());
+        //capWorkOrderRecord.setRecordId(capVehicleInfo.getId());
+        capWorkOrderRecord.setVehicleId(capVehicleInfo.getId());
         capWorkOrderRecord.setDelFlag("0");
         capWorkOrderRecord.setUpdateBy(capVehicleInfo.getUpdateBy());
         capWorkOrderRecord.setUpdateDate(new Date());
