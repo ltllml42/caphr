@@ -1,29 +1,30 @@
 package com.capinfo.controller;
 
+import com.capinfo.config.ActiveMQConfig;
+import lombok.extern.log4j.Log4j;
+import me.chanjar.weixin.common.api.WxConsts;
 import me.chanjar.weixin.common.error.WxErrorException;
-import me.chanjar.weixin.common.util.crypto.SHA1;
+import me.chanjar.weixin.mp.api.WxMpKefuService;
 import me.chanjar.weixin.mp.api.WxMpMessageRouter;
 import me.chanjar.weixin.mp.api.WxMpService;
+import me.chanjar.weixin.mp.bean.kefu.WxMpKefuMessage;
 import me.chanjar.weixin.mp.bean.message.WxMpXmlMessage;
 import me.chanjar.weixin.mp.bean.message.WxMpXmlOutMessage;
-import me.chanjar.weixin.mp.bean.message.WxMpXmlOutTextMessage;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
+import org.springframework.jms.annotation.JmsListener;
 import org.springframework.web.bind.annotation.*;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.PrintWriter;
 
 @RestController
 @RequestMapping(value = "/wx/portal/{appid}")
+@Log4j
 public class WeiXinController {
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     private WxMpService wxService;
+
 
     private WxMpMessageRouter messageRouter;
 
@@ -119,6 +120,8 @@ public class WeiXinController {
 
         return null;
     }
+
+    //@JmsListener(destination = ActiveMQConfig.MSG_WIXIN_MESSAGE_QUEUE)
 
 
 

@@ -77,7 +77,7 @@ public class CapVehicleSpendtimeService extends BaseServiceImpl<CapVehicleSpendt
     public List<CapVehicleSpendtime> selectBySort(CapVehicleSpendtime cvst) {
         Example example = new Example(CapVehicleSpendtime.class);
         Example.Criteria criteria = example.createCriteria();
-        criteria.andEqualTo("cap_work_record_id",cvst.getCapWorkRecordId());
+        criteria.andEqualTo("capWorkRecordId",cvst.getCapWorkRecordId());
         example.setOrderByClause("end_time desc");
         return capVehicleSpendtimeMapper.selectByExample(example);
     }

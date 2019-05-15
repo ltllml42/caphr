@@ -15,7 +15,7 @@
 <link rel="stylesheet" href="${re.contextPath}/plugin/css/demos.css">
 
 </head>
-  <body ontouchstart>	
+  <body onload="closeWindow();">
 <div class="weui-msg">
   <div class="weui-msg__icon-area"><i class="weui-icon-warn weui-icon_msg"></i></div>
   <div class="weui-msg__text-area">
@@ -24,7 +24,9 @@
   </div>
   <div class="weui-msg__opr-area">
     <p class="weui-btn-area">
-      <a href="javascript:;" class="weui-btn weui-btn_warn">返回</a>
+      <div id="show">
+          将倒计时5秒后关闭当前窗口，返回公众号窗口
+      </div>
     </p>
   </div>
   <div class="weui-msg__extra-area">
@@ -54,6 +56,21 @@
   $(function() {
     FastClick.attach(document.body);
   });
+
+  var time=5;
+  function closeWindow(){
+      window.setTimeout('closeWindow()',1000);
+      if(time>0){
+          document.getElementById("show").innerHTML=" 将倒计时<font color=red>"+time+"</font>秒后关闭当前窗口,返回微信公众号窗口";
+          time--;
+      }else{
+          WeixinJSBridge.call('closeWindow');
+//this.window.opener=null; //关闭窗口时不出现提示窗口
+//window.close();
+      }
+  }
+
+
 </script>
 
 

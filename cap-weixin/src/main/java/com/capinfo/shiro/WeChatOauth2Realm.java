@@ -22,10 +22,12 @@ import org.apache.shiro.session.Session;
 import org.apache.shiro.subject.PrincipalCollection;
 import org.apache.shiro.subject.Subject;
 import org.apache.shiro.util.CollectionUtils;
+import org.apache.shiro.web.util.WebUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.security.Principal;
 import java.util.Date;
 import java.util.HashMap;
@@ -94,15 +96,15 @@ public class WeChatOauth2Realm extends AuthenticatingRealm {
                 capWxAccountFansService.updateByPrimaryKey(fansRelation);
                 CapVehicleInfo t = new CapVehicleInfo();
                 t.setFansId(fansRelation.getId());
-
+                //车辆
                 xwToken.setCvInfoList(capVehicleInfoService.select(t));
                 xwToken.setFansInfo(fansRelation);
             }
             Subject subject = ShiroUtil.getSubject();
             Session session= subject.getSession();
             session.setAttribute("weiXinUser",xwToken);
-        } catch (WxErrorException e) {
-            e.printStackTrace();
+        } catch (Exception e) {
+            throw new IllegalArgumentException(e.getMessage());
         }
         return new SimpleAuthenticationInfo(xwToken,xwToken.getCredentials(),getName());
     }

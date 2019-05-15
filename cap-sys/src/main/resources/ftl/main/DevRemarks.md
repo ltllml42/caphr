@@ -66,6 +66,9 @@ freemarker中显示某对象使用${name}.
 
 可以使用lt代替<，lte代替<=，gt代替>，gte代替>=
 
+时间类型
+${(foundDate?string("yyyy-MM-dd"))!} 
+
 ```
 
 

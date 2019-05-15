@@ -10,7 +10,9 @@ import com.capinfo.utils.WeiXinUtils;
 import com.capinfo.vo.BindingCarBean;
 import com.google.gson.GsonBuilder;
 import me.chanjar.weixin.common.error.WxErrorException;
+import me.chanjar.weixin.mp.api.WxMpKefuService;
 import me.chanjar.weixin.mp.api.WxMpService;
+import me.chanjar.weixin.mp.bean.kefu.WxMpKefuMessage;
 import me.chanjar.weixin.mp.bean.result.WxMpOAuth2AccessToken;
 import me.chanjar.weixin.mp.bean.result.WxMpUser;
 import org.apache.commons.lang3.StringUtils;
@@ -146,6 +148,7 @@ public class WeiXinUserController {
                     vehicleInfo.setLastTestTime(lastTestTime);
                     vehicleInfo.setBuyTime(buyTime);
                     vehicleInfo.setFansId(fansInfo.getId());
+                    vehicleInfo.setOpenid(capWxAccountFans.getOpenId());
                     capVehicleInfoService.insertSelective(vehicleInfo);
                     List<CapVehicleInfo> capVehicleInfos = new ArrayList<CapVehicleInfo>();
                     capVehicleInfos.add(vehicleInfo);
@@ -207,6 +210,8 @@ public class WeiXinUserController {
     public String success(@PathVariable String appid) {
         return "/weixin/success";
     }
+
+
 
 
 }

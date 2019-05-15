@@ -57,10 +57,7 @@ public class WxMenuController {
         button2.setName("验车须知");
         WxMenuButton button3 = new WxMenuButton();
         button3.setName("我的车辆");
-
         menu.getButtons().add(button1);
-
-
         WxMenuButton button11 = new WxMenuButton();
         button11.setName("预约验车");
         button11.setType(MenuButtonType.VIEW);
@@ -109,10 +106,7 @@ public class WxMenuController {
         button2.getSubButtons().add(button22);
         button2.getSubButtons().add(button23);
         button2.getSubButtons().add(button24);
-
         menu.getButtons().add(button2);
-
-
         WxMenuButton button31 = new WxMenuButton();
         button31.setName("车辆绑定");
         button31.setType(MenuButtonType.VIEW);
