@@ -76,7 +76,7 @@ To change this template use File | Settings | File Templates.-->
        return false;
    });
    $("#onlylight").click(function () {
-       layerAjax('completeVehicle',{"id": "${capWorkOrderRecord.id}","status": "nopass","onlylight":"yes"},'vehicleList');
+       layerAjax('completeVehicle',{"id": "${capWorkOrderRecordy.id}","status": "nopass","onlylight":"yes"},'vehicleList');
        var index = parent.layer.getFrameIndex(window.name);
        parent.layer.close(index);
        return false;

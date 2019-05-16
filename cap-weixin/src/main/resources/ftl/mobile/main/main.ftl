@@ -15,6 +15,12 @@
     <div data-role="header" data-position="fixed" data-theme="b">
         <h1>车检管理系统</h1>
         <button class="layui-btn layui-btn-sm icon-position-button" id="refreshData"><i class="layui-icon">ဂ</i></button>
+        <a class="layui-btn layui-btn-sm icon-position-button" href="/logout"><i class="fa fa-sign-out" aria-hidden="true"></i> 注销</a>
+        <#--<ul class="layui-nav layui-layout-right kit-nav">
+            <button class="layui-btn layui-btn-sm icon-position-button" id="refreshData"><i class="layui-icon">ဂ</i></button>
+            <li class="layui-nav-item"><a href="logout"><i class="fa fa-sign-out" aria-hidden="true"></i> 注销</a></li>
+        </ul>-->
+
     </div>
     <div data-role="main" class="ui-content">
         <h2>
@@ -285,9 +291,9 @@
     <li id="channel_{{d.buisId}}" flag="empty" >
         <a href="javascript:void(0);" onclick="showPanel('{{d.procInstId}}','{{d.plateNo}}','{{d.detectionState}}','{{d.buisId}}','{{d.flowStatus}}')" data-swipe-close="false" data-dismissible="false">
             <span class="ui-listview-inset">{{d.plateNo}}</span>
-            <span class="ui-listview-inset" style="margin-left: 50px;">{{d.detectionState}}</span>
-            <span class="ui-listview-inset {{d.statusCss}} " style="margin-left: 50px;">{{d.nowStatus}}</span>
-            <span class="ui-listview-inset" style="margin-left: 50px;">{{d.flowStatus}}</span>
+            <span class="ui-listview-inset" style="margin-left: 20px;">{{d.detectionState}}</span>
+            <span class="ui-listview-inset {{d.statusCss}} " style="margin-left: 20px;">{{d.nowStatus}}</span>
+            <span class="ui-listview-inset" style="margin-left: 20px;">{{d.flowStatus}}</span>
             <span class="ui-li-count">{{d.newIcon}}</span>
         </a>
     </li>
@@ -296,18 +302,18 @@
 <script id="updateChannel" type="text/html">
         <a href="javascript:void(0);" onclick="showPanel('{{d.procInstId}}','{{d.plateNo}}','{{d.detectionState}}','{{d.buisId}}','{{d.flowStatus}}')" data-swipe-close="false" data-dismissible="false">
             <span class="ui-listview-inset">{{d.plateNo}}</span>
-            <span class="ui-listview-inset" style="margin-left: 50px;">{{d.detectionState}}</span>
-            <span class="ui-listview-inset {{d.statusCss}} " style="margin-left: 50px;">{{d.nowStatus}}</span>
-            <span class="ui-listview-inset" style="margin-left: 50px;">{{d.flowStatus}}</span>
+            <span class="ui-listview-inset" style="margin-left: 20px;">{{d.detectionState}}</span>
+            <span class="ui-listview-inset {{d.statusCss}} " style="margin-left: 20px;">{{d.nowStatus}}</span>
+            <span class="ui-listview-inset" style="margin-left: 20px;">{{d.flowStatus}}</span>
             <span class="ui-li-count">{{d.newIcon}}</span>
         </a>
 </script>
 <script id="updateChannelNoClick" type="text/html">
     <a href="javascript:void(0);"  data-swipe-close="false" data-dismissible="false">
         <span class="ui-listview-inset">{{d.plateNo}}</span>
-        <span class="ui-listview-inset" style="margin-left: 50px;">{{d.detectionState}}</span>
-        <span class="ui-listview-inset {{d.statusCss}} " style="margin-left: 50px;">{{d.nowStatus}}</span>
-        <span class="ui-listview-inset" style="margin-left: 50px;">{{d.flowStatus}}</span>
+        <span class="ui-listview-inset" style="margin-left: 20px;">{{d.detectionState}}</span>
+        <span class="ui-listview-inset {{d.statusCss}} " style="margin-left: 20px;">{{d.nowStatus}}</span>
+        <span class="ui-listview-inset" style="margin-left: 20px;">{{d.flowStatus}}</span>
         <span class="ui-li-count">{{d.newIcon}}</span>
     </a>
 </script>
@@ -330,7 +336,7 @@
                class="ui-btn ui-mini ui-shadow  ui-icon-delete ui-btn-icon-left">不通过</a>
             {{# } }}
             {{#if(d.flowStatus == '上线检测'){ }}
-            <a href="#" data-role="button" id="onlylight" onclick="checkLight(this,'{{d.busiId}}')"
+            <a href="#" data-role="button" id="onlylight" onclick="checkLight(this,'{{d.buisId}}')"
                class="ui-btn ui-mini ui-shadow  ui-icon-delete ui-btn-icon-left">只复检车灯</a>
             {{# } }}
             {{#if(d.flowStatus == '尾气检测'){ }}

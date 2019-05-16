@@ -113,7 +113,6 @@ public class CapVehicleController {
     @ApiOperation(value = "/showVehicleList", httpMethod = "GET", notes = "意见列表")
     @GetMapping(value = "showVehicleList")
     @ResponseBody
-    @RequiresPermissions("car:show")
     public ReType showAdviceList(CapVehicleInfo capVehicleInfo, HttpServletRequest request, Model model, String page, String limit) {
         String pageType = request.getParameter("pageType");
         CapWorkOrderRecord record = new CapWorkOrderRecord();

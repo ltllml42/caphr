@@ -38,7 +38,7 @@ public class NowLinkUtils {
         } else if (VehicleConstant.PROCESS_ONLINE.equals(nowLink)) {
             roleId = VehicleConstant.ROLEID_ONLINE;
         } else if (VehicleConstant.PORCESS_LIGHT.equals(nowLink)) {
-            roleId = VehicleConstant.PORCESS_LIGHT;
+            roleId = VehicleConstant.ROLEID_LIGHT;
         }
         return roleId;
     }
@@ -63,6 +63,9 @@ public class NowLinkUtils {
             case VehicleConstant.ROLEID_LIGHT:
                 nowLink = VehicleConstant.PORCESS_LIGHT;
                 break;
+            /*case VehicleConstant.ROLEID_PAY:
+                nowLink = VehicleConstant.PROCESS_PAY;
+                break;*/
             default:
                 nowLink = "0";
                 break;
