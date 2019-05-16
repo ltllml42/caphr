@@ -70,6 +70,8 @@ public class CapWorkOrderRecord  extends BaseEntity {
     private String isPowerfree;
 
 
+    private CapVehicleInfo capVehicleInfo;
+
 
 
 }

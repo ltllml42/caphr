@@ -7,12 +7,20 @@
     <link rel="stylesheet" href="${re.contextPath}/plugin/jmq/css/jquery.mobile-1.4.5.css"/>
     <link rel="stylesheet" href="${re.contextPath}/plugin/jmq/css/jquery.mobile.theme-1.4.5.css"/>
     <link rel="stylesheet" href="${re.contextPath}/plugin/jmq/css/jqm-demos.css"/>
+    <link rel="stylesheet" href="${re.contextPath}/plugin/layui/css/layui.css">
 </head>
 <body>
 
 <div data-role="page" id="login">
     <div data-role="header" data-position="fixed" data-theme="b">
         <h1>车检管理系统</h1>
+        <button class="layui-btn layui-btn-sm icon-position-button" id="refreshData"><i class="layui-icon">ဂ</i></button>
+        <a class="layui-btn layui-btn-sm icon-position-button" href="/logout"><i class="fa fa-sign-out" aria-hidden="true"></i> 注销</a>
+        <#--<ul class="layui-nav layui-layout-right kit-nav">
+            <button class="layui-btn layui-btn-sm icon-position-button" id="refreshData"><i class="layui-icon">ဂ</i></button>
+            <li class="layui-nav-item"><a href="logout"><i class="fa fa-sign-out" aria-hidden="true"></i> 注销</a></li>
+        </ul>-->
+
     </div>
     <div data-role="main" class="ui-content">
         <h2>
@@ -279,9 +287,9 @@
     <li id="channel_{{d.buisId}}" flag="empty" >
         <a href="javascript:void(0);" onclick="showPanel('{{d.procInstId}}','{{d.plateNo}}','{{d.detectionState}}','{{d.buisId}}','{{d.flowStatus}}')" data-swipe-close="false" data-dismissible="false">
             <span class="ui-listview-inset">{{d.plateNo}}</span>
-            <span class="ui-listview-inset" style="margin-left: 50px;">{{d.detectionState}}</span>
-            <span class="ui-listview-inset {{d.statusCss}} " style="margin-left: 50px;">{{d.nowStatus}}</span>
-            <span class="ui-listview-inset" style="margin-left: 50px;">{{d.flowStatus}}</span>
+            <span class="ui-listview-inset" style="margin-left: 20px;">{{d.detectionState}}</span>
+            <span class="ui-listview-inset {{d.statusCss}} " style="margin-left: 20px;">{{d.nowStatus}}</span>
+            <span class="ui-listview-inset" style="margin-left: 20px;">{{d.flowStatus}}</span>
             <span class="ui-li-count">{{d.newIcon}}</span>
         </a>
     </li>
@@ -290,11 +298,20 @@
 <script id="updateChannel" type="text/html">
         <a href="javascript:void(0);" onclick="showPanel('{{d.procInstId}}','{{d.plateNo}}','{{d.detectionState}}','{{d.buisId}}','{{d.flowStatus}}')" data-swipe-close="false" data-dismissible="false">
             <span class="ui-listview-inset">{{d.plateNo}}</span>
-            <span class="ui-listview-inset" style="margin-left: 50px;">{{d.detectionState}}</span>
-            <span class="ui-listview-inset {{d.statusCss}} " style="margin-left: 50px;">{{d.nowStatus}}</span>
-            <span class="ui-listview-inset" style="margin-left: 50px;">{{d.flowStatus}}</span>
+            <span class="ui-listview-inset" style="margin-left: 20px;">{{d.detectionState}}</span>
+            <span class="ui-listview-inset {{d.statusCss}} " style="margin-left: 20px;">{{d.nowStatus}}</span>
+            <span class="ui-listview-inset" style="margin-left: 20px;">{{d.flowStatus}}</span>
             <span class="ui-li-count">{{d.newIcon}}</span>
         </a>
+</script>
+<script id="updateChannelNoClick" type="text/html">
+    <a href="javascript:void(0);"  data-swipe-close="false" data-dismissible="false">
+        <span class="ui-listview-inset">{{d.plateNo}}</span>
+        <span class="ui-listview-inset" style="margin-left: 20px;">{{d.detectionState}}</span>
+        <span class="ui-listview-inset {{d.statusCss}} " style="margin-left: 20px;">{{d.nowStatus}}</span>
+        <span class="ui-listview-inset" style="margin-left: 20px;">{{d.flowStatus}}</span>
+        <span class="ui-li-count">{{d.newIcon}}</span>
+    </a>
 </script>
 
 
@@ -315,7 +332,7 @@
                class="ui-btn ui-mini ui-shadow  ui-icon-delete ui-btn-icon-left">不通过</a>
             {{# } }}
             {{#if(d.flowStatus == '上线检测'){ }}
-            <a href="#" data-role="button" id="onlylight" onclick="checkLight(this,'{{d.busiId}}')"
+            <a href="#" data-role="button" id="onlylight" onclick="checkLight(this,'{{d.buisId}}')"
                class="ui-btn ui-mini ui-shadow  ui-icon-delete ui-btn-icon-left">只复检车灯</a>
             {{# } }}
             {{#if(d.flowStatus == '尾气检测'){ }}
@@ -335,7 +352,7 @@
     $(document).ready(function() {
         loadData();
 
-        $("#myFilter").click(function () {
+        $("#refreshData").click(function () {
             loadData();
         });
     })
@@ -350,10 +367,17 @@
                 console.log(result.body);
                 var json = JSON.parse(result.body);
                 var data = $.parseJSON( json.content );
+                var nowStatus = data.nowStatus;
                 console.log(data);
                 if(data.action=='add'){
                     if(selectOne(data.buisId)){
-                        var uptpl = document.getElementById('updateChannel').innerHTML;
+                        var uptpl = "";
+                        if (nowStatus == "未检测" ) {
+                            uptpl = document.getElementById('updateChannel').innerHTML;
+                        } else {
+                            uptpl = document.getElementById('updateChannelNoClick').innerHTML;
+                        }
+                        //var uptpl = document.getElementById('updateChannel').innerHTML;
                         laytpl(uptpl).render(data, function (html) {
                             $("#channel_"+data.buisId).html(html);
                             $("#channel_"+data.buisId).slideDown();
@@ -374,7 +398,13 @@
                         });
                     }else{
                         voiceTTs(data.plateNo + "状态变更为"+data.nowStatus)
-                        var uptpl = document.getElementById('updateChannel').innerHTML;
+                        //var uptpl = document.getElementById('updateChannel').innerHTML;
+                        var uptpl = "";
+                        if (nowStatus == "未检测") {
+                            uptpl = document.getElementById('updateChannel').innerHTML;
+                        } else {
+                            uptpl = document.getElementById('updateChannelNoClick').innerHTML;
+                        }
                         laytpl(uptpl).render(data, function (html) {
                             $(eId).html(html)
                             //$("#channel_"+data.buisId).html(html);
@@ -391,7 +421,13 @@
                         return;
                     };
                     voiceTTs(data.plateNo + "状态变更为"+data.nowStatus)
-                    var uptpl = document.getElementById('updateChannel').innerHTML;
+                    var uptpl = "";
+                    if (nowStatus == "未检测") {
+                        uptpl = document.getElementById('updateChannel').innerHTML;
+                    } else {
+                        uptpl = document.getElementById('updateChannelNoClick').innerHTML;
+                    }
+                    //var uptpl = document.getElementById('updateChannel').innerHTML;
                     laytpl(uptpl).render(data, function (html) {
                         $("#channel_"+data.buisId).html(html);
                         $("#channel_"+data.buisId).slideDown();

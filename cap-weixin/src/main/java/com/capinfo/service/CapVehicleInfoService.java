@@ -88,7 +88,7 @@ public class CapVehicleInfoService extends BaseServiceImpl<CapVehicleInfo, Strin
             capVehicleInfo.setUpdateBy(VehicleConstant.USER_WORKER_ID);
             capVehicleInfo.setUpdateDate(new Date());
             capVehicleInfo.setDelFlag("0");
-            this.insertSelective(capVehicleInfo);
+            this.getMappser().insert(capVehicleInfo);
         } else {
             capVehicleInfo.setUpdateBy(currentUser.getId());
             capVehicleInfo.setUpdateDate(new Date());
@@ -197,25 +197,23 @@ public class CapVehicleInfoService extends BaseServiceImpl<CapVehicleInfo, Strin
             userId = currentUser.getId();
         }
         CapWorkOrderRecord capWorkOrderRecord = capWorkOrderRecordService.selectByPrimaryKey(id);
-        if (StringUtils.isBlank(capWorkOrderRecord.getNowStatus()) || "2".equals(capWorkOrderRecord.getNowStatus())) {
-            //为空或者为2不通过的时候，证明没签收过。已经是1的时候说明点进来了关掉又点进来了
-            capWorkOrderRecord.setNowStatus(VehicleConstant.PROCESS_NOWSTATUS_CHECKING);
-            capWorkOrderRecord.setUpdateDate(new Date());
-            capWorkOrderRecordService.updateByPrimaryKey(capWorkOrderRecord);
-            String processId = capWorkOrderRecord.getProcInstId();
-            Task task = taskService.createTaskQuery().processInstanceId(processId).singleResult();
-            taskService.claim(task.getId(), userId);
+        //为空或者为2不通过的时候，证明没签收过。已经是1的时候说明点进来了关掉又点进来了
+        capWorkOrderRecord.setNowStatus(VehicleConstant.PROCESS_NOWSTATUS_CHECKING);
+        capWorkOrderRecord.setUpdateDate(new Date());
+        capWorkOrderRecordService.updateByPrimaryKey(capWorkOrderRecord);
+        String processId = capWorkOrderRecord.getProcInstId();
+        Task task = taskService.createTaskQuery().processInstanceId(processId).singleResult();
+        taskService.claim(task.getId(), userId);
 
-            String nowLink = capWorkOrderRecord.getNowLink();
+        String nowLink = capWorkOrderRecord.getNowLink();
 
-            if (VehicleConstant.PROCESS_GAS.equals(nowLink)) {
-                String free = capWorkOrderRecord.getIsPowerfree();
-                if (VehicleConstant.IS_POWERFREE_NO.equals(free)) {
-                    capVehicleSpendtimeService.insertSpendtime(capWorkOrderRecord.getId(), task.getName(), "");
-                }
-            } else {
+        if (VehicleConstant.PROCESS_GAS.equals(nowLink)) {
+            String free = capWorkOrderRecord.getIsPowerfree();
+            if (VehicleConstant.IS_POWERFREE_NO.equals(free)) {
                 capVehicleSpendtimeService.insertSpendtime(capWorkOrderRecord.getId(), task.getName(), "");
             }
+        } else {
+            capVehicleSpendtimeService.insertSpendtime(capWorkOrderRecord.getId(), task.getName(), "");
         }
     }
 
@@ -248,8 +246,6 @@ public class CapVehicleInfoService extends BaseServiceImpl<CapVehicleInfo, Strin
             } else {
                 record = recordList.get(0);
             }
-
-
             vehicleMsg.setCapWorkOrderRecord(record);
 
             if (VehicleConstant.PROCESS_END.equals(record.getNowLink())) {
@@ -324,22 +320,7 @@ public class CapVehicleInfoService extends BaseServiceImpl<CapVehicleInfo, Strin
             capWorkOrderRecordService.startFlow(capWorkOrderRecord);
             VehicleFlowEntity flow = new VehicleFlowEntity();
             Map<String, Object> map = new HashMap<String, Object>();
-            //String plateNo = capWorkOrderRecord.getPlateNo();
-            //int length = plateNo.length();
-            /*if (length == 7) {
-                //电动车
-                flow.setNowLink(VehicleConstant.PROCESS_ONLINE);
-                map.put("pass", "3");
-                flow.setMap(map);
-                flow.setStepMoney(0);
-            } else {
-                //普通车
-                flow.setNowLink(VehicleConstant.PROCESS_GAS);
-                map.put("pass", "1");
-                flow.setMap(map);
-                flow.setStepMoney(0);
-            }*/
-            //暂时不好判断，让所有的都过到尾气检测那一步，在那一步里加一个“免检”按钮，走免检的不算尾气检测
+            //暂时不好判断电动车还是普通车，让所有的都过到尾气检测那一步，在那一步里加一个“免检”按钮，走免检的不算尾气检测
             flow.setNowLink(VehicleConstant.PROCESS_GAS);
             map.put("pass", "1");
             flow.setMap(map);

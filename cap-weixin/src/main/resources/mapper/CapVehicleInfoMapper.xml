@@ -31,7 +31,7 @@
     b.id AS "capWorkOrderRecord.id",
     b.now_link AS "capWorkOrderRecord.nowLink",
     b.now_status AS "capWorkOrderRecord.nowStatus"
-    from cap_vehicle_info a left join cap_work_order_record b on a.id=b.record_id
+    from cap_vehicle_info a left join cap_work_order_record b on a.id=b.vehicle_id
     <where>
       a.del_flag = '0'
       <if test="capWorkOrderRecord != null and capWorkOrderRecord.nowLink!=null and capWorkOrderRecord.nowLink!=''">
@@ -64,6 +64,9 @@
       </if>
       <if test="plateNo !=null and plateNo!=''">
         and a.plate_no = #{plateNo}
+      </if>
+      <if test="openid!= null and openid!=''">
+        and a.openId = #{openid}
       </if>
     </where>
   </select>

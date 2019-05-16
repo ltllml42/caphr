@@ -32,6 +32,6 @@ public interface RoleService extends BaseService<SysRole,String> {
   @Override
   List<SysRole> selectListByPage(SysRole sysRole);
 
-  List<SysRole> getUserListByRoleId(String userId);
+  List<SysRole> getRoleListByUser(String userId);
 
 }

@@ -90,6 +90,10 @@ public class VehicleConstant {
      * 车灯复检人员   角色id
      */
     public static final String ROLEID_LIGHT = "dcd47a1a1e6448d78de13964ac9c3ecc";
+    /**
+     * 缴费核算人员   角色id
+     */
+    public static final String ROLEID_PAY = "b87da330613241278988e345022fb08b";
 
 
     /**

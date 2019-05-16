@@ -27,7 +27,7 @@ To change this template use File | Settings | File Templates.-->
 <div class="x-body">
   <div class="layui-form layui-form-pane" style="margin-left: 20px;">
     <div style="width:100%;height:400px;overflow: auto;">
-        <input type="hidden" id="id" name="id" value="${capVehicleInfo.id}"/>
+        <input type="hidden" id="id" name="id" value="${capWorkOrderRecord.id}"/>
     <div class="layui-form-item">
       <fieldset class="layui-elem-field layui-field-title" style="margin-top: 10px;">
         <legend style="font-size:16px;">车辆信息</legend>
@@ -39,10 +39,10 @@ To change this template use File | Settings | File Templates.-->
       </label>
       <div class="layui-input-inline">
         <input type="text"  id="plateNo" name="plateNo"  lay-verify="plateNo"
-               autocomplete="off" class="layui-input" value="${capVehicleInfo.plateNo}"/>
+               autocomplete="off" class="layui-input" value="${capWorkOrderRecord.plateNo}"/>
       </div>
     </div>
-    <div class="layui-form-item">
+    <#--<div class="layui-form-item">
     <div class="layui-inline">
       <label for="vehicleType" class="layui-form-label">
         <span class="x-red">*</span>车辆类型
@@ -51,7 +51,7 @@ To change this template use File | Settings | File Templates.-->
         <input type="text" id="vehicleType" name="vehicleType" lay-verify="vehicleType"  autocomplete="off" class="layui-input" value="${capVehicleInfo.vehicleType}"/>
       </div>
     </div>
-    </div>
+    </div>-->
 
     </div>
   <div style="width: 100%;height: 55px;background-color: white;border-top:1px solid #e6e6e6;
@@ -99,7 +99,7 @@ To change this template use File | Settings | File Templates.-->
        } else {
            url = "completeVehicle";
        }
-       layerAjax(url,{"id": "${capVehicleInfo.id}","status": "pass"},'vehicleList');
+       layerAjax(url,{"id": "${capWorkOrderRecord.id}","status": "pass"},'vehicleList');
        return false;
    });
 
@@ -108,7 +108,7 @@ To change this template use File | Settings | File Templates.-->
           var url = "";
           if (pageType == "enter") {
               url = "completeVehicleAppear";
-              layerAjax(url,{"id": "${capVehicleInfo.id}","status": "nopass"},'vehicleList');
+              layerAjax(url,{"id": "${capWorkOrderRecord.id}","status": "nopass"},'vehicleList');
               return false;
           } else if (pageType == 'online') {
               layer.open({
@@ -120,11 +120,11 @@ To change this template use File | Settings | File Templates.-->
                   shadeClose: false,
                   shade: 0.4,
                   title: '上线检测不通过确认',
-                  content: 'nopassOnline?id=${capVehicleInfo.id}'
+                  content: 'nopassOnline?id=${capWorkOrderRecord.id}'
               });
           } else {
               url = "completeVehicle";
-              layerAjax(url,{"id": "${capVehicleInfo.id}","status": "nopass"},'vehicleList');
+              layerAjax(url,{"id": "${capWorkOrderRecord.id}","status": "nopass"},'vehicleList');
               return false;
           }
 
