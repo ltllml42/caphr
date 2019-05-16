@@ -195,10 +195,12 @@ public class CapVehicleController {
      */
     @GetMapping(value = "showComplete")
     public String showComplete(String id, HttpServletRequest request, Model model, boolean detail) {
-        CapVehicleInfo capVehicleInfo = capVehicleInfoService.selectByPrimaryKey(id);
+        //CapVehicleInfo capVehicleInfo = capVehicleInfoService.selectByPrimaryKey(id);
+        CapWorkOrderRecord capWorkOrderRecord = capWorkOrderRecordService.selectByPrimaryKey(id);
+        //用工单表查。这个车的数据只有一条
         String pageType = request.getParameter("pageType");
         model.addAttribute("pageType", pageType);
-        model.addAttribute("capVehicleInfo", capVehicleInfo);
+        model.addAttribute("capWorkOrderRecord", capWorkOrderRecord);
         model.addAttribute("detail", detail);
         //在这里要做签收动作。工作流里签收一下，也把这个开始时间记到一张表里
         //不是进入并且不是外观检测的时候签收一下
@@ -222,8 +224,9 @@ public class CapVehicleController {
      */
     @GetMapping(value = "nopassOnline")
     public String nopassOnline(String id, HttpServletRequest request, Model model) {
-        CapVehicleInfo capVehicleInfo = capVehicleInfoService.selectByPrimaryKey(id);
-        model.addAttribute("capVehicleInfo", capVehicleInfo);
+        //CapVehicleInfo capVehicleInfo = capVehicleInfoService.selectByPrimaryKey(id);
+        CapWorkOrderRecord capWorkOrderRecord = capWorkOrderRecordService.selectByPrimaryKey(id);
+        model.addAttribute("capWorkOrderRecord", capWorkOrderRecord);
         return "vehicle/nopass-online";
     }
 
@@ -298,10 +301,7 @@ public class CapVehicleController {
             return jsonUtil;
         }
         try {
-            CapWorkOrderRecord record = new CapWorkOrderRecord();
-            //record.setRecordId(id);
-            record.setVehicleId(id);
-            CapWorkOrderRecord capWorkOrderRecord = capWorkOrderRecordService.selectListByCondition(record).get(0);
+            CapWorkOrderRecord capWorkOrderRecord = capWorkOrderRecordService.selectByPrimaryKey(id);
             if (VehicleConstant.PROCESS_ONLINE.equals(capWorkOrderRecord.getNowLink())) {
                 String onlylight = request.getParameter("onlylight");
                 if ("yes".equals(onlylight)) {
@@ -339,6 +339,16 @@ public class CapVehicleController {
         try {
             CapWorkOrderRecord capWorkOrderRecord = capWorkOrderRecordService.selectByPrimaryKey(bean.getId());
             String beforeNowLink = capWorkOrderRecord.getNowLink();
+            //可能需要判断一下当前用户有没有处理这一步对应的角色权限。如果没有直接返回
+            //因为处理结束之后会推送消息到页面上把对应数据改为  通过/不通过  这种时候当前用户可能不是数据对应步骤的操作人
+            // 前台做了限制了后台也做一下判断
+            String roleId = NowLinkUtils.getRoleIdByNowLink(beforeNowLink);
+            List<SysUser> userList = sysUserService.getUserListByRoleId(roleId);
+            boolean flag = getFlagByCurrentRole(userList, currentUser.getId());
+            if (!flag) {
+                jsonUtil.setMsg("修改失败");
+                return jsonUtil;
+            }
             if (VehicleConstant.PROCESS_GAS.equals(beforeNowLink)) {
                 capWorkOrderRecord.setIsPowerfree(bean.getFree());
             }
@@ -346,11 +356,8 @@ public class CapVehicleController {
             capWorkOrderRecordService.completeFlow(capWorkOrderRecord, flow);
             //在这加推送消息队列的东西应该
             //尾气检测结束，上线检测结束不通过的时候
-            if (VehicleConstant.PROCESS_GAS.equals(beforeNowLink) || VehicleConstant.PROCESS_ONLINE.equals(beforeNowLink)) {
-                String roleId = NowLinkUtils.getRoleIdByNowLink(beforeNowLink);
-                List<SysUser> userList = sysUserService.getUserListByRoleId(roleId);
+            if (VehicleConstant.PROCESS_GAS.equals(beforeNowLink) || VehicleConstant.PROCESS_ONLINE.equals(beforeNowLink) || VehicleConstant.PORCESS_LIGHT.equals(beforeNowLink)) {
                 //自己也要把页面上数据的状态改一下。暂时不去remove当前用户了
-
                 flowMessagePushService.upflowByRecord(userList, capWorkOrderRecord, status, beforeNowLink, "up");
                 //给下一步的发消息  如果下一步是在尾气检测、上线检测、灯光复检的时候
                 if (VehicleConstant.PROCESS_GAS.equals(capWorkOrderRecord.getNowLink()) || VehicleConstant.PROCESS_ONLINE.equals(capWorkOrderRecord.getNowLink()) || VehicleConstant.PORCESS_LIGHT.equals(capWorkOrderRecord.getNowLink())) {
@@ -367,7 +374,6 @@ public class CapVehicleController {
                     }
                     flowMessagePushService.addflowByRecord(nextUserList, capWorkOrderRecord, "add");
                 }
-
                 //不通过的时候，给微信公众号推送一条消息
                 if (VehicleConstant.PROCESS_NOWSTATUS_NO.equals(capWorkOrderRecord.getNowStatus())) {
                     String recordId = capWorkOrderRecord.getRecordId();
@@ -399,10 +405,10 @@ public class CapVehicleController {
         ResultData result = new ResultData();
         result.setFlag(false);
         try {
-            List<SysRole> roleList = roleService.getUserListByRoleId(currentUser.getId());
+            List<SysRole> roleList = roleService.getRoleListByUser(currentUser.getId());
             List<CapWorkOrderRecord> list = new ArrayList<CapWorkOrderRecord>();
             for (SysRole sysRole : roleList) {
-                capWorkOrderRecordService.selectListByRoleId(sysRole.getId(), list);
+                capWorkOrderRecordService.setSelectListByRoleId(sysRole.getId(), list);
             }
             List<CarCheckFlowMessage> carMsgList = capWorkOrderRecordService.putDataToEntity(list);
             result.setFlag(true);
@@ -436,10 +442,7 @@ public class CapVehicleController {
             return jsonUtil;
         }
         try {
-            CapWorkOrderRecord record = new CapWorkOrderRecord();
-            //record.setRecordId(id);
-            record.setVehicleId(id);
-            CapWorkOrderRecord capWorkOrderRecord = capWorkOrderRecordService.selectListByCondition(record).get(0);
+            CapWorkOrderRecord capWorkOrderRecord = capWorkOrderRecordService.selectByPrimaryKey(id);
             capWorkOrderRecordService.endFlow(capWorkOrderRecord, status);
             jsonUtil.setFlag(true);
             jsonUtil.setMsg("修改成功");
@@ -450,6 +453,36 @@ public class CapVehicleController {
         return jsonUtil;
     }
 
+
+    /**
+     * 根据当前用户的角色是否是当前车检步骤判断一下时候允许执行操作
+     * @return
+     */
+    private boolean getFlagByCurrentRole(List<SysUser> userList, String currentUserId) {
+        boolean flag = false;
+        for (SysUser sysUser : userList) {
+            if (sysUser.getId().equals(currentUserId)) {
+                flag = true;
+                break;
+            }
+        }
+        return flag;
+    }
+
+
+
+    @ApiOperation(value = "/showSpendtimeList", httpMethod = "GET", notes = "车检情况列表")
+    @GetMapping(value = "showSpendtimeList")
+    @ResponseBody
+    @RequiresPermissions("car:show")
+    public ReType showSpendtimeListByRecord(HttpServletRequest request, Model model, String page, String limit) {
+        String recordId = request.getParameter("recordId");
+
+        CapVehicleSpendtime spendtime = new CapVehicleSpendtime();
+        //capVehicleSpendtimeService.
+        //capVehicleSpendtimeService.showAll()
+        return null;
+    }
 
 
 

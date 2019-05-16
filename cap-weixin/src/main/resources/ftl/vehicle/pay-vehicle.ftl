@@ -27,7 +27,7 @@ To change this template use File | Settings | File Templates.-->
 <div class="x-body">
   <div class="layui-form layui-form-pane" style="margin-left: 20px;">
     <div style="width:100%;height:400px;overflow: auto;">
-        <input type="hidden" id="id" name="id" value="${capVehicleInfo.id}"/>
+        <input type="hidden" id="id" name="id" value="${capWorkOrderRecord.id}"/>
     <div class="layui-form-item">
       <fieldset class="layui-elem-field layui-field-title" style="margin-top: 10px;">
         <legend style="font-size:16px;">车辆信息</legend>
@@ -39,19 +39,20 @@ To change this template use File | Settings | File Templates.-->
       </label>
       <div class="layui-input-inline">
         <input type="text"  id="plateNo" name="plateNo"  lay-verify="plateNo"
-               autocomplete="off" class="layui-input" value="${capVehicleInfo.plateNo}"/>
+               autocomplete="off" class="layui-input" value="${capWorkOrderRecord.plateNo}"/>
       </div>
     </div>
-    <div class="layui-form-item">
-    <div class="layui-inline">
+    <#--<div class="layui-form-item">
       <label for="vehicleType" class="layui-form-label">
         <span class="x-red">*</span>车辆类型
       </label>
       <div class="layui-input-inline">
         <input type="text" id="vehicleType" name="vehicleType" lay-verify="vehicleType"  autocomplete="off" class="layui-input" value="${capVehicleInfo.vehicleType}"/>
       </div>
-    </div>
-    </div>
+    </div>-->
+        <#-- 这个页面，加载一个对应的处理步骤的表信息 -->
+
+
 
 
     </div>
@@ -93,11 +94,11 @@ To change this template use File | Settings | File Templates.-->
    });
 
    $("#pass").click(function () {
-       layerAjax('endVehicle',{"id": "${capVehicleInfo.id}","status": "pass"},'vehicleList');
+       layerAjax('endVehicle',{"id": "${capWorkOrderRecord.id}","status": "pass"},'vehicleList');
        return false;
    });
    $("#nopass").click(function () {
-       layerAjax('endVehicle',{"id": "${capVehicleInfo.id}","status": "nopass"},'vehicleList');
+       layerAjax('endVehicle',{"id": "${capWorkOrderRecord.id}","status": "nopass"},'vehicleList');
        return false;
    })
 

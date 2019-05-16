@@ -65,6 +65,9 @@
       <if test="plateNo !=null and plateNo!=''">
         and a.plate_no = #{plateNo}
       </if>
+      <if test="openid!= null and openid!=''">
+        and a.openId = #{openid}
+      </if>
     </where>
   </select>
 

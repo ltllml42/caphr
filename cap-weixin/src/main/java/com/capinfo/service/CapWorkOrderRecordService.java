@@ -57,10 +57,12 @@ public class CapWorkOrderRecordService extends BaseServiceImpl<CapWorkOrderRecor
         //capWorkOrderRecord.setRecordId(capVehicleInfo.getId());
         capWorkOrderRecord.setVehicleId(capVehicleInfo.getId());
         capWorkOrderRecord.setDelFlag("0");
+        capWorkOrderRecord.setCreateBy(capVehicleInfo.getCreateBy());
+        capWorkOrderRecord.setCreateDate(new Date());
         capWorkOrderRecord.setUpdateBy(capVehicleInfo.getUpdateBy());
         capWorkOrderRecord.setUpdateDate(new Date());
         capWorkOrderRecord.setNowLink(VehicleConstant.PROCESS_ENTER);
-        this.insertSelective(capWorkOrderRecord);
+        this.getMappser().insert(capWorkOrderRecord);
         return capWorkOrderRecord;
     }
 
@@ -92,6 +94,7 @@ public class CapWorkOrderRecordService extends BaseServiceImpl<CapWorkOrderRecor
      * @param flow
      */
     public void completeFlow(CapWorkOrderRecord capWorkOrderRecord, VehicleFlowEntity flow) {
+        this.updateByPrimaryKey(capWorkOrderRecord);
         CurrentUser currentUser = (CurrentUser) SecurityUtils.getSubject().getSession().getAttribute("curentUser");
         //String userId = "";
         String userName = "";
@@ -237,7 +240,7 @@ public class CapWorkOrderRecordService extends BaseServiceImpl<CapWorkOrderRecor
      * @param roleId
      * @param recordList
      */
-    public void selectListByRoleId(String roleId, List<CapWorkOrderRecord> recordList) {
+    public void setSelectListByRoleId(String roleId, List<CapWorkOrderRecord> recordList) {
         String nowLink = NowLinkUtils.getNowLinkByRoleId(roleId);
         CapWorkOrderRecord record = new CapWorkOrderRecord();
         record.setNowLink(nowLink);

@@ -27,7 +27,7 @@ To change this template use File | Settings | File Templates.-->
 <div class="x-body">
   <div class="layui-form layui-form-pane" style="margin-left: 20px;">
     <div style="width:100%;height:400px;overflow: auto;">
-        <input type="hidden" id="id" name="id" value="${capVehicleInfo.id}"/>
+        <input type="hidden" id="id" name="id" value="${capWorkOrderRecord.id}"/>
 
 
     </div>
@@ -70,13 +70,13 @@ To change this template use File | Settings | File Templates.-->
    });
 
    $("#nopass").click(function () {
-       layerAjax('completeVehicle',{"id": "${capVehicleInfo.id}","status": "nopass","onlylight": "no"},'vehicleList');
+       layerAjax('completeVehicle',{"id": "${capWorkOrderRecord.id}","status": "nopass","onlylight": "no"},'vehicleList');
        var index = parent.layer.getFrameIndex(window.name);
        parent.layer.close(index);
        return false;
    });
    $("#onlylight").click(function () {
-       layerAjax('completeVehicle',{"id": "${capVehicleInfo.id}","status": "nopass","onlylight":"yes"},'vehicleList');
+       layerAjax('completeVehicle',{"id": "${capWorkOrderRecord.id}","status": "nopass","onlylight":"yes"},'vehicleList');
        var index = parent.layer.getFrameIndex(window.name);
        parent.layer.close(index);
        return false;

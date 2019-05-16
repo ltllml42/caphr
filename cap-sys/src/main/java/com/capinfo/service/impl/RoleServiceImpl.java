@@ -66,7 +66,7 @@ public class RoleServiceImpl extends BaseServiceImpl<SysRole,String> implements 
   }
 
   @Override
-  public List<SysRole> getUserListByRoleId(String userId) {
+  public List<SysRole> getRoleListByUser(String userId) {
     Map map = new HashMap<>();
     map.put("userId", userId);
     return roleMapper.selectRoleListByUser(map);

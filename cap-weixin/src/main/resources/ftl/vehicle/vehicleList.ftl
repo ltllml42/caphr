@@ -179,7 +179,7 @@
                     layer.msg('请选择一行编辑', {icon: 5});
                     return false;
                 }
-                update('编辑角色', 'showComplete?pageType=${pageType}&id=' + data[0].id, 700, 450);
+                update('编辑角色', 'showComplete?pageType=${pageType}&id=' + data[0].capWorkOrderRecord.id, 700, 450);
             },
             detail: function () {
                 var checkStatus = table.checkStatus('vehicleList')
@@ -188,7 +188,7 @@
                     layer.msg('请选择一行查看', {icon: 5});
                     return false;
                 }
-                detail('查看角色信息', 'showComplete?pageType=${pageType}&id=' + data[0].id, 700, 450);
+                detail('查看角色信息', 'showComplete?pageType=${pageType}&id=' + data[0].capWorkOrderRecord.id, 700, 450);
             }
         };
 
@@ -200,13 +200,13 @@
         table.on('tool(user)', function (obj) {
             var data = obj.data;
             if (obj.event === 'detail') {
-                detail('编辑角色', 'showComplete?pageType=${pageType}&id=' + data.id, 700, 450);
+                detail('编辑角色', 'showComplete?pageType=${pageType}&id=' + data.capWorkOrderRecord.id, 700, 450);
             } else if (obj.event === 'del') {
-                layer.confirm('确定删除角色[<label style="color: #00AA91;">' + data.roleName + '</label>]?', function(){
+                /*layer.confirm('确定删除角色[<label style="color: #00AA91;">' + data.roleName + '</label>]?', function(){
                     del(data.id);
-                });
+                });*/
             } else if (obj.event === 'edit') {
-                update('编辑角色', 'showComplete?pageType=${pageType}&id=' + data.id, 700, 450);
+                update('编辑角色', 'showComplete?pageType=${pageType}&id=' + data.capWorkOrderRecord.id, 700, 450);
             }
         });
 

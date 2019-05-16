@@ -58,4 +58,52 @@
   </select>
 
 
+  <select id="selectListJoinVehicleByCondition" parameterType="com.capinfo.entity.CapWorkOrderRecord" resultMap="BaseResultMap">
+    SELECT
+      a.id AS "id",
+      a.plate_no AS "plateNo",
+      a.record_id AS "recordId",
+      a.vehicle_id AS "vehicleId",
+      a.start_time AS "startTime",
+      a.end_time AS "endTime",
+      a.now_link AS "nowLink",
+      a.now_status AS "nowStatus",
+      a.create_by AS "createBy",
+      a.proc_inst_id AS "procInstId",
+      a.is_powerfree AS "isPowerfree",
+      b.id AS "capVehicleInfo.id",
+      b.plate_no AS "capVehicleInfo.plateNo",
+      b.vehicle_type AS "capVehicleInfo.vehicleType",
+      b.vehicle_prop AS "capVehicleInfo.vehicleProp",
+      b.vehicle_kind AS "capVehicleInfo.vehicleKind"
+    from cap_work_order_record a left join cap_vehicle_info b on a.vehicle_id=b.id
+    <where>
+      a.del_flag = '0'
+      <if test="nowLink!=null and nowLink!=''">
+        and a.now_link = #{nowLink}
+      </if>
+      <if test="nowStatus!=null and nowStatus!=''">
+        and a.now_status = #{nowStatus}
+      </if>
+      <if test="recordId!=null and recordId!=''">
+        and a.record_id = #{recordId}
+      </if>
+      <if test="isPowerfree!=null and isPowerfree!=''">
+        and a.is_powerfree = #{isPowerfree}
+      </if>
+      <if test="plateNo!=null and plateNo!=''">
+        and a.plate_no = #{plateNo}
+      </if>
+      <if test="vehicleId!=null and vehicleId!=''">
+        and a.vehicle_id = #{vehicleId}
+      </if>
+      <if test="recordId!=null and recordId!=''">
+        and a.record_id = #{recordId}
+      </if>
+    </where>
+    order by a.create_date desc
+  </select>
+
+
+
 </mapper>
