@@ -1,8 +1,7 @@
 package com.capinfo.entity;
 
 import com.capinfo.base.BaseEntity;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -10,6 +9,9 @@ import java.util.Date;
 @Getter
 @Setter
 @Table(name = "cap_wx_account_menu")
+@AllArgsConstructor //生成全参数构造函数
+@NoArgsConstructor//生成无参构造函数
+@Builder
 public class CapWxAccountMenu extends BaseEntity {
     @Id
     @GeneratedValue(generator = "JDBC")

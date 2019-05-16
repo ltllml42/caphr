@@ -59,7 +59,7 @@ public class MessageCode {
 	
 	public String setfailMessage(String msg,String exceptionMessage){
 		this.flag = FLAG_FAIL;
-		this.msg = String.format(MSG_FAIL,msg!=null?"":msg,exceptionMessage!=null?"":exceptionMessage);
+		this.msg = String.format(MSG_FAIL,msg==null?"":msg,exceptionMessage==null?"":exceptionMessage);
 		this.data = new Object();
 		return this.builder();
 	}

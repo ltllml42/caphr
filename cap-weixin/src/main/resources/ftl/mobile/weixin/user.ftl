@@ -87,14 +87,14 @@
             <div class="weui-cell__bd" style="display: flex;">
                 <label class="weui-label_spot">&#8226</label>
                 <input class="weui-input" type="text" id="lpnNumber" name="lpnNumber" maxlength="5" max="5" msg="输入有误"
-                      value="${cvInfo.lpnNumber}" required="required" pattern="^[A-Z0-9]{4}[A-Z0-9挂学警港澳]{1}$" placeholder="车牌号">
+                      value="${cvInfo.lpnNumber}" required="required" pattern="^[A-Z0-9]{4}[A-Z0-9挂学警港澳]{1}$" placeholder="字母需大写">
             </div>
             <div class="weui-cell__ft">
                 <i class="weui-icon-warn"></i>
             </div>
         </div>
         <div class="weui-cells__tips">
-            <label class="weui-label_exc"> <font color="red">例如:</font> 京A &#8226 KB126</label>
+            <label class="weui-label_exc"> <font color="red">例如:</font> 京A &#8226 KB126 字母需大写</label>
         </div>
         <div class="weui-cell">
             <div class="weui-cell__hd">
@@ -213,7 +213,6 @@
             data.lastTestTimeStr = lastTestTime.value;
             var jsonStr = JSON.stringify(data);
             $.showLoading("数据提交中...");
-
             if (jsonStr != null || jsonStr != [{}]) {
                 $.ajax({
                     url: '/oauth2/${appid}/saveOrUpdateCar',
@@ -224,9 +223,9 @@
                     success: function (data) {
                         $.hideLoading();
                         if(data.flag=="success"){
-                            window.location.href="/oauth2/${appid}/success";
+                            window.location.href="/oauth2/${appid}/success?msg=车辆绑定成功";
                         } else {
-                            window.location.href="/wx/message/fail";
+                            $.toptip('绑定失败：'+data.msg, 'error');
                         }
                     }
                 });

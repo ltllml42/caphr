@@ -129,7 +129,7 @@ public class CapVehicleInfo extends BaseEntity {
 
     public void setPlateNo(String plateNo) {
         if(StringUtils.isNotBlank(plateNo)){
-            this.plateNo = plateNo.replaceAll(PLATENO_HERICIUM_ERINACEUS,PLATENO_DIAN).replaceAll(" ","");
+            this.plateNo = plateNo.replaceAll(PLATENO_HERICIUM_ERINACEUS,"").replaceAll(" ","");
             setLpnChar("");
             setLpnNumber("");
         }else{

@@ -15,7 +15,7 @@
 	  	<div class="weui-cells weui-cells_form">
 		  <div class="weui-cells__title">个人信息</div>
 			<div class="weui-cells">
-			<a class="weui-cell weui-cell_access" href="http://www.baidu.com">
+			<a class="weui-cell weui-cell_access" href="javascript:void(0);">
 			  <div class="weui-cell__hd"><img height="80px" width="80px" src="${fans.headImgUrl}"></div>
 			  <div class="weui-cell__bd">
 				<p>${fans.nick_name}</p>
@@ -44,7 +44,7 @@
 		 	
 		  <div class="weui-cell__hd"><label class="weui-label">手机</label></div>
 		  <div class="weui-cell__bd">
-		  		${fans.telphone}
+		  		${fans.telPhone}
 		  </div>
 		  <div class="weui-cell__ft">
 	      <i class="weui-icon-warn"></i>
@@ -70,15 +70,14 @@
 					<p>${cvInfo.plateNo}</p>
               	</div>
                 <div class="weui-cell__bd left_150 " >
-                 	 <p><a href="javascript:void(0);">${cvInfo.yearCheckCount}</a></p>
+                 	 <p><a href="${re.contextPath}/oauth2/${wxUser.appid}/${cvInfo.id}/hisTestMsg">${cvInfo.yearCheckCount}</a></p>
                 </div>
 			    <#assign wxUser = Session["weiXinUser"]>
-                <div class="weui-cell__ft"><a href="${re.contextPath}/oauth2/${wxUser.appid}/${cvInfo.id}/hisTestMsg">查看详情</a></div>
+                <div class="weui-cell__ft"></div>
               </div>
             </div>
             <div class="weui-cell__ft">
-              <a class="weui-swiped-btn weui-swiped-btn_warn delete-swipeout" href="javascript:">解除</a>
-              <a class="weui-swiped-btn weui-swiped-btn_default close-swipeout" href="javascript:">编辑</a>
+              <a class="weui-swiped-btn weui-swiped-btn_warn delete-swipeout" href="${re.contextPath}/oauth2/${wxUser.appid}/${cvInfo.id}/del">解除</a>
             </div>
          </div>
         </div>
