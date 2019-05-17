@@ -7,6 +7,8 @@ import com.capinfo.service.*;
 import com.capinfo.util.JsonUtil;
 import com.capinfo.util.ReType;
 import com.capinfo.vehicle.utilEntity.*;
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
 import io.swagger.annotations.ApiOperation;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.SecurityUtils;
@@ -350,6 +352,8 @@ public class CapVehicleController {
             }
             if (VehicleConstant.PROCESS_GAS.equals(beforeNowLink)) {
                 capWorkOrderRecord.setIsPowerfree(bean.getFree());
+                //在这里判断一下用户。如果是检测中型车的用户，那么把字段加上值。如果不是中型车的用户，填成小型车
+                capVehicleInfoService.saveVehiclePropValue(capWorkOrderRecord.getPlateNo());
             }
             VehicleFlowEntity flow = capVehicleInfoService.getMatchMap(status, capWorkOrderRecord);
             capWorkOrderRecordService.completeFlow(capWorkOrderRecord, flow);
@@ -380,6 +384,10 @@ public class CapVehicleController {
                     vehicleInfo.setCapWorkOrderRecord(capWorkOrderRecord);
                     flowMessagePushService.sendRecordToWx(vehicleInfo);
                 }
+            }
+            //在最后写不合前面的混了就  如果下一步到缴费核算的情况下，把整体的费用算一下
+            if (VehicleConstant.PROCESS_PAY.equals(capWorkOrderRecord.getNowLink())) {
+                capWorkOrderRecordService.saveTotalMoney(capWorkOrderRecord.getId());
             }
             jsonUtil.setFlag(true);
             jsonUtil.setMsg("修改成功");
@@ -473,14 +481,14 @@ public class CapVehicleController {
     @ApiOperation(value = "/showSpendtimeList", httpMethod = "GET", notes = "车检情况列表")
     @GetMapping(value = "showSpendtimeList")
     @ResponseBody
-    @RequiresPermissions("car:show")
     public ReType showSpendtimeListByRecord(HttpServletRequest request, Model model, String page, String limit) {
         String recordId = request.getParameter("recordId");
-
         CapVehicleSpendtime spendtime = new CapVehicleSpendtime();
-        //capVehicleSpendtimeService.
-        //capVehicleSpendtimeService.showAll()
-        return null;
+        spendtime.setCapWorkRecordId(recordId);
+        spendtime.setSortType(VehicleConstant.SPENDTIME_SORTTYPE_CREATEDATEASC);
+        List<CapVehicleSpendtime> list = capVehicleSpendtimeService.selectListByCondition(spendtime);
+        Page<CapVehicleSpendtime> tPage = PageHelper.startPage(1, 100);
+        return new ReType(tPage.getTotal(), list);
     }
 
 

@@ -44,7 +44,13 @@
         and now_status = #{nowStatus}
       </if>
     </where>
-    order by create_date desc
+    <if test="sortType == 'createDateAsc'">
+      order by create_date asc
+    </if>
+    <if test="sortType != 'createDateAsc'">
+      order by create_date desc
+    </if>
+
   </select>
 
 

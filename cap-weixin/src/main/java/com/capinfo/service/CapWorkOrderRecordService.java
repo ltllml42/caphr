@@ -72,6 +72,12 @@ public class CapWorkOrderRecordService extends BaseServiceImpl<CapWorkOrderRecor
     }
 
 
+    public List<CapWorkOrderRecord> selectListJoinVehicleByCondition(CapWorkOrderRecord capWorkOrderRecord) {
+        return capWorkOrderRecordMapper.selectListJoinVehicleByCondition(capWorkOrderRecord);
+    }
+
+
+
 
     /**
      * 开启工作流。这里先把工单表的bow_link改成2--外观检测
@@ -288,6 +294,38 @@ public class CapWorkOrderRecordService extends BaseServiceImpl<CapWorkOrderRecor
         }
         return list;
     }
+
+
+    /**
+     * 根据车辆的类型  中型车还是小型车    算出总共的检测费用
+     * @param id
+     */
+    public void saveTotalMoney(String id) {
+        CapWorkOrderRecord capWorkOrderRecord = this.selectByPrimaryKey(id);
+        CapVehicleInfo vehicleInfo = new CapVehicleInfo();
+        vehicleInfo.setPlateNo(capWorkOrderRecord.getPlateNo());
+        CapVehicleInfo info = capVehicleInfoService.selectListByCondition(vehicleInfo).get(0);
+        float totalMoney = 0;
+        if (VehicleConstant.VEHICLE_PROP_SMALL.equals(info.getVehicleProp())) {
+            //小型车检测计费方式。暂时在这块写死
+            totalMoney = 100 + 70 + 80 + 80 + 50;
+        } else {
+            //中型车检测计费方式。
+            totalMoney = 150 + 120 + 80 + 50;
+        }
+        //在这里算一下复检的次数。复检一次总费用加80
+        CapVehicleSpendtime spendtime = new CapVehicleSpendtime();
+        spendtime.setCapWorkRecordId(id);
+        spendtime.setIsrepeat(VehicleConstant.PROCESS_ISREPEAT_YES);
+        List<CapVehicleSpendtime> spendtimeList = capVehicleSpendtimeService.selectListByCondition(spendtime);
+        for (CapVehicleSpendtime capVehicleSpendtime : spendtimeList) {
+            totalMoney = totalMoney + 80;
+        }
+        capWorkOrderRecord.setTotalMoney(totalMoney);
+        this.updateByPrimaryKey(capWorkOrderRecord);
+    }
+
+
 
 
 

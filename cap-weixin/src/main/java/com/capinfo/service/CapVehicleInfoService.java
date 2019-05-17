@@ -338,5 +338,32 @@ public class CapVehicleInfoService extends BaseServiceImpl<CapVehicleInfo, Strin
     }
 
 
+    /**
+     * 根据车牌号，查一下对应的Vehicle表车的信息里    车辆类型    有没有值。如果没有值根据当前用户赋一下值
+     * @param plateNo
+     */
+    public void saveVehiclePropValue(String plateNo) {
+        CurrentUser currentUser = (CurrentUser) SecurityUtils.getSubject().getSession().getAttribute("curentUser");
+        CapVehicleInfo vehicleInfo = new CapVehicleInfo();
+        vehicleInfo.setPlateNo(plateNo);
+        List<CapVehicleInfo> list = capVehicleInfoMapper.selectListByCondition(vehicleInfo);
+        if (list!=null && !list.isEmpty()) {
+            CapVehicleInfo capVehicleInfo = capVehicleInfoMapper.selectByPrimaryKey(list.get(0).getId());
+            String vehicleProp = capVehicleInfo.getVehicleProp();
+            if (StringUtils.isBlank(vehicleProp)) {
+                //在这根据用户判断一下附上值
+                if (VehicleConstant.MID_USERID.equals(currentUser.getId())) {
+                    capVehicleInfo.setVehicleProp(VehicleConstant.VEHICLE_PROP_MIDDLE);
+                } else {
+                    capVehicleInfo.setVehicleProp(VehicleConstant.VEHICLE_PROP_SMALL);
+                }
+                this.updateByPrimaryKey(capVehicleInfo);
+            }
+
+        }
+    }
+
+
+
 
 }

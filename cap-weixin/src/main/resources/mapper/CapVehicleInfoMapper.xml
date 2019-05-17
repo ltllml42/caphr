@@ -26,6 +26,8 @@
     a.id AS "id",
     a.plate_no AS "plateNo",
     a.vehicle_type AS "vehicleType",
+    a.vehicle_prop AS "vehicleProp",
+    a.vehicle_kind AS "vehicleKind",
     a.create_date AS "createDate",
     a.openId AS "openid",
     b.id AS "capWorkOrderRecord.id",

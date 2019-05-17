@@ -75,7 +75,8 @@
       b.plate_no AS "capVehicleInfo.plateNo",
       b.vehicle_type AS "capVehicleInfo.vehicleType",
       b.vehicle_prop AS "capVehicleInfo.vehicleProp",
-      b.vehicle_kind AS "capVehicleInfo.vehicleKind"
+      b.vehicle_kind AS "capVehicleInfo.vehicleKind",
+      b.openId AS "capVehicleInfo.openid"
     from cap_work_order_record a left join cap_vehicle_info b on a.vehicle_id=b.id
     <where>
       a.del_flag = '0'
