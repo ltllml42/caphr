@@ -30,17 +30,19 @@ public class MobileInterceptor implements HandlerInterceptor {
 	@Override
 	public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, 
 			ModelAndView modelAndView) throws Exception {
-				//if(modelAndView!=null)
-				/*if(true && !StringUtils.startsWithIgnoreCase(modelAndView.getViewName(), "redirect:")) {
-					modelAndView.setViewName("mobile/" + modelAndView.getViewName());
+				/*if(modelAndView!=null) {
+                    if(true && !StringUtils.startsWithIgnoreCase(modelAndView.getViewName(), "redirect:")) {
+                        modelAndView.setViewName("mobile/" + modelAndView.getViewName());
 
-					//					if(modelAndView.getViewName().startsWith("main")){
+                        //					if(modelAndView.getViewName().startsWith("main")){
 //						modelAndView.setViewName(modelAndView.getViewName().replaceFirst("main","redirect: mobile/main"));
 //					}else{
 //						modelAndView.setViewName("mobile/" + modelAndView.getViewName());
 //
 //					}
-				}*/
+                    }
+                }*/
+
 
 		if (modelAndView != null){
 			// 如果是手机或平板访问的话，则跳转到手机视图页面。

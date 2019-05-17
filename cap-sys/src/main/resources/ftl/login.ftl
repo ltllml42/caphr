@@ -20,7 +20,8 @@
 <body class="login-bg">
 
 <div class="login">
-    <div class="message">首信呼叫前后端分离脚手架</div>
+    <#--<div class="message">首信呼叫前后端分离脚手架</div>-->
+        <div class="message">登录页面</div>
     <div id="darkbannerwrap"></div>
 
     <form method="post" action="${re.contextPath}/login" class="layui-form" >

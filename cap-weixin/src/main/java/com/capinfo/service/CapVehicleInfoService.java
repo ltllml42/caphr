@@ -219,7 +219,7 @@ public class CapVehicleInfoService extends BaseServiceImpl<CapVehicleInfo, Strin
 
 
 
-    public void createVehicleInfo(String license) {
+    public void createVehicleInfo(String license, String direction) {
         //记下来这么一个车的对象，在最后发一个消息给微信的队列里
         CapVehicleInfo vehicleMsg = new CapVehicleInfo();
         CapVehicleInfo vehicleInfo = new CapVehicleInfo();
@@ -300,6 +300,9 @@ public class CapVehicleInfoService extends BaseServiceImpl<CapVehicleInfo, Strin
         //进入车检厂，判断一下vehicleMsg里有没有微信的openId,如果有给微信公众号发一条消息
         String openId = vehicleMsg.getOpenid();
         if (StringUtils.isNotBlank(openId)) {
+            /*if ("3".equals(direction)) {
+                //取到的数据暂时设定方向3为进入车检厂时的方向。进入车检厂时发送微信公众号一条消息。需要再测试一下
+            }*/
             flowMessagePushService.sendRecordToWx(vehicleMsg);
         }
     }
