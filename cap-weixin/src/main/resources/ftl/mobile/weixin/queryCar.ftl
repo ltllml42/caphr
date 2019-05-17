@@ -70,9 +70,10 @@
 					<p>${cvInfo.plateNo}</p>
               	</div>
                 <div class="weui-cell__bd left_150 " >
+					<#assign wxUser = Session["weiXinUser"]>
                  	 <p><a href="${re.contextPath}/oauth2/${wxUser.appid}/${cvInfo.id}/hisTestMsg">${cvInfo.yearCheckCount}</a></p>
                 </div>
-			    <#assign wxUser = Session["weiXinUser"]>
+
                 <div class="weui-cell__ft"></div>
               </div>
             </div>

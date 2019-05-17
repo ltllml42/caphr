@@ -86,15 +86,15 @@
             </div>
             <div class="weui-cell__bd" style="display: flex;">
                 <label class="weui-label_spot">&#8226</label>
-                <input class="weui-input" type="text" id="lpnNumber" name="lpnNumber" maxlength="5" max="5" msg="输入有误"
-                      value="${cvInfo.lpnNumber}" required="required" pattern="^[A-Z0-9]{4}[A-Z0-9挂学警港澳]{1}$" placeholder="字母需大写">
+                <input class="weui-input" type="text" id="lpnNumber" name="lpnNumber" maxlength="6" max="6" msg="输入有误"
+                      value="${cvInfo.lpnNumber}" required="required" pattern="^((([0-9]{5}[DF])|([DF]([A-HJ-NP-Z0-9])[0-9]{4})))|([A-HJ-NP-Z0-9]{4}[A-HJ-NP-Z0-9挂学警港澳]{1})$" placeholder="字母需大写">
             </div>
             <div class="weui-cell__ft">
                 <i class="weui-icon-warn"></i>
             </div>
         </div>
         <div class="weui-cells__tips">
-            <label class="weui-label_exc"> <font color="red">例如:</font> 京A &#8226 KB126 字母需大写</label>
+            <label class="weui-label_exc"> <font color="red">例如:</font> 京A &#8226 KB126(能源车为6位) 字母需大写</label>
         </div>
         <div class="weui-cell">
             <div class="weui-cell__hd">

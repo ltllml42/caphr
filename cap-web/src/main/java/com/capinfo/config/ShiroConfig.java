@@ -7,6 +7,7 @@ import com.capinfo.core.shiro.LoginRealm;
 import com.capinfo.core.shiro.RetryLimitCredentialsMatcher;
 import com.capinfo.shiro.WeChatOauth2Realm;
 import com.capinfo.shiro.filter.WeixinPermissionFilter;
+import com.google.common.collect.Maps;
 import me.chanjar.weixin.mp.api.WxMpService;
 import org.apache.shiro.authc.Authenticator;
 import org.apache.shiro.cache.ehcache.EhCacheManager;
@@ -19,7 +20,9 @@ import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
 import org.apache.shiro.web.session.mgt.DefaultWebSessionManager;
 import org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
+import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -73,7 +76,8 @@ public class ShiroConfig {
     }
 
     @Bean(name = "securityManager")
-    public SecurityManager getSecurityManager(@Qualifier("loginRealm") LoginRealm loginRealm, @Qualifier("weChatOauth2Realm") WeChatOauth2Realm weChatOauth2Realm) {
+    public SecurityManager getSecurityManager(@Qualifier("loginRealm") LoginRealm loginRealm,
+                                              @Qualifier("weChatOauth2Realm") WeChatOauth2Realm weChatOauth2Realm) {
         DefaultWebSecurityManager dwm = new DefaultWebSecurityManager();
         dwm.setAuthenticator(getCustomeModularRealmAuthenticator());
         List<Realm> realms = new ArrayList<Realm>();
@@ -159,7 +163,7 @@ public class ShiroConfig {
     public DefaultWebSessionManager defaultWebSessionManager() {
         DefaultWebSessionManager defaultWebSessionManager = new DefaultWebSessionManager();
         defaultWebSessionManager.setSessionIdCookieEnabled(true);
-        defaultWebSessionManager.setGlobalSessionTimeout(21600000);
+        defaultWebSessionManager.setGlobalSessionTimeout(28800000);
         defaultWebSessionManager.setDeleteInvalidSessions(true);
         defaultWebSessionManager.setSessionValidationSchedulerEnabled(true);
         defaultWebSessionManager.setSessionIdUrlRewritingEnabled(false);
