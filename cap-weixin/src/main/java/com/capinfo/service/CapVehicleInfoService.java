@@ -308,7 +308,6 @@ public class CapVehicleInfoService extends BaseServiceImpl<CapVehicleInfo, Strin
     }
 
 
-
     public void startFlowByCamera(String license) {
         CapVehicleInfo vehicleInfo = new CapVehicleInfo();
         vehicleInfo.setPlateNo(license);

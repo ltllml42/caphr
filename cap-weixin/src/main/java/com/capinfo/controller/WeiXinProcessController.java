@@ -7,6 +7,7 @@ import com.capinfo.service.SimpleMessageService;
 import com.capinfo.vehicle.utilEntity.VehicleProcess;
 import com.capinfo.vehicle.utilEntity.VehicleProcessEnum;
 import lombok.extern.log4j.Log4j;
+import lombok.extern.slf4j.Slf4j;
 import me.chanjar.weixin.common.error.WxErrorException;
 import me.chanjar.weixin.mp.api.WxMpKefuService;
 import me.chanjar.weixin.mp.api.WxMpMessageRouter;
@@ -27,7 +28,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping(value = "/wx/{appid}/process")
-@Log4j
+@Slf4j
 public class WeiXinProcessController {
 
     private final Logger logger = LoggerFactory.getLogger(this.getClass());

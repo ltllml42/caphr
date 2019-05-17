@@ -2,6 +2,7 @@ package com.capinfo.controller;
 
 import com.capinfo.config.ActiveMQConfig;
 import lombok.extern.log4j.Log4j;
+import lombok.extern.slf4j.Slf4j;
 import me.chanjar.weixin.common.api.WxConsts;
 import me.chanjar.weixin.common.error.WxErrorException;
 import me.chanjar.weixin.mp.api.WxMpKefuService;
@@ -19,7 +20,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping(value = "/wx/portal/{appid}")
-@Log4j
+@Slf4j
 public class WeiXinController {
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 

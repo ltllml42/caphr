@@ -1,5 +1,6 @@
 package com.capinfo.controller;
 
+import com.capinfo.base.BaseEntity;
 import com.capinfo.entity.*;
 import com.capinfo.service.CapVehicleInfoService;
 import com.capinfo.service.CapVehicleSpendtimeService;
@@ -27,6 +28,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -104,15 +106,6 @@ public class WeiXinUserController {
 
 
     /**
-     * data.fansId = "${fans.id}";
-     * data.carId = "${cvInfo.id}";
-     * data.name = name.value;
-     * data.sex = $(sex).attr("data-values");
-     * data.telphone = telphone.value;
-     * data.plateNo = lpnChar.value + "@" + lpnNumber.value;
-     * data.njType = $(njType).attr("data-values");
-     * data.buyTimeStr = buyTime.value;
-     * data.lastTestTimeStr = lastTestTime.value;
      *
      * @param appid
      * @param request
@@ -133,7 +126,7 @@ public class WeiXinUserController {
             WeiXinAuth2Token principal = WeiXinUtils.getPrincipal();
             vehicleInfo.setOpenid(principal.getFansInfo().getOpenId());
             if (principal == null) {
-                return "/weixin/fail";
+                return code.setfailMessage("权限异常失败","principal为空");
             }
             if (StringUtils.isNotBlank(bean.getFansId())) {
                 CapWxAccountFans fansInfo = principal.getFansInfo();
@@ -145,23 +138,37 @@ public class WeiXinUserController {
                 Date lastTestTime = DateUtils.parseDate(vehicleInfo.getLastTestTimeStr(), CapVehicleInfo.FORMAT_DATE);
                 Date buyTime = DateUtils.parseDate(vehicleInfo.getBuyTimeStr(), CapVehicleInfo.FORMAT_DATE);
                 if (StringUtils.isBlank(vehicleInfo.getId())) {
-                    vehicleInfo.setLastTestTime(lastTestTime);
-                    vehicleInfo.setBuyTime(buyTime);
-                    vehicleInfo.setFansId(fansInfo.getId());
-                    vehicleInfo.setOpenid(capWxAccountFans.getOpenId());
-                    capVehicleInfoService.insertSelective(vehicleInfo);
-                    List<CapVehicleInfo> capVehicleInfos = new ArrayList<CapVehicleInfo>();
-                    capVehicleInfos.add(vehicleInfo);
-                    principal.setCvInfoList(capVehicleInfos);
-                    WeiXinUtils.setPrincipal(principal);
+                    List<CapVehicleInfo> cvcInfoList = capVehicleInfoService.select(CapVehicleInfo.builder().plateNo(vehicleInfo.getPlateNo()).build());
+
+                    switch (validateCar(cvcInfoList,bean)){
+                       case "1"://报错提醒 提醒内容为 该车已经被其他人绑定，请先解除绑定后在增加
+                           return code.setfailMessage("该车已经被昵称为"+showFansNickName(cvcInfoList)+"人绑定，请先解除绑定后在增加","验证不通过");
+                       case "2"://直接update
+                           CapVehicleInfo oldVehicleInfo = cvcInfoList.get(0);
+                           oldVehicleInfo.setPlateNo(vehicleInfo.getPlateNo());
+                           oldVehicleInfo.setNjType(vehicleInfo.getNjType());oldVehicleInfo.setLastTestTime(lastTestTime);
+                           oldVehicleInfo.setBuyTime(buyTime);
+                           oldVehicleInfo.setFansId(fansInfo.getId());
+                           oldVehicleInfo.setOpenid(capWxAccountFans.getOpenId());
+                           capVehicleInfoService.updateByPrimaryKeySelective(oldVehicleInfo);
+                           refreshPrincipal(principal, oldVehicleInfo);
+                           break;
+                       case"3"://完全是空需要进行添加操作
+                           vehicleInfo.setLastTestTime(lastTestTime);
+                           vehicleInfo.setBuyTime(buyTime);
+                           vehicleInfo.setFansId(fansInfo.getId());
+                           vehicleInfo.setOpenid(capWxAccountFans.getOpenId());
+                           capVehicleInfoService.insertSelective(vehicleInfo);
+                           refreshPrincipal(principal, vehicleInfo);
+                           break;
+                   }
                 } else {
                     CapVehicleInfo oldVehicleInfo = capVehicleInfoService.selectByPrimaryKey(vehicleInfo);
                     oldVehicleInfo.setPlateNo(vehicleInfo.getPlateNo());
-                    oldVehicleInfo.setNjType(vehicleInfo.getNjType());
-                    oldVehicleInfo.setBuyTime(vehicleInfo.getBuyTime());
-                    oldVehicleInfo.setLastTestTime(lastTestTime);
+                    oldVehicleInfo.setNjType(vehicleInfo.getNjType());oldVehicleInfo.setLastTestTime(lastTestTime);
                     oldVehicleInfo.setBuyTime(buyTime);
                     capVehicleInfoService.updateByPrimaryKeySelective(oldVehicleInfo);
+                    refreshPrincipal(principal, oldVehicleInfo);
                 }
             }
             return code.setSuccessMessage("", "获取信息成功");
@@ -171,6 +178,33 @@ public class WeiXinUserController {
         }
 
 
+    }
+
+    private void refreshPrincipal(WeiXinAuth2Token principal, CapVehicleInfo oldVehicleInfo) {
+        List<CapVehicleInfo> capVehicleInfos = new ArrayList<CapVehicleInfo>();
+        capVehicleInfos.add(oldVehicleInfo);
+        principal.setCvInfoList(capVehicleInfos);
+        WeiXinUtils.setPrincipal(principal);
+    }
+
+    private String showFansNickName(List<CapVehicleInfo> cvcInfoList) {
+        if(cvcInfoList!=null&&!cvcInfoList.isEmpty()) {
+            CapVehicleInfo capVehicleInfo = cvcInfoList.get(0);
+            CapWxAccountFans capWxAccountFans = capWxAccountFansService.selectOne(CapWxAccountFans.builder().id(capVehicleInfo.getFansId()).build());
+            return capWxAccountFans.getNickName();
+        }
+        return "";
+    }
+    private String validateCar(List<CapVehicleInfo> cvcInfoList,BindingCarBean bean) {
+        if(cvcInfoList!=null&&!cvcInfoList.isEmpty()){
+            CapVehicleInfo capVehicleInfo = cvcInfoList.get(0);
+            if(StringUtils.isNotBlank(capVehicleInfo.getFansId())){
+                return "1";//报错提醒 提醒内容为 该车已经被其他人绑定，请先解除绑定后在增加
+            }else{
+                return "2";//直接update
+            }
+        }
+        return "3";//完全是空需要进行添加操作
     }
 
 
@@ -195,6 +229,27 @@ public class WeiXinUserController {
     }
 
 
+
+    @GetMapping("/{id}/del")
+    public String del(@PathVariable String appid, @PathVariable String id, Model model) {
+        CapVehicleInfo cvInfo = capVehicleInfoService.selectOne(CapVehicleInfo.builder().id(id).build());
+        cvInfo.setFansId("");
+        capVehicleInfoService.updateByPrimaryKey(cvInfo);
+        WeiXinAuth2Token principal = WeiXinUtils.getPrincipal();
+        List<CapVehicleInfo> cvInfoList = principal.getCvInfoList();
+        Iterator<CapVehicleInfo> iter = cvInfoList.iterator();
+        while (iter.hasNext()) {
+            CapVehicleInfo next = iter.next();
+            if(next.getId().equals(cvInfo.getId())){
+                iter.remove();
+            }
+        }
+        principal.setCvInfoList(cvInfoList);
+        WeiXinUtils.setPrincipal(principal);
+        model.addAttribute("msg","解除绑定成功");
+        return "/weixin/success";
+    }
+
     @GetMapping("flow")
     public String flow(@PathVariable String appid) {
         return "/weixin/flow";
@@ -207,7 +262,8 @@ public class WeiXinUserController {
 
 
     @GetMapping("success")
-    public String success(@PathVariable String appid) {
+    public String success(@PathVariable String appid,String msg,Model model) {
+        model.addAttribute("msg",msg);
         return "/weixin/success";
     }
 

@@ -75,6 +75,7 @@ public class LoginRealm extends AuthorizingRealm{
    }
    for(CurrentMenu cMenu:cUser.getCurrentMenuList()){
      if(!StringUtils.isEmpty(cMenu.getPermission()))
+     System.out.println(cMenu.getPermission());
      info.addStringPermission(cMenu.getPermission());
    }
     return info;

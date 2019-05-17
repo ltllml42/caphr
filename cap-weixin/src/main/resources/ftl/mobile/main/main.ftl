@@ -24,7 +24,7 @@
     </div>
     <div data-role="main" class="ui-content">
         <h2>
-             <#assign currentUser = Session["curentUser"]>
+            <#assign currentUser = Session["curentUser"]>
             <@shiro.hasPermission name="car:gas">尾气检查消息列表</@shiro.hasPermission>
             <@shiro.hasPermission name="car:online">上线检测消息列表</@shiro.hasPermission>
             <@shiro.hasPermission name="car:pay">缴费核算消息列表</@shiro.hasPermission>
@@ -37,11 +37,7 @@
         </ol>
     </div>
 
-    <div data-role="panel" id="adelePage" data-display="overlay">
-
-    </div>
-
-
+    <div data-role="panel" id="adelePage" data-display="overlay"></div>
 </div>
 </div>
 </body>
