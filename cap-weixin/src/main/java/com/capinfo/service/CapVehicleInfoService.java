@@ -243,10 +243,15 @@ public class CapVehicleInfoService extends BaseServiceImpl<CapVehicleInfo, Strin
                 spendtime.setTaskName(VehicleProcessEnum.PROCESS_ENTER.getTypeName());
                 capVehicleSpendtimeService.save(spendtime);
                 record = capWorkOrderRecord;
+                vehicleMsg.setCapWorkOrderRecord(record);
+                //发送消息队列
+                sendMsg(vehicleMsg);
             } else {
+                vehicleMsg.setCapWorkOrderRecord(record);
                 record = recordList.get(0);
+                //这个时候不在发消息到消息队列了
             }
-            vehicleMsg.setCapWorkOrderRecord(record);
+
 
             if (VehicleConstant.PROCESS_END.equals(record.getNowLink())) {
                 CapWorkOrderRecord capWorkOrderRecord = capWorkOrderRecordService.saveRecordByVehicleInfo(vehicle);
@@ -296,17 +301,13 @@ public class CapVehicleInfoService extends BaseServiceImpl<CapVehicleInfo, Strin
             spendtime.setStartTime(new Date());
             spendtime.setTaskName(VehicleProcessEnum.PROCESS_ENTER.getTypeName());
             capVehicleSpendtimeService.save(spendtime);
+            //发送消息队列
+            sendMsg(vehicleMsg);
         }
-        //进入车检厂，判断一下vehicleMsg里有没有微信的openId,如果有给微信公众号发一条消息
-        String openId = vehicleMsg.getOpenid();
-        if (StringUtils.isNotBlank(openId)) {
-            /*if ("3".equals(direction)) {
-                //取到的数据暂时设定方向3为进入车检厂时的方向。进入车检厂时发送微信公众号一条消息。需要再测试一下
-            }*/
-            flowMessagePushService.sendRecordToWx(vehicleMsg);
-        }
-        //往大屏上也发送
-        flowMessagePushService.sendRecordToLargeScreen(vehicleInfo);
+
+
+
+
     }
 
 
@@ -365,6 +366,21 @@ public class CapVehicleInfoService extends BaseServiceImpl<CapVehicleInfo, Strin
         }
     }
 
+
+
+    public void sendMsg(CapVehicleInfo vehicleMsg) {
+        //进入车检厂，判断一下vehicleMsg里有没有微信的openId,如果有给微信公众号发一条消息
+        String openId = vehicleMsg.getOpenid();
+        if (StringUtils.isNotBlank(openId)) {
+            /*if ("3".equals(direction)) {
+                //取到的数据暂时设定方向3为进入车检厂时的方向。进入车检厂时发送微信公众号一条消息。需要再测试一下
+            }*/
+            flowMessagePushService.sendRecordToWx(vehicleMsg);
+        }
+        //往大屏上也发送
+        flowMessagePushService.sendRecordToLargeScreen(vehicleMsg);
+
+    }
 
 
 

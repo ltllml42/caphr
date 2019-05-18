@@ -58,7 +58,7 @@
   <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail">查看</a>
     <#--</@shiro.hasPermission>-->
 <#--<@shiro.hasPermission name="role:update">-->
-    {{#if(d.capWorkOrderRecord.nowLink != '5' || d.capWorkOrderRecord.nowLink != '7'){ }}
+    {{#if(d.capWorkOrderRecord.nowLink != '5' && d.capWorkOrderRecord.nowLink != '7'){ }}
   <a class="layui-btn layui-btn-xs  layui-btn-normal" lay-event="edit">检测</a>
     {{# }if(d.capWorkOrderRecord.nowLink =='5') { }}
     <a class="layui-btn layui-btn-xs  layui-btn-normal" lay-event="edit">结算</a>
