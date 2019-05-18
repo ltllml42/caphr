@@ -18,10 +18,15 @@ public class GiantCurtainController {
 
     //@JmsListener(destination = ActiveMQConfig.MSG_LARGE_SCREEN_DISPLAY_QUEUE)
     //@Scheduled(fixedRate = 10000)
-    @JmsListener(destination = ActiveMQConfig.MSG_LARGE_SCREEN_DISPLAY_QUEUE)
-    public void information(String text) {
-        simpleMessageService.sendTopicMessage("/topic/gcc",text);
-    }
+//    @JmsListener(destination = ActiveMQConfig.MSG_LARGE_SCREEN_DISPLAY_QUEUE)
+//    public void information(String text) {
+//        try {
+//            Thread.sleep(5000);
+//            simpleMessageService.sendTopicMessage("/topic/gcc",text);
+//        } catch (InterruptedException e) {
+//            e.printStackTrace();
+//        }
+//    }
 
 
 

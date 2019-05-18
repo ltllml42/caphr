@@ -164,16 +164,16 @@ public class MqTestController {
 
 
 
-    /*@Scheduled(fixedRate = 10000)
+    @Scheduled(fixedRate = 10000)
     public void sendMsg() {
         //测试数据
-        if(i==list.size()){
+        if(i==list.size()-1){
             i=0;
         }
         jmsTemplate.convertAndSend(this.displayQueue, list.get(i++));
 
         log.debug("大屏显示消息为"+list.get(i));
-    }*/
+    }
 
 
     /**

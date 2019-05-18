@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
-    <title>Bootstrap 101 Template</title>
+    <title>大屏显示</title>
 
     <!-- Bootstrap -->
     <link href="${re.contextPath}/plugin/mp/css/bootstrap.css" rel="stylesheet">
@@ -25,7 +25,18 @@
         <div class="row">
             <h2>验车流程</h2>
             <p>检查车辆消息列表（测试版1.1）</p>
-
+            <ol id="largeScreen" class="list-group">
+                <li class="list-group-item" flag="empty">暂无消息</li>
+                <li class="list-group-item" flag="empty">暂无消息</li>
+                <li class="list-group-item" flag="empty">暂无消息</li>
+                <li class="list-group-item" flag="empty">暂无消息</li>
+                <li class="list-group-item" flag="empty">暂无消息</li>
+                <li class="list-group-item" flag="empty">暂无消息</li>
+                <li class="list-group-item" flag="empty">暂无消息</li>
+                <li class="list-group-item" flag="empty">暂无消息</li>
+                <li class="list-group-item" flag="empty">暂无消息</li>
+                <li class="list-group-item" flag="empty">暂无消息</li>
+            </ol>
         </div>
         <div class="row">
             <h2>即时消息通道</h2>
@@ -53,6 +64,30 @@
 <script src="/webjars/stomp-websocket/2.3.3/stomp.min.js"></script>
 
 <script type="text/javascript">
+    /**
+     *
+     * 获取当前时间
+     */
+    function getNow(s) {
+        return s < 10 ? '0' + s: s;
+    }
+
+    function getTime(){
+        var myDate = new Date();
+        //获取当前年
+        var year=myDate.getFullYear();
+        //获取当前月
+        var month=myDate.getMonth()+1;
+        //获取当前日
+        var date=myDate.getDate();
+        var h=myDate.getHours();       //获取当前小时数(0-23)
+        var m=myDate.getMinutes();     //获取当前分钟数(0-59)
+        var s=myDate.getSeconds();
+        return year+'-'+getNow(month)+"-"+getNow(date)+" "+getNow(h)+':'+getNow(m)+":"+getNow(s);
+    }
+
+
+
 
     var stompClient = null;
 
@@ -64,9 +99,32 @@
             stompClient.subscribe('/topic/gcc', function (result) {
                 console.log(result.body);
                 showContent(JSON.parse(result.body));
+                showLargeScreen(JSON.parse(result.body));
+
             });
         });
     });
+
+    var full = 9;
+    var index = 0;//从零开始
+    function showLargeScreen(data){
+        var fullFalg = true;
+        $($("#largeScreen li").toArray().reverse()).each(function(index,item){
+            debugger;
+            var flag = $(item).attr("flag");
+            if(flag=="empty"){
+                $(item).html(data.content+"<span class=\"badge\">"+getTime()+"</span>");
+                $(item).attr("flag","full");
+                fullFalg = false;
+                return false;
+            }
+        });
+        if(fullFalg){
+            $("#largeScreen").children().get(0).remove();
+            $("#largeScreen").append("<li class=\"list-group-item\" flag=\"full\">"+data.content5+"<span class=\"badge\">"+getTime()+"</span></li>")
+        }
+    }
+
 
     function showContent(data){
         $('.dowebok').children().remove();

@@ -70,7 +70,6 @@ public class WeiXinProcessController {
         String mess = printMessage(message);
         try {
             if(!StringUtils.isEmpty(mess)){
-                simpleMessageService.sendTopicMessage("/topic/gcc",mess);
                 boolean flag = kefuService.sendKefuMessage(WxMpKefuMessage.TEXT().content(mess).toUser(message.getOpenId()).build());
             }else{
                 log.debug("未发送成功："+message);
@@ -80,6 +79,20 @@ public class WeiXinProcessController {
             e.printStackTrace();
         }
     }
+
+    @JmsListener(destination = ActiveMQConfig.MSG_LARGE_SCREEN_DISPLAY_QUEUE)
+    public void information(CarCheckFlowMessage message) {
+        try {
+            Thread.sleep(5000);
+            String mess = printMessage(message);
+            if(!StringUtils.isEmpty(mess)){
+                simpleMessageService.sendTopicMessage("/topic/gcc",mess);
+            }
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
 
     private String printMessage(CarCheckFlowMessage message) {
         List<VehicleProcessEnum> enumList = EnumUtils.getEnumList(VehicleProcessEnum.class);

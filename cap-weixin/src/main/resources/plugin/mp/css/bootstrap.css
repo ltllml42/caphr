@@ -1077,7 +1077,7 @@ th {
           box-sizing: border-box;
 }
 html {
-  font-size: 10px;
+  font-size: 20px;
 
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 }
@@ -1602,6 +1602,7 @@ pre code {
   	padding-right: 50px;
   	padding-left: 50px;
     width: 100%;
+    height: 1500px;
   }
 }
 .container-fluid {
@@ -5245,6 +5246,7 @@ a.thumbnail.active {
 }
 .list-group {
   padding-left: 0;
+  font-size: 30px !important;
   margin-bottom: 20px;
 }
 .list-group-item {
