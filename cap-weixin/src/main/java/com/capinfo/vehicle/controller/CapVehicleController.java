@@ -97,11 +97,34 @@ public class CapVehicleController {
         return "vehicle/vehicleList";
     }
 
+    /**
+     * 灯光复检
+     * @param model
+     * @return
+     */
     @GetMapping(value = "light")
     public String light(Model model) {
         model.addAttribute("pageType", "light");
         return "vehicle/vehicleList";
     }
+
+    /**
+     * 所有结束流程的
+     * @param model
+     * @return
+     */
+    @GetMapping(value = "end")
+    public String endList(Model model) {
+        model.addAttribute("pageType", "light");
+        return "vehicle/vehicleList";
+    }
+
+    @GetMapping(value = "largescreen")
+    public String largeScreen(Model model) {
+
+        return "";
+    }
+
 
 
     /**
