@@ -25,60 +25,7 @@
         <div class="row">
             <h2>验车流程</h2>
             <p>检查车辆消息列表（测试版1.1）</p>
-            <table class="table table-striped">
-                <thead>
-                <tr>
-                    <th>车牌号</th>
-                    <th>所在流程</th>
-                    <th>流程所花时间</th>
-                    <th>总花费时间</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr>
-                    <td>京J-FS318</td>
-                    <td>上线检测</td>
-                    <td>50分钟</td>
-                    <td>50分钟</td>
-                </tr>
-                <tr>
-                    <td>京A-AG221</td>
-                    <td>上线检测</td>
-                    <td>50分钟</td>
-                    <td>50分钟</td>
-                </tr>
-                <tr>
-                    <td>京G-FV123</td>
-                    <td>上线检测</td>
-                    <td>100分钟</td>
-                    <td>50分钟</td>
-                </tr>
-                <tr>
-                    <td>京J-VK123</td>
-                    <td>上线检测</td>
-                    <td>50分钟</td>
-                    <td>120分钟</td>
-                </tr>
-                <tr>
-                    <td>陕J-FS318</td>
-                    <td>上线检测</td>
-                    <td>36分钟</td>
-                    <td>127分钟</td>
-                </tr>
-                <tr>
-                    <td>陕J-FS318</td>
-                    <td>上线检测</td>
-                    <td>36分钟</td>
-                    <td>127分钟</td>
-                </tr>
-                <tr>
-                    <td>陕J-FS318</td>
-                    <td>上线检测</td>
-                    <td>36分钟</td>
-                    <td>127分钟</td>
-                </tr>
-                </tbody>
-            </table>
+
         </div>
         <div class="row">
             <h2>即时消息通道</h2>

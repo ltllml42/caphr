@@ -1,0 +1,86 @@
+Manifest-Version: 1.0
+Class-Path: gson-2.8.2.jar tomcat-embed-el-8.5.29.jar persistence-api-
+ 1.0.jar batik-js-1.7.jar guava-18.0.jar activiti-json-converter-5.22.
+ 0.jar reflections-0.9.11.jar commons-email-1.4.jar springfox-swagger-
+ ui-2.7.0.jar activemq-client-5.15.3.jar commons-dbcp-1.4.jar mapper-e
+ xtra-1.0.4.jar xpp3_min-1.1.4c.jar mapper-base-1.0.4.jar spring-boot-
+ starter-tomcat-2.0.1.RELEASE.jar spring-boot-starter-test-2.0.1.RELEA
+ SE.jar commons-codec-1.11.jar httpclient-4.5.5.jar spring-core-5.0.5.
+ RELEASE.jar logback-core-1.2.3.jar jquery-3.1.0.jar batik-xml-1.7.jar
+  mapper-spring-boot-starter-2.0.3.jar spring-jms-5.0.5.RELEASE.jar av
+ alon-framework-impl-4.3.1.jar pagehelper-5.1.2.jar weixin-java-miniap
+ p-3.3.8.B.jar freemarker-2.3.28.jar batik-transcoder-1.7.jar jul-to-s
+ lf4j-1.7.25.jar commons-compress-1.9.jar jcl-over-slf4j-1.7.25.jar lo
+ g4j-api-2.10.0.jar batik-svggen-1.7.jar spring-boot-starter-freemarke
+ r-2.0.1.RELEASE.jar activiti-modeler-5.22.0.jar spring-orm-5.0.5.RELE
+ ASE.jar mapstruct-1.1.0.Final.jar hibernate-validator-6.0.10.Final.ja
+ r shiro-web-1.3.2.jar batik-awt-util-1.7.jar UserAgentUtils-1.21.jar 
+ commons-logging-1.1.1.jar httpcore-4.4.9.jar tomcat-embed-core-8.5.29
+ .jar junit-4.12.jar spring-plugin-metadata-1.2.0.RELEASE.jar ehcache-
+ core-2.5.0.jar logback-classic-1.2.3.jar jboss-logging-3.3.2.Final.ja
+ r shiro-aspectj-1.4.0.jar mockito-core-2.15.0.jar shiro-ehcache-1.3.2
+ .jar shiro-quartz-1.3.2.jar commons-io-2.5.jar spring-boot-starter-ao
+ p-2.0.1.RELEASE.jar spring-boot-starter-jdbc-2.0.1.RELEASE.jar activi
+ ti-process-validation-5.22.0.jar log4j-to-slf4j-2.10.0.jar activiti-b
+ pmn-model-5.22.0.jar batik-gvt-1.7.jar spring-jdbc-5.0.5.RELEASE.jar 
+ activiti-spring-5.22.0.jar asm-5.0.4.jar javaGeom-0.11.1.jar shiro-co
+ re-1.3.2.jar bcpkix-jdk15on-1.59.jar shiro-spring-1.3.2.jar spring-bo
+ ot-starter-websocket-2.0.1.RELEASE.jar mapper-spring-1.0.4.jar spring
+ -webmvc-5.0.5.RELEASE.jar pagehelper-spring-boot-starter-1.2.5.jar st
+ omp-websocket-2.3.3.jar quartz-2.3.0.jar activiti-engine-5.22.0.jar a
+ ndroid-json-0.0.20131108.vaadin1.jar swagger-annotations-1.5.13.jar d
+ ruid-1.1.10.jar accessors-smart-1.2.jar weixin-java-mp-3.3.8.B.jar ja
+ ckson-datatype-jdk8-2.9.5.jar javax.jms-api-2.0.1.jar swagger-models-
+ 1.5.13.jar spring-boot-2.0.1.RELEASE.jar spring-context-5.0.5.RELEASE
+ .jar activemq-openwire-legacy-5.15.3.jar jackson-datatype-joda-2.9.5.
+ jar dom4j-2.1.1.jar spring-boot-starter-2.0.1.RELEASE.jar activiti-im
+ age-generator-5.22.0.jar mchange-commons-java-0.2.11.jar spring-secur
+ ity-web-5.0.4.RELEASE.jar spring-security-crypto-5.0.4.RELEASE.jar sp
+ ring-plugin-core-1.2.0.RELEASE.jar activiti-common-rest-5.22.0.jar by
+ te-buddy-agent-1.7.11.jar json-smart-2.3.jar HikariCP-2.7.8.jar xmlun
+ it-core-2.5.1.jar joda-time-2.9.9.jar spring-security-core-5.0.4.RELE
+ ASE.jar xstream-1.4.10.jar batik-parser-1.7.jar mybatis-spring-1.3.0.
+ jar javax.annotation-api-1.3.2.jar spring-expression-5.0.5.RELEASE.ja
+ r hamcrest-library-1.3.jar jackson-module-jaxb-annotations-2.9.5.jar 
+ sockjs-client-1.0.2.jar pagehelper-spring-boot-autoconfigure-1.2.5.ja
+ r webjars-locator-core-0.35.jar activation-1.1.jar batik-anim-1.7.jar
+  spring-beans-5.0.5.RELEASE.jar spring-boot-starter-cache-2.0.1.RELEA
+ SE.jar batik-svg-dom-1.7.jar springfox-schema-2.7.0.jar springfox-spr
+ ing-web-2.7.0.jar activiti-bpmn-converter-5.22.0.jar byte-buddy-1.7.1
+ 1.jar batik-script-1.7.jar batik-codec-1.7.jar json-lib-2.4-jdk15.jar
+  ezmorph-1.0.6.jar xml-apis-ext-1.3.04.jar mybatis-3.4.1.jar avalon-f
+ ramework-api-4.3.1.jar mybatis-spring-boot-autoconfigure-1.3.1.jar we
+ bjars-locator-0.34.jar spring-context-support-5.0.5.RELEASE.jar jsona
+ ssert-1.5.0.jar spring-boot-starter-web-2.0.1.RELEASE.jar snakeyaml-1
+ .19.jar spring-aop-5.0.5.RELEASE.jar mail-1.5.0-b01.jar jackson-modul
+ e-parameter-names-2.9.5.jar activiti-diagram-rest-5.22.0.jar springfo
+ x-swagger2-2.7.0.jar javassist-3.21.0-GA.jar spring-boot-starter-acti
+ vemq-2.0.1.RELEASE.jar jackson-datatype-jsr310-2.9.5.jar bootstrap-3.
+ 3.7.jar xmlpull-1.1.3.1.jar spring-websocket-5.0.5.RELEASE.jar batik-
+ css-1.7.jar commons-collections-3.2.1.jar mybatis-generator-core-1.3.
+ 5.jar hawtbuf-1.11.jar jsqlparser-1.0.jar springfox-spi-2.7.0.jar com
+ mons-lang3-3.7.jar hutool-core-4.0.12.jar fop-0.94.jar aspectjweaver-
+ 1.8.13.jar geronimo-j2ee-management_1.1_spec-1.0.1.jar spring-boot-au
+ toconfigure-2.0.1.RELEASE.jar mybatis-spring-boot-starter-1.3.1.jar s
+ pring-security-config-5.0.4.RELEASE.jar slf4j-api-1.7.25.jar spring-b
+ oot-starter-json-2.0.1.RELEASE.jar javax.mail-1.6.1.jar weixin-java-c
+ ommon-3.3.8.B.jar xml-apis-1.4.01.jar spring-jcl-5.0.5.RELEASE.jar sp
+ ring-boot-test-autoconfigure-2.0.1.RELEASE.jar weixin-java-open-3.3.8
+ .B.jar hamcrest-core-1.3.jar jackson-annotations-2.9.0.jar xmlgraphic
+ s-commons-1.2.jar shiro-freemarker-tags-1.0.0.jar jackson-databind-2.
+ 9.5.jar spring-tx-5.0.5.RELEASE.jar spring-test-5.0.5.RELEASE.jar htt
+ pmime-4.5.5.jar mapper-weekend-1.1.3.jar commons-fileupload-1.3.2.jar
+  mysql-connector-java-5.1.6.jar assertj-core-3.9.1.jar mapper-spring-
+ boot-autoconfigure-2.0.3.jar spring-boot-configuration-processor-2.0.
+ 1.RELEASE.jar batik-util-1.7.jar validation-api-2.0.1.Final.jar tomca
+ t-embed-websocket-8.5.29.jar commons-pool-1.6.jar springfox-core-2.7.
+ 0.jar json-path-2.4.0.jar mapper-core-1.0.4.jar springfox-swagger-com
+ mon-2.7.0.jar aspectjrt-1.8.13.jar batik-bridge-1.7.jar spring-messag
+ ing-5.0.5.RELEASE.jar jackson-core-2.9.5.jar batik-ext-1.7.jar fastjs
+ on-1.2.41.jar spring-web-5.0.5.RELEASE.jar bcprov-jdk15on-1.59.jar sp
+ ring-boot-starter-logging-2.0.1.RELEASE.jar classmate-1.3.4.jar objen
+ esis-2.6.jar spring-boot-test-2.0.1.RELEASE.jar batik-dom-1.7.jar act
+ ivemq-broker-5.15.3.jar commons-beanutils-1.8.3.jar commons-lang-2.5.
+ jar
+Main-Class: com.capinfo.Application
+

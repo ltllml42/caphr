@@ -70,6 +70,7 @@ public class WeiXinProcessController {
         String mess = printMessage(message);
         try {
             if(!StringUtils.isEmpty(mess)){
+                simpleMessageService.sendTopicMessage("/topic/gcc",mess);
                 boolean flag = kefuService.sendKefuMessage(WxMpKefuMessage.TEXT().content(mess).toUser(message.getOpenId()).build());
             }else{
                 log.debug("未发送成功："+message);
