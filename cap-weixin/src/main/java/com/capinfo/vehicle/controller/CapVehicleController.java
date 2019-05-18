@@ -405,7 +405,11 @@ public class CapVehicleController {
                     String recordId = capWorkOrderRecord.getRecordId();
                     CapVehicleInfo vehicleInfo = capVehicleInfoService.selectByPrimaryKey(recordId);
                     vehicleInfo.setCapWorkOrderRecord(capWorkOrderRecord);
-                    flowMessagePushService.sendRecordToWx(vehicleInfo);
+                    if (StringUtils.isNotBlank(vehicleInfo.getOpenid())) {
+                        flowMessagePushService.sendRecordToWx(vehicleInfo);
+                    }
+                    //往大屏上也发送
+                    flowMessagePushService.sendRecordToLargeScreen(vehicleInfo);
                 }
             }
             //在最后写不合前面的混了就  如果下一步到缴费核算的情况下，把整体的费用算一下

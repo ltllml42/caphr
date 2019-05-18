@@ -305,6 +305,8 @@ public class CapVehicleInfoService extends BaseServiceImpl<CapVehicleInfo, Strin
             }*/
             flowMessagePushService.sendRecordToWx(vehicleMsg);
         }
+        //往大屏上也发送
+        flowMessagePushService.sendRecordToLargeScreen(vehicleInfo);
     }
 
 

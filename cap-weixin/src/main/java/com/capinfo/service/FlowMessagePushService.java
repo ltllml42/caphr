@@ -179,5 +179,21 @@ public class FlowMessagePushService {
     }
 
 
+    public void sendRecordToLargeScreen(CapVehicleInfo capVehicleInfo) {
+        CarCheckFlowMessage carMsg = new CarCheckFlowMessage();
+        carMsg.setBuisId(capVehicleInfo.getCapWorkOrderRecord().getId());
+        carMsg.setFlowStatus(capVehicleInfo.getCapWorkOrderRecord().getNowLink());
+        carMsg.setPlateNo(capVehicleInfo.getPlateNo());
+        carMsg.setOpenId(capVehicleInfo.getOpenid());
+        String nowStatus = capVehicleInfo.getCapWorkOrderRecord().getNowStatus();
+        if (VehicleConstant.PROCESS_NOWSTATUS_NO.equals(nowStatus)) {
+            carMsg.setNowStatus("不通过");
+        } else {
+            carMsg.setNowStatus("通过");
+        }
+        jmsTemplate.convertAndSend(this.displayQueue, carMsg);
+    }
+
+
 
 }
