@@ -219,7 +219,7 @@ public class CapVehicleInfoService extends BaseServiceImpl<CapVehicleInfo, Strin
 
 
 
-    public void createVehicleInfo(String license) {
+    public void createVehicleInfo(String license, String direction) {
         //记下来这么一个车的对象，在最后发一个消息给微信的队列里
         CapVehicleInfo vehicleMsg = new CapVehicleInfo();
         CapVehicleInfo vehicleInfo = new CapVehicleInfo();
@@ -300,6 +300,9 @@ public class CapVehicleInfoService extends BaseServiceImpl<CapVehicleInfo, Strin
         //进入车检厂，判断一下vehicleMsg里有没有微信的openId,如果有给微信公众号发一条消息
         String openId = vehicleMsg.getOpenid();
         if (StringUtils.isNotBlank(openId)) {
+            /*if ("3".equals(direction)) {
+                //取到的数据暂时设定方向3为进入车检厂时的方向。进入车检厂时发送微信公众号一条消息。需要再测试一下
+            }*/
             flowMessagePushService.sendRecordToWx(vehicleMsg);
         }
     }
@@ -333,6 +336,33 @@ public class CapVehicleInfoService extends BaseServiceImpl<CapVehicleInfo, Strin
         }
 
     }
+
+
+    /**
+     * 根据车牌号，查一下对应的Vehicle表车的信息里    车辆类型    有没有值。如果没有值根据当前用户赋一下值
+     * @param plateNo
+     */
+    public void saveVehiclePropValue(String plateNo) {
+        CurrentUser currentUser = (CurrentUser) SecurityUtils.getSubject().getSession().getAttribute("curentUser");
+        CapVehicleInfo vehicleInfo = new CapVehicleInfo();
+        vehicleInfo.setPlateNo(plateNo);
+        List<CapVehicleInfo> list = capVehicleInfoMapper.selectListByCondition(vehicleInfo);
+        if (list!=null && !list.isEmpty()) {
+            CapVehicleInfo capVehicleInfo = capVehicleInfoMapper.selectByPrimaryKey(list.get(0).getId());
+            String vehicleProp = capVehicleInfo.getVehicleProp();
+            if (StringUtils.isBlank(vehicleProp)) {
+                //在这根据用户判断一下附上值
+                if (VehicleConstant.MID_USERID.equals(currentUser.getId())) {
+                    capVehicleInfo.setVehicleProp(VehicleConstant.VEHICLE_PROP_MIDDLE);
+                } else {
+                    capVehicleInfo.setVehicleProp(VehicleConstant.VEHICLE_PROP_SMALL);
+                }
+                this.updateByPrimaryKey(capVehicleInfo);
+            }
+
+        }
+    }
+
 
 
 

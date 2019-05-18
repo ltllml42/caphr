@@ -49,7 +49,7 @@ public class CapVehicleInfo extends BaseEntity {
     @Column(name = "vehicle_type")
     private String vehicleType;
     /**
-     * 车辆属性   中型车  或 小型车
+     * 车辆属性   中型车  或 小型车    1：小型车   2：中型车
      */
     @Column(name = "vehicle_prop")
     private String vehicleProp;

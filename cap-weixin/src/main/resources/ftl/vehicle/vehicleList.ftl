@@ -86,6 +86,14 @@
     {{#  } }}
 </script>
 
+<script type="text/html" id="vehiclePropTemp">
+    {{#  if(d.vehicleProp =='1'){ }}
+    小型车
+    {{# }if(d.vehicleProp =='2') { }}
+    中型车
+    {{#  } }}
+</script>
+
 
 <script>
     layui.laytpl.toDateString = function(d, format){
@@ -138,10 +146,10 @@
             , url: 'showVehicleList?pageType=${pageType}'
             , cols: [[
                 {checkbox: true, fixed: true, width: '5%'}
-                , {field: 'plateNo', title: '车牌号', width: '20%', sort: true}
-                , {field: 'vehicleType', title: '车辆类型', width: '20%', sort: true}
+                , {field: 'plateNo', title: '车牌号', width: '20%'}
+                , {field: 'vehicleProp', title: '车辆类型', width: '20%', sort: true, templet: '#vehiclePropTemp'}
                 , {field: 'capWorkOrderRecord.nowLink', title: '当前环节', width: '15%', templet: '#nowLinkTemp'}
-                , {field: 'createDate', title: '创建时间', width: '20%',templet: '<div>{{ layui.laytpl.toDateString(d.createDate,"yyyy-MM-dd") }}</div>'}
+                , {field: 'createDate', title: '入场时间', width: '20%',templet: '<div>{{ layui.laytpl.toDateString(d.createDate,"yyyy-MM-dd") }}</div>'}
                 , {field: 'remark', title: '操作', width: '20%', toolbar: "#toolBar"}
             ]]
             , page: true
@@ -200,13 +208,13 @@
         table.on('tool(user)', function (obj) {
             var data = obj.data;
             if (obj.event === 'detail') {
-                detail('编辑角色', 'showComplete?pageType=${pageType}&id=' + data.capWorkOrderRecord.id, 700, 450);
+                detail('核对信息', 'showComplete?pageType=${pageType}&id=' + data.capWorkOrderRecord.id, 700, 450);
             } else if (obj.event === 'del') {
                 /*layer.confirm('确定删除角色[<label style="color: #00AA91;">' + data.roleName + '</label>]?', function(){
                     del(data.id);
                 });*/
             } else if (obj.event === 'edit') {
-                update('编辑角色', 'showComplete?pageType=${pageType}&id=' + data.capWorkOrderRecord.id, 700, 450);
+                update('核对信息', 'showComplete?pageType=${pageType}&id=' + data.capWorkOrderRecord.id, 700, 450);
             }
         });
 

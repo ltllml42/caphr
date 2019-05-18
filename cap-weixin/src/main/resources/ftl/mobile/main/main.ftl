@@ -14,7 +14,7 @@
 <div data-role="page" id="login">
     <div data-role="header" data-position="fixed" data-theme="b">
         <h1>车检管理系统</h1>
-        <button class="layui-btn layui-btn-sm icon-position-button" id="refreshData"><i class="layui-icon">ဂ</i></button>
+        <button class="layui-btn layui-btn-sm icon-position-button" id="refreshData" ><i class="layui-icon">ဂ</i></button>
         <a class="layui-btn layui-btn-sm icon-position-button" href="/logout"><i class="fa fa-sign-out" aria-hidden="true"></i> 注销</a>
         <#--<ul class="layui-nav layui-layout-right kit-nav">
             <button class="layui-btn layui-btn-sm icon-position-button" id="refreshData"><i class="layui-icon">ဂ</i></button>

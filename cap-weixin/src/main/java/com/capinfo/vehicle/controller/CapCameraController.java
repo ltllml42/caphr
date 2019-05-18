@@ -58,7 +58,7 @@ public class CapCameraController {
         CarCardInfo info = getPostData(in,size,charset);
         if (info != null) {
             if (StringUtils.isNotBlank(info.getLicense())) {
-                capVehicleInfoService.createVehicleInfo(info.getLicense());
+                capVehicleInfoService.createVehicleInfo(info.getLicense(), info.getDirection());
             }
         }
         String jsonStr ="{\"Response\":{\"Open\":1,\"SerialData\":{\"data\":\"/pgAbJdUAAAAAAAAAAAAAQEB/lxLiVkAAAAxAABsuUYAAAAwMDAwMDAwMDEsAQT/MDEwMTAxOTkxMjMxEwAAAFWqAAA3MjIxMTEAAAgAEAABEQASAAAAu7bTrbniwdn/AAEAAQABAGd8//+BbII=\",\"datalen\":148}}}";
@@ -74,7 +74,7 @@ public class CapCameraController {
     @RequestMapping(value = "testGetCarCardInfo")
     @ResponseBody
     public String testGetCarCardInfo(HttpServletRequest request) {
-        capVehicleInfoService.createVehicleInfo("京Q7Z8Q6");
+        capVehicleInfoService.createVehicleInfo("京Q7Z8Q6", "3");
         String jsonStr ="{\"Response\":{\"Open\":1,\"SerialData\":{\"data\":\"/pgAbJdUAAAAAAAAAAAAAQEB/lxLiVkAAAAxAABsuUYAAAAwMDAwMDAwMDEsAQT/MDEwMTAxOTkxMjMxEwAAAFWqAAA3MjIxMTEAAAgAEAABEQASAAAAu7bTrbniwdn/AAEAAQABAGd8//+BbII=\",\"datalen\":148}}}";
         return jsonStr;
     }
@@ -104,7 +104,7 @@ public class CapCameraController {
                 } else {
                     //判断一下有没有在其他步骤的数据。
                     // 如果没有就去创建，如果有，那么可能是某一步没有通过进入车检厂复检的情况，这种情况不去创建，这种情况直接发送给对应步骤的用户消息
-                    capVehicleInfoService.createVehicleInfo(carInfo.getLicense());
+                    capVehicleInfoService.createVehicleInfo(carInfo.getLicense(), "3");
                     //这个时候要再查一下是不是有所在步骤是进入检测场的。有可能经过create数据的方法之后，数据是在某一个步骤的。
                     // 在create里发过消息了，这时候不要再走开启流程的方法了。
                     CapWorkOrderRecord newRecord = new CapWorkOrderRecord();
@@ -141,7 +141,7 @@ public class CapCameraController {
         if (list!=null&&!list.isEmpty()) {
             capVehicleInfoService.startFlowByCamera("京Q7Z8Q6");
         } else {
-            capVehicleInfoService.createVehicleInfo("京Q7Z8Q6");
+            capVehicleInfoService.createVehicleInfo("京Q7Z8Q6", "3");
             //这个时候要再查一下是不是有所在步骤是进入检测场的。有可能经过create数据的方法之后，数据是在某一个步骤的。
             // 在create里发过消息了，这时候不要再走开启流程的方法了。
             CapWorkOrderRecord newRecord = new CapWorkOrderRecord();
@@ -247,11 +247,13 @@ public class CapCameraController {
             String recotime = Json.getJSONObject("AlarmInfoPlate").getJSONObject("result").getJSONObject("PlateResult").getString("recotime");
             String parkId = Json.getJSONObject("AlarmInfoPlate").getString("ParkID");
 
+            String direction = Json.getJSONObject("AlarmInfoPlate").getJSONObject("result").getJSONObject("PlateResult").getString("direction");
             info.setIpaddr(ipaddr);
             info.setLicense(license);
             info.setPlatecolor(platecolor);
             info.setRecotime(recotime);
             info.setParkId(parkId);
+            info.setDirection(direction);
 
             return info;
         } catch (Exception e) {

@@ -13,6 +13,8 @@ public class CarCardInfo {
     //识别时间
     private String recotime;
 
+    private String direction;
+
     public String getIpaddr() {
         return ipaddr;
     }
@@ -51,5 +53,13 @@ public class CarCardInfo {
 
     public void setRecotime(String recotime) {
         this.recotime = recotime;
+    }
+
+    public String getDirection() {
+        return direction;
+    }
+
+    public void setDirection(String direction) {
+        this.direction = direction;
     }
 }

@@ -74,9 +74,9 @@ public class LoginRealm extends AuthorizingRealm{
      info.addRole(cRole.getId());
    }
    for(CurrentMenu cMenu:cUser.getCurrentMenuList()){
-     if(!StringUtils.isEmpty(cMenu.getPermission())){
-       info.addStringPermission(cMenu.getPermission());
-     }
+       if(!StringUtils.isEmpty(cMenu.getPermission())){
+           info.addStringPermission(cMenu.getPermission());
+       }
    }
     return info;
   }

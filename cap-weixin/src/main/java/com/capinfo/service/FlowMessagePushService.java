@@ -151,7 +151,7 @@ public class FlowMessagePushService {
                     carMsg.setStatusCss(CarCheckFlowMessage.FONT_CSS_RED);
                 } else if ("nopasslight".equals(status)) {
                     carMsg.setFlag("empty");
-                    carMsg.setNowStatus("不通过");
+                    carMsg.setNowStatus("车灯复检");
                     carMsg.setStatusCss(CarCheckFlowMessage.FONT_CSS_RED);
                 }
                 jmsTemplate.convertAndSend(this.flowQuere,carMsg);

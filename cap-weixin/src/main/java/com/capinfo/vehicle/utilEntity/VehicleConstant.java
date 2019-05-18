@@ -41,29 +41,29 @@ public class VehicleConstant {
 
 
     /**
-     * 检测中     在点进页面的时候改成这个状态。表示这个人签收了开始检测了
+     * 检测中     在点进页面的时候改成这个状态。表示这个人签收了开始检测了     SPENDTIME表中的字段
      */
     public static final String PROCESS_NOWSTATUS_CHECKING = "1";
     /**
-     * 不通过
+     * 不通过      SPENDTIME表中的字段
      */
     public static final String PROCESS_NOWSTATUS_NO = "2";
 
     /**
-     * 检测用时表里status用这几个常量表示     1：检测中
+     * 检测用时表里status用这几个常量表示     1：检测中   SPENDTIME表中的status字段
      */
     public static final String PROCESS_SPENDTIME_CHECKING = "1";
     /**
-     * 2:检测完成
+     * 2:检测完成                  PENDTIME表中的status字段
      */
     public static final String PROCESS_SPENDTIME_END = "2";
 
     /**
-     * 是否是复检的情况     0：否
+     * 是否是复检的情况     0：否     PENDTIME表中的ISREPEAT字段
      */
     public static final String PROCESS_ISREPEAT_NO = "0";
     /**
-     * 是否是复检的情况     1：是
+     * 是否是复检的情况     1：是     PENDTIME表中的ISREPEAT字段
      */
     public static final String PROCESS_ISREPEAT_YES = "1";
 
@@ -104,6 +104,29 @@ public class VehicleConstant {
      * 是否是新能源车在尾气检测步骤免检     1:免检      （新能源车辆）
      */
     public static final String IS_POWERFREE_YES = "1";
+
+
+    /**
+     * 车辆车型 1：小型车
+     */
+    public static final String VEHICLE_PROP_SMALL = "1";
+    /**
+     * 车辆车型 2：中型车
+     */
+    public static final String VEHICLE_PROP_MIDDLE = "2";
+
+    /**
+     *  中型车尾气检测人员   用户id    先默认写死这个
+     */
+    public static final String MID_USERID = "d0dc97f1ab6249819750679c0e51d0c1";
+
+
+    /**
+     * spendtime表排序方式。按创建时间正序排序
+     */
+    public static final String SPENDTIME_SORTTYPE_CREATEDATEASC = "createDateAsc";
+
+
 
 
 }

@@ -48,6 +48,8 @@ public class CapVehicleSpendtime extends BaseEntity {
     private String nowStatuStr;
     @Transient
     private String iconImg;
+    @Transient
+    private String sortType;//加这个字段变一下select时候的排序方式
 
     /**
      *     STAUTS_OK("1","通过",""),

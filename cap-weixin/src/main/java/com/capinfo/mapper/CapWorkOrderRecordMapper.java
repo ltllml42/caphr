@@ -12,5 +12,7 @@ public interface CapWorkOrderRecordMapper extends BaseMapper<CapWorkOrderRecord,
 
     List<CapWorkOrderRecord> selectListByCondition(CapWorkOrderRecord capWorkOrderRecord);
 
+    List<CapWorkOrderRecord> selectListJoinVehicleByCondition(CapWorkOrderRecord capWorkOrderRecord);
+
 
 }
