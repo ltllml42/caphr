@@ -115,7 +115,7 @@ public class LoginController {
 
     @GetMapping("/main")
     public String main(){
-        return "main/main";
+        return "/main/main";
     }
 
     @Log(desc = "用户退出平台")
