@@ -247,8 +247,8 @@ public class CapVehicleInfoService extends BaseServiceImpl<CapVehicleInfo, Strin
                 //发送消息队列
                 sendMsg(vehicleMsg);
             } else {
-                vehicleMsg.setCapWorkOrderRecord(record);
                 record = recordList.get(0);
+                vehicleMsg.setCapWorkOrderRecord(record);
                 //这个时候不在发消息到消息队列了
             }
 
@@ -262,6 +262,8 @@ public class CapVehicleInfoService extends BaseServiceImpl<CapVehicleInfo, Strin
                 spendtime.setStartTime(new Date());
                 spendtime.setTaskName(VehicleProcessEnum.PROCESS_ENTER.getTypeName());
                 capVehicleSpendtimeService.save(spendtime);
+                vehicleMsg.setCapWorkOrderRecord(capWorkOrderRecord);
+                sendMsg(vehicleMsg);
             } else {
                 //这个时候不需要在添加数据。这个时候说明还有没结束流程的年检记录
                 //在这看是在哪一步就给哪一步的用户发消息

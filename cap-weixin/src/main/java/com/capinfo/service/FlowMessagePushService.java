@@ -1,15 +1,13 @@
 package com.capinfo.service;
 
 import com.capinfo.base.CurrentUser;
-import com.capinfo.entity.CapVehicleInfo;
-import com.capinfo.entity.CapWorkOrderRecord;
-import com.capinfo.entity.CarCheckFlowMessage;
-import com.capinfo.entity.SysUser;
+import com.capinfo.entity.*;
 import com.capinfo.vehicle.utilEntity.NowLinkUtils;
 import com.capinfo.vehicle.utilEntity.VehicleConstant;
 import com.capinfo.vehicle.utilEntity.VehicleProcessEnum;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jms.core.JmsTemplate;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import javax.jms.Queue;

@@ -396,7 +396,7 @@ public class CapVehicleController {
                 }
                 //不通过的时候，给微信公众号推送一条消息
                 if (VehicleConstant.PROCESS_NOWSTATUS_NO.equals(capWorkOrderRecord.getNowStatus())) {
-                    String recordId = capWorkOrderRecord.getRecordId();
+                    String recordId = capWorkOrderRecord.getVehicleId();
                     CapVehicleInfo vehicleInfo = capVehicleInfoService.selectByPrimaryKey(recordId);
                     vehicleInfo.setCapWorkOrderRecord(capWorkOrderRecord);
                     if (StringUtils.isNotBlank(vehicleInfo.getOpenid())) {
@@ -409,6 +409,15 @@ public class CapVehicleController {
             //在最后写不合前面的混了就  如果下一步到缴费核算的情况下，把整体的费用算一下
             if (VehicleConstant.PROCESS_PAY.equals(capWorkOrderRecord.getNowLink())) {
                 capWorkOrderRecordService.saveTotalMoney(capWorkOrderRecord.getId());
+                //这个时候是通过的情况下。这个时候也往公众号和大屏推送一条消息
+                String recordId = capWorkOrderRecord.getVehicleId();
+                CapVehicleInfo vehicleInfo = capVehicleInfoService.selectByPrimaryKey(recordId);
+                vehicleInfo.setCapWorkOrderRecord(capWorkOrderRecord);
+                if (StringUtils.isNotBlank(vehicleInfo.getOpenid())) {
+                    flowMessagePushService.sendRecordToWx(vehicleInfo);
+                }
+                //往大屏上也发送
+                flowMessagePushService.sendRecordToLargeScreen(vehicleInfo);
             }
             jsonUtil.setFlag(true);
             jsonUtil.setMsg("修改成功");

@@ -4,6 +4,8 @@ import com.capinfo.base.CurrentUser;
 import com.capinfo.entity.CapVehicleInfo;
 import com.capinfo.entity.CapWorkOrderRecord;
 import com.capinfo.entity.CarCheckFlowMessage;
+import com.capinfo.entity.SysUser;
+import com.capinfo.service.SysUserService;
 import com.capinfo.util.CommonUtil;
 import com.capinfo.utils.WeiXinUtils;
 import com.capinfo.vehicle.utilEntity.VehicleConstant;
@@ -39,6 +41,8 @@ public class MqTestController {
     private Queue ordinaryQueue;
     @Autowired
     private Queue flowQuere;
+    @Autowired
+    private SysUserService sysUserService;
 
 
 
@@ -242,6 +246,31 @@ public class MqTestController {
     public String data(){
         String temp = "{\"code\":0,\"msg\":\"\",\"count\":1000,\"data\":[{\"id\":10000,\"username\":\"user-0\",\"sex\":\"女\",\"city\":\"城市-0\",\"sign\":\"签名-0\",\"experience\":255,\"logins\":24,\"wealth\":82830700,\"classify\":\"作家\",\"score\":57},{\"id\":10001,\"username\":\"user-1\",\"sex\":\"男\",\"city\":\"城市-1\",\"sign\":\"签名-1\",\"experience\":884,\"logins\":58,\"wealth\":64928690,\"classify\":\"词人\",\"score\":27}]}";
         return temp;
+    }
+
+
+    @Scheduled(fixedRate = 60000)
+    public void sendOrdinaryQueue() {
+        //测试
+        List<String> roleList = new ArrayList<String>();
+        roleList.add(VehicleConstant.ROLEID_GAS);
+        roleList.add(VehicleConstant.ROLEID_ONLINE);
+        roleList.add(VehicleConstant.ROLEID_LIGHT);
+        List<SysUser> userList = new ArrayList<SysUser>();
+        for (String str : roleList) {
+            List<SysUser> userListByRoleId = sysUserService.getUserListByRoleId(str);
+            for (SysUser sysUser : userListByRoleId) {
+                userList.add(sysUser);
+            }
+        }
+        for (SysUser user : userList) {
+            CarCheckFlowMessage carMsg = new CarCheckFlowMessage();
+            carMsg.setAction("msg");
+            carMsg.setToUser(user.getId());
+            jmsTemplate.convertAndSend(this.flowQuere,carMsg);
+        }
+
+
     }
 
 

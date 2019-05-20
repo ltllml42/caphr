@@ -89,6 +89,7 @@
                     success: function (data) {
                         if(data.flag){
                             //alert("success");
+                            loadData();
                         } else {
                             //window.location.href="/wx/message/fail";
                             //alert("fail");
@@ -133,6 +134,7 @@
                     success: function (data) {
                         if(data.flag){
                             //alert("success");
+                            loadData();
                         } else {
                             //window.location.href="/wx/message/fail";
                             //alert("fail");
@@ -168,6 +170,7 @@
                     success: function (data) {
                         if(data.flag){
                             //alert("success");
+                            loadData();
                         } else {
                             //window.location.href="/wx/message/fail";
                             //alert("fail");
@@ -203,6 +206,7 @@
                     success: function (data) {
                         if(data.flag){
                             //alert("success");
+                            loadData();
                         } else {
                             //window.location.href="/wx/message/fail";
                             //alert("fail");
@@ -326,21 +330,21 @@
         <p>双击确认！！</p>
         <div  data-role="controlgroup" data-type="vertical">
             <a href="#" data-role="button" id="ok" onclick="subUp(this,'{{d.buisId}}','{{d.flowStatus}}')"
-               class="ui-btn ui-mini ui-shadow  ui-icon-check ui-btn-icon-left">通过</a>
+               class="ui-btn ui-mini ui-shadow  ui-icon-check ui-btn-icon-left" style="padding-top: 1.4em;padding-bottom: 1.4em">通过</a>
             {{#if(d.flowStatus != '缴费核算'){ }}
             <a href="#" data-role="button" id="notOk" onclick="subNotOk(this,'{{d.buisId}}','{{d.flowStatus}}')"
-               class="ui-btn ui-mini ui-shadow  ui-icon-delete ui-btn-icon-left">不通过</a>
+               class="ui-btn ui-mini ui-shadow  ui-icon-delete ui-btn-icon-left" style="padding-top: 1.4em;padding-bottom: 1.4em">不通过</a>
             {{# } }}
             {{#if(d.flowStatus == '上线检测'){ }}
             <a href="#" data-role="button" id="onlylight" onclick="checkLight(this,'{{d.buisId}}')"
-               class="ui-btn ui-mini ui-shadow  ui-icon-delete ui-btn-icon-left">只复检车灯</a>
+               class="ui-btn ui-mini ui-shadow  ui-icon-delete ui-btn-icon-left" style="padding-top: 1.4em;padding-bottom: 1.4em">只复检车灯</a>
             {{# } }}
             {{#if(d.flowStatus == '尾气检测'){ }}
             <a href="#" data-role="button" id="onlylight" onclick="subFree(this,'{{d.buisId}}','{{d.flowStatus}}')"
-               class="ui-btn ui-mini ui-shadow  ui-icon-delete ui-btn-icon-left">新能源免检</a>
+               class="ui-btn ui-mini ui-shadow  ui-icon-delete ui-btn-icon-left" style="padding-top: 1.4em;padding-bottom: 1.4em">新能源免检</a>
             {{# } }}
             <a href="#" data-role="button" id="re" onclick="revokeProgram(this,'{{d.buisId}}')"
-               class="ui-btn ui-mini ui-shadow ui-icon-back ui-btn-icon-left">撤销</a>
+               class="ui-btn ui-mini ui-shadow ui-icon-back ui-btn-icon-left" style="padding-top: 1.4em;padding-bottom: 1.4em">撤销</a>
         </div>
 </script>
 
@@ -443,6 +447,8 @@
                     // }else{
                     //
                     // }
+                } else if (data.action=='msg') {
+                    //定时器传的数据。保证socket一直存在
                 }
             });
         });
