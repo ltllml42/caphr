@@ -45,7 +45,7 @@ To change this template use File | Settings | File Templates.-->
 
     <div class="layui-form-item">
         <label for="plateNo" class="layui-form-label">
-            总体检测费用
+            检测费用
         </label>
         <div class="layui-input-inline">
             <input type="text" id="totalMoney" name="totalMoney" class="layui-input" value="${capWorkOrderRecord.totalMoney}" readonly="readonly"/>

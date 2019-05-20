@@ -115,14 +115,8 @@ public class CapVehicleController {
      */
     @GetMapping(value = "end")
     public String endList(Model model) {
-        model.addAttribute("pageType", "light");
+        model.addAttribute("pageType", "end");
         return "vehicle/vehicleList";
-    }
-
-    @GetMapping(value = "largescreen")
-    public String largeScreen(Model model) {
-
-        return "";
     }
 
 
@@ -232,7 +226,7 @@ public class CapVehicleController {
         /*if (!"appear".equals(pageType) && !"enter".equals(pageType) && !"pay".equals(pageType)) {
             capVehicleInfoService.claim(id);
         }*/
-        if ("pay".equals(pageType)) {
+        if ("pay".equals(pageType) || "end".equals(pageType)) {
             return "vehicle/pay-vehicle";
         } else {
             return "vehicle/complete-vehicle";
