@@ -399,11 +399,7 @@ public class CapVehicleController {
                     String recordId = capWorkOrderRecord.getVehicleId();
                     CapVehicleInfo vehicleInfo = capVehicleInfoService.selectByPrimaryKey(recordId);
                     vehicleInfo.setCapWorkOrderRecord(capWorkOrderRecord);
-                    if (StringUtils.isNotBlank(vehicleInfo.getOpenid())) {
-                        flowMessagePushService.sendRecordToWx(vehicleInfo);
-                    }
-                    //往大屏上也发送
-                    flowMessagePushService.sendRecordToLargeScreen(vehicleInfo);
+                    capVehicleInfoService.sendMsg(vehicleInfo);
                 }
             }
             //在最后写不合前面的混了就  如果下一步到缴费核算的情况下，把整体的费用算一下
@@ -414,11 +410,7 @@ public class CapVehicleController {
                 CapVehicleInfo vehicleInfo = capVehicleInfoService.selectByPrimaryKey(recordId);
                 capWorkOrderRecord.setNowLink(beforeNowLink);
                 vehicleInfo.setCapWorkOrderRecord(capWorkOrderRecord);
-                if (StringUtils.isNotBlank(vehicleInfo.getOpenid())) {
-                    flowMessagePushService.sendRecordToWx(vehicleInfo);
-                }
-                //往大屏上也发送
-                flowMessagePushService.sendRecordToLargeScreen(vehicleInfo);
+                capVehicleInfoService.sendMsg(vehicleInfo);
             }
             jsonUtil.setFlag(true);
             jsonUtil.setMsg("修改成功");
