@@ -50,9 +50,6 @@
       <if test="vehicleId!=null and vehicleId!=''">
         and vehicle_id = #{vehicleId}
       </if>
-      <if test="recordId!=null and recordId!=''">
-        and record_id = #{recordId}
-      </if>
     </where>
     order by create_date desc
   </select>
@@ -97,9 +94,6 @@
       </if>
       <if test="vehicleId!=null and vehicleId!=''">
         and a.vehicle_id = #{vehicleId}
-      </if>
-      <if test="recordId!=null and recordId!=''">
-        and a.record_id = #{recordId}
       </if>
     </where>
     order by a.create_date desc

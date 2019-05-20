@@ -412,6 +412,7 @@ public class CapVehicleController {
                 //这个时候是通过的情况下。这个时候也往公众号和大屏推送一条消息
                 String recordId = capWorkOrderRecord.getVehicleId();
                 CapVehicleInfo vehicleInfo = capVehicleInfoService.selectByPrimaryKey(recordId);
+                capWorkOrderRecord.setNowLink(beforeNowLink);
                 vehicleInfo.setCapWorkOrderRecord(capWorkOrderRecord);
                 if (StringUtils.isNotBlank(vehicleInfo.getOpenid())) {
                     flowMessagePushService.sendRecordToWx(vehicleInfo);
