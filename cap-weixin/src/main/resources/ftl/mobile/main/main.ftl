@@ -153,9 +153,10 @@
             $(v).text("再点一次确认");
             reOk();
         } else {
-            $(v).text("不通过");
+            $(v).text("只复检车灯");
             reOk();
             reNotOk();
+            reLight();
             var data = {};
             data.id=buisId;
             data.status="nopasslight";
@@ -184,13 +185,14 @@
 
     function subFree(v, buisId) {
         countFree++;
-        if (countLight == 1) {
+        if (countFree == 1) {
             $(v).text("再点一次确认");
             reOk();
         } else {
             $(v).text("免检");
             reOk();
             reNotOk();
+            reFree();
             var data = {};
             data.id=buisId;
             data.status="pass";
@@ -229,6 +231,16 @@
     function reNotOk() {
         countNotOk = 0;
         $("#notOk").text("不通过");
+    }
+
+    function reLight() {
+        countLight = 0;
+        $("#onlylight").text("只复检车灯");
+    }
+    
+    function reFree() {
+        countFree = 0;
+        $("#free").text("新能源免检");
     }
 
     function revokeProgram() {
@@ -340,7 +352,7 @@
                class="ui-btn ui-mini ui-shadow  ui-icon-delete ui-btn-icon-left" style="padding-top: 1.4em;padding-bottom: 1.4em">只复检车灯</a>
             {{# } }}
             {{#if(d.flowStatus == '尾气检测'){ }}
-            <a href="#" data-role="button" id="onlylight" onclick="subFree(this,'{{d.buisId}}','{{d.flowStatus}}')"
+            <a href="#" data-role="button" id="free" onclick="subFree(this,'{{d.buisId}}','{{d.flowStatus}}')"
                class="ui-btn ui-mini ui-shadow  ui-icon-delete ui-btn-icon-left" style="padding-top: 1.4em;padding-bottom: 1.4em">新能源免检</a>
             {{# } }}
             <a href="#" data-role="button" id="re" onclick="revokeProgram(this,'{{d.buisId}}')"
