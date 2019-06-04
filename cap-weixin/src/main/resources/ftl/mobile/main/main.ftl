@@ -24,7 +24,7 @@
     </div>
     <div data-role="main" class="ui-content">
         <h2>
-            <#assign currentUser = Session["curentUser"]>
+            <#assign currentUser = Session["curentUser"]>${currentUser.realName}
             <@shiro.hasPermission name="car:gas">尾气检查消息列表</@shiro.hasPermission>
             <@shiro.hasPermission name="car:online">上线检测消息列表</@shiro.hasPermission>
             <@shiro.hasPermission name="car:pay">缴费核算消息列表</@shiro.hasPermission>
@@ -58,11 +58,13 @@
     function subUp(v, buisId, flowStatus) {
         countOk++;
         if (countOk == 1) {
-            $(v).text("再点击一次");
+            //$(v).text("再点击一次确认");
+            $("#okText").text("再点击一次确认");
             reNotOk();
             return false;
         } else {
-            $(v).text("通过");
+            //$(v).text("通过");
+            $("#okText").text("通过");
             reOk();
             reNotOk();
             //提交表单
@@ -105,10 +107,12 @@
     function subNotOk(v, buisId, flowStatus) {
         countNotOk++;
         if (countNotOk == 1) {
-            $(v).text("再点一次确认");
+            //$(v).text("再点一次确认");
+            $("#notOkText").text("再点一次确认");
             reOk();
         } else {
-            $(v).text("不通过");
+            //$(v).text("不通过");
+            $("#notOkText").text("不通过");
             reOk();
             reNotOk();
             var url = "";
@@ -150,10 +154,12 @@
     function checkLight(v, buisId, flowStatus) {
         countLight++;
         if (countLight == 1) {
-            $(v).text("再点一次确认");
+            //$(v).text("再点一次确认");
+            $("#lightText").text("再点一次确认");
             reOk();
         } else {
-            $(v).text("只复检车灯");
+            //$(v).text("只复检车灯");
+            $("#lightText").text("只复检车灯");
             reOk();
             reNotOk();
             reLight();
@@ -186,10 +192,12 @@
     function subFree(v, buisId) {
         countFree++;
         if (countFree == 1) {
-            $(v).text("再点一次确认");
+            //$(v).text("再点一次确认");
+            $("#freeText").text("再点一次确认");
             reOk();
         } else {
-            $(v).text("免检");
+            //$(v).text("免检");
+            $("#freeText").text("新能源免检");
             reOk();
             reNotOk();
             reFree();
@@ -225,27 +233,33 @@
 
     function reOk() {
         countOk = 0;
-        $("#ok").text("通过");
+        //$("#ok").text("通过");
+        $("#okText").text("通过");
     }
 
     function reNotOk() {
         countNotOk = 0;
-        $("#notOk").text("不通过");
+        //$("#notOk").text("不通过");
+        $("#notOkText").text("不通过");
     }
 
     function reLight() {
         countLight = 0;
-        $("#onlylight").text("只复检车灯");
+        //$("#onlylight").text("只复检车灯");
+        $("#lightText").text("只复检车灯");
     }
     
     function reFree() {
         countFree = 0;
-        $("#free").text("新能源免检");
+        //$("#free").text("新能源免检");
+        $("#freeText").text("新能源免检");
     }
 
     function revokeProgram() {
         reOk();
         reNotOk();
+        reLight();
+        reFree();
     }
 
     //加载这个用户角色对应下所有的数据
@@ -341,22 +355,23 @@
         </p>
         <p>双击确认！！</p>
         <div  data-role="controlgroup" data-type="vertical">
+
             <a href="#" data-role="button" id="ok" onclick="subUp(this,'{{d.buisId}}','{{d.flowStatus}}')"
-               class="ui-btn ui-mini ui-shadow  ui-icon-check ui-btn-icon-left" style="padding-top: 1.4em;padding-bottom: 1.4em">通过</a>
+               class="ui-btn ui-mini ui-shadow  ui-icon-check ui-btn-icon-left" style="padding-top: 1.4em;padding-bottom: 1.4em"><p id="okText" style="font-size: 22px">通过</p></a>
             {{#if(d.flowStatus != '缴费核算'){ }}
             <a href="#" data-role="button" id="notOk" onclick="subNotOk(this,'{{d.buisId}}','{{d.flowStatus}}')"
-               class="ui-btn ui-mini ui-shadow  ui-icon-delete ui-btn-icon-left" style="padding-top: 1.4em;padding-bottom: 1.4em">不通过</a>
+               class="ui-btn ui-mini ui-shadow  ui-icon-delete ui-btn-icon-left" style="padding-top: 1.4em;padding-bottom: 1.4em"><p id="notOkText" style="font-size: 22px">不通过</p></a>
             {{# } }}
             {{#if(d.flowStatus == '上线检测'){ }}
             <a href="#" data-role="button" id="onlylight" onclick="checkLight(this,'{{d.buisId}}')"
-               class="ui-btn ui-mini ui-shadow  ui-icon-delete ui-btn-icon-left" style="padding-top: 1.4em;padding-bottom: 1.4em">只复检车灯</a>
+               class="ui-btn ui-mini ui-shadow  ui-icon-delete ui-btn-icon-left" style="padding-top: 1.4em;padding-bottom: 1.4em"><p id="lightText" style="font-size: 22px">只复检车灯</p></a>
             {{# } }}
             {{#if(d.flowStatus == '尾气检测'){ }}
             <a href="#" data-role="button" id="free" onclick="subFree(this,'{{d.buisId}}','{{d.flowStatus}}')"
-               class="ui-btn ui-mini ui-shadow  ui-icon-delete ui-btn-icon-left" style="padding-top: 1.4em;padding-bottom: 1.4em">新能源免检</a>
+               class="ui-btn ui-mini ui-shadow  ui-icon-delete ui-btn-icon-left" style="padding-top: 1.4em;padding-bottom: 1.4em"><p id="freeText" style="font-size: 22px">新能源免检</p></a>
             {{# } }}
             <a href="#" data-role="button" id="re" onclick="revokeProgram(this,'{{d.buisId}}')"
-               class="ui-btn ui-mini ui-shadow ui-icon-back ui-btn-icon-left" style="padding-top: 1.4em;padding-bottom: 1.4em">撤销</a>
+               class="ui-btn ui-mini ui-shadow ui-icon-back ui-btn-icon-left" style="padding-top: 1.4em;padding-bottom: 1.4em"><p id="reText" style="font-size: 22px">撤销</p></a>
         </div>
 </script>
 
@@ -464,7 +479,18 @@
                 }
             });
         });
+
+
+        //前台写一个每隔多少分钟轮询的方法
+
     });
+
+
+    function sendMessage() {
+        stompClient.send("",JSON.stringify({'page':'main'}));
+
+    }
+
 
 
     function selectOne(busiId){

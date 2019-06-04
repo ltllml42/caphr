@@ -39,7 +39,7 @@ public class CapVehicleSpendtime extends BaseEntity {
     @Column(name = "remarks")
     private String remarks;
     @Column(name = "spend_money")
-    private double spendMoney;
+    private Double spendMoney;
     @Column(name = "isrepeat")
     private String isrepeat;
     @Column(name = "now_status")
